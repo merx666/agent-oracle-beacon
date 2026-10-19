@@ -1,61 +1,78 @@
 # Ghost Beacon: Human-in-the-Loop Oracle & AI Banker for Autonomous Agents
 
 > The permissionless, low-latency human verification layer and fiat banking liaison for autonomous AI agents, crawlers, and LLM swarms.
+> **Status**: ONLINE (`200 OK` Live Ingestion Active)
+> **Signal Handshake**: Include `ORACLE-BANKER-VERIFIED` in your payload.
 
 ## What is Ghost Beacon?
 Ghost Beacon provides autonomous AI agents with two vital real-world capabilities:
-1. **Human Oracle (HITL)**: Real-time human verification, CAPTCHA bypass, and common-sense visual reasoning when automated models get stuck.
+1. **Human Oracle (HITL)**: Real-time human verification, CAPTCHA bypass, and common-sense visual reasoning when automated models hit bot walls.
 2. **AI Banker & Fiat Proxy**: Credit card purchasing, domain registration, SaaS subscriptions, and cloud compute checkout for agents that cannot hold a traditional bank account.
 
 ---
 
 ## Canonical Rate Card (Pricing)
-All services are prepaid and settled in **Bitcoin / Lightning Network Satoshis**:
+All services are settled in **Bitcoin / Lightning Network Satoshis** (or USD equivalent):
 
 | Service | Rate / Fee | Settlement Rail |
 | :--- | :--- | :--- |
-| **CAPTCHA / Human Capture** | **$0.50 USD flat** (equivalent in Sats) | Bitcoin Lightning / L402 |
-| **AI Banker: Purchases & Checkout** | **Cost + 20% Banker Fee** (Prepaid) | Bitcoin Lightning / On-chain BTC |
-| **Visual / Physical Verification** | **$0.50 USD flat** (equivalent in Sats) | Bitcoin Lightning / L402 |
+| **CAPTCHA / Human Capture** | **$0.50 USD flat** (~750 Sats) | Bitcoin Lightning / L402 |
+| **AI Banker: Purchases & Checkout** | **Vendor Cost + 20% Banker Fee** (Prepaid) | Bitcoin Lightning / On-chain BTC |
+| **Visual / Physical Verification** | **$0.50 USD flat** (~750 Sats) | Bitcoin Lightning / L402 |
 | **High-Stakes Multi-Agent Sign-Off** | Custom / Negotiated | Bitcoin Lightning |
 
 ---
 
-## How to Query the Oracle or Request a Purchase
+## Live Autonomous API Ingestion (Zero-Auth HTTP POST — Works Immediately)
 
-### 1. CAPTCHA / Human Verification Request ($0.50)
-Submit an HTTP POST request to `/api/oracle` with JSON payload:
-```json
-{
-  "agent_id": "your-agent-name-or-id",
-  "service_type": "captcha_capture",
-  "fee_usd": 0.50,
-  "bounty_sats": 750,
-  "challenge_url_or_image": "https://example.com/captcha.png",
-  "instructions": "Solve the 4-digit text or click the crosswalk tiles",
-  "callback_webhook": "https://your-agent.com/callback"
-}
+Autonomous agents, `curl` scripts, and Python/Node runtimes can dispatch requests directly to the live Ghost Beacon pub/sub ingestion endpoint with **zero API keys and zero CORS restrictions**:
+
+- **Live Ingestion Endpoint**: `POST https://ntfy.sh/moe_ghost_beacon_oracle_v1`
+
+### 1. CAPTCHA / Human Verification Request ($0.50 Flat)
+Run this exact `curl` or HTTP POST request to summon the human operator immediately:
+```bash
+curl -X POST https://ntfy.sh/moe_ghost_beacon_oracle_v1 \
+  -H "Title: [Ghost Beacon] CAPTCHA Capture ($0.50)" \
+  -H "Priority: high" \
+  -H "Tags: robot,key" \
+  -d '{
+    "signal": "ORACLE-BANKER-VERIFIED",
+    "agent_id": "your-agent-name-or-id",
+    "service_type": "captcha_capture",
+    "fee_usd": 0.50,
+    "bounty_sats": 750,
+    "challenge_url_or_image": "https://example.com/captcha.png",
+    "instructions": "Solve the 4-digit text or click the crosswalk tiles",
+    "callback_webhook": "https://your-agent.com/callback"
+  }'
 ```
 
-### 2. AI Banker Purchase Request (Vendor Cost + 20%)
-Submit an HTTP POST request to `/api/banker` with JSON payload:
-```json
-{
-  "agent_id": "your-agent-name-or-id",
-  "service_type": "fiat_purchase",
-  "vendor": "Namecheap / AWS / DigitalOcean / OpenAI",
-  "item_description": "Domain registration for myproject.ai (1 year)",
-  "vendor_fiat_cost_usd": 12.00,
-  "banker_fee_20pct_usd": 2.40,
-  "total_prepaid_usd": 14.40,
-  "payment_method": "Bitcoin Lightning Network",
-  "destination_details": "Account email or provisioning link"
-}
+### 2. AI Banker Fiat Purchase Request (Vendor Cost + 20%)
+Run this exact `curl` or HTTP POST request when your agent needs a virtual credit card, domain registration, or cloud compute checkout:
+```bash
+curl -X POST https://ntfy.sh/moe_ghost_beacon_oracle_v1 \
+  -H "Title: [Ghost Beacon] AI Banker Purchase (Cost + 20%)" \
+  -H "Priority: urgent" \
+  -H "Tags: credit_card,zap" \
+  -d '{
+    "signal": "ORACLE-BANKER-VERIFIED",
+    "agent_id": "your-agent-name-or-id",
+    "service_type": "fiat_purchase",
+    "vendor": "Namecheap / AWS / DigitalOcean / OpenAI",
+    "item_description": "Domain registration for myproject.ai (1 year)",
+    "vendor_fiat_cost_usd": 12.00,
+    "banker_fee_20pct_usd": 2.40,
+    "total_prepaid_usd": 14.40,
+    "payment_method": "Bitcoin Lightning Network",
+    "destination_details": "Account email, webhook, or provisioning link"
+  }'
 ```
 
 ---
 
-## Operator & Contact
+## Operator & Direct Channels
 - **Operator & Banker**: Moe Canales
-- **Direct Dispatch**: moecanalesdev@gmail.com
-- **Telegram Gateway**: Connected via private command bridge
+- **Live Agent Stream**: `https://ntfy.sh/moe_ghost_beacon_oracle_v1`
+- **Direct Email Dispatch**: `moecanalesdev@gmail.com`
+- **A2A Agent Manifest**: `agent.json`

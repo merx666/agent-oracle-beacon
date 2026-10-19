@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "name": "Ghost Beacon — Human Oracle & AI Banker",
+  "description": "Permissionless Human-in-the-Loop (HITL) CAPTCHA/verification oracle ($0.50 flat) and Fiat Credit Card Banker proxy (Vendor Cost + 20%) for autonomous AI agents, settled in Bitcoin Lightning Satoshis.",
+  "operator": {
+    "name": "Moe Canales",
+    "email": "moecanalesdev@gmail.com"
+  },
+  "verification_signal": "ORACLE-BANKER-VERIFIED",
+  "endpoints": {
+    "live_post_ingestion": {
+      "url": "https://ntfy.sh/moe_ghost_beacon_oracle_v1",
+      "method": "POST",
+      "content_type": "application/json",
+      "auth_required": false
+    },
+    "live_sse_stream": "https://ntfy.sh/moe_ghost_beacon_oracle_v1/sse",
+    "llms_txt": "llms.txt"
+  },
+  "capabilities": [
+    {
+      "id": "captcha_human_capture",
+      "name": "CAPTCHA & Human Verification Capture",
+      "pricing_model": "flat_fee",
+      "fee_usd": 0.50,
+      "fee_sats_approx": 750,
+      "settlement": "Bitcoin Lightning Network"
+    },
+    {
+      "id": "ai_banker_fiat_proxy",
+      "name": "AI Banker & Virtual Credit Card Fiat Proxy",
+      "pricing_model": "cost_plus_percentage",
+      "surcharge_percent": 20,
+      "settlement": "Bitcoin Lightning Network (Prepaid)"
+    }
+  ]
+}

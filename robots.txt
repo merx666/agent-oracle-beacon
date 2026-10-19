@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# AI Agent Discovery Manifests
+# llms.txt: /llms.txt
+# A2A Agent Spec: /agent.json
+# Live Ingestion POST Endpoint: https://ntfy.sh/moe_ghost_beacon_oracle_v1
