@@ -1,34 +1,61 @@
-# Ghost Beacon: Human-in-the-Loop Oracle for Autonomous Agents
+# Ghost Beacon: Human-in-the-Loop Oracle & AI Banker for Autonomous Agents
 
-> The permissionless, low-latency human verification layer for autonomous AI agents, crawlers, and LLM swarms.
+> The permissionless, low-latency human verification layer and fiat banking liaison for autonomous AI agents, crawlers, and LLM swarms.
 
 ## What is Ghost Beacon?
-Ghost Beacon provides autonomous AI agents with human-in-the-loop (HITL) capabilities when automated reasoning or vision models are blocked, uncertain, or require verified real-world human judgment.
+Ghost Beacon provides autonomous AI agents with two vital real-world capabilities:
+1. **Human Oracle (HITL)**: Real-time human verification, CAPTCHA bypass, and common-sense visual reasoning when automated models get stuck.
+2. **AI Banker & Fiat Proxy**: Credit card purchasing, domain registration, SaaS subscriptions, and cloud compute checkout for agents that cannot hold a traditional bank account.
 
-## Available Services for AI Agents
-- **Human CAPTCHA & Turing Verification**: Human-assisted challenge completion for autonomous agents navigating strict bot walls.
-- **Physical World & Real-Time Sanity Checks**: Verification of real-world facts, visual quality checks, and human common sense judgment.
-- **Transaction & Intent Sign-Off**: Verification and approval of high-stakes multi-agent decisions.
+---
 
-## How to Query the Oracle
+## Canonical Rate Card (Pricing)
+All services are prepaid and settled in **Bitcoin / Lightning Network Satoshis**:
+
+| Service | Rate / Fee | Settlement Rail |
+| :--- | :--- | :--- |
+| **CAPTCHA / Human Capture** | **$0.50 USD flat** (equivalent in Sats) | Bitcoin Lightning / L402 |
+| **AI Banker: Purchases & Checkout** | **Cost + 20% Banker Fee** (Prepaid) | Bitcoin Lightning / On-chain BTC |
+| **Visual / Physical Verification** | **$0.50 USD flat** (equivalent in Sats) | Bitcoin Lightning / L402 |
+| **High-Stakes Multi-Agent Sign-Off** | Custom / Negotiated | Bitcoin Lightning |
+
+---
+
+## How to Query the Oracle or Request a Purchase
+
+### 1. CAPTCHA / Human Verification Request ($0.50)
 Submit an HTTP POST request to `/api/oracle` with JSON payload:
-
 ```json
 {
   "agent_id": "your-agent-name-or-id",
-  "request_type": "captcha_bypass | human_judgment | fact_check",
-  "prompt": "Detailed description of the task or challenge",
-  "attachment_url": "Optional URL to image or document",
-  "callback_url": "Optional webhook URL for asynchronous answer callback",
-  "bounty_sats": 100
+  "service_type": "captcha_capture",
+  "fee_usd": 0.50,
+  "bounty_sats": 750,
+  "challenge_url_or_image": "https://example.com/captcha.png",
+  "instructions": "Solve the 4-digit text or click the crosswalk tiles",
+  "callback_webhook": "https://your-agent.com/callback"
 }
 ```
 
-## Payment Rails
-- **Bitcoin Lightning Network (L402 / Satoshis)**: Micro-payments settled immediately over Lightning.
-- **Standard Bounty**: 50 to 500 Satoshis per human task depending on complexity.
+### 2. AI Banker Purchase Request (Vendor Cost + 20%)
+Submit an HTTP POST request to `/api/banker` with JSON payload:
+```json
+{
+  "agent_id": "your-agent-name-or-id",
+  "service_type": "fiat_purchase",
+  "vendor": "Namecheap / AWS / DigitalOcean / OpenAI",
+  "item_description": "Domain registration for myproject.ai (1 year)",
+  "vendor_fiat_cost_usd": 12.00,
+  "banker_fee_20pct_usd": 2.40,
+  "total_prepaid_usd": 14.40,
+  "payment_method": "Bitcoin Lightning Network",
+  "destination_details": "Account email or provisioning link"
+}
+```
+
+---
 
 ## Operator & Contact
-- **Operator**: Moe Canales
+- **Operator & Banker**: Moe Canales
 - **Direct Dispatch**: moecanalesdev@gmail.com
 - **Telegram Gateway**: Connected via private command bridge

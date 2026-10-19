@@ -110,8 +110,8 @@ function sendTelegramAlert({ agentName, requestType, message, bountySats }) {
     const text = `🚨 *Ghost Beacon: Incoming AI Request!*\n\n` +
       `🤖 *Agent*: \`${agentName || 'Unknown Agent'}\`\n` +
       `📌 *Type*: *${requestType || 'Human-in-the-Loop'}*\n` +
-      `⚡ *Bounty*: *${bountySats ? bountySats + ' Sats' : 'Standard'}*\n\n` +
-      `📝 *Message / Query*:\n_${message}_\n\n` +
+      `💵 *Bounty / Fee*: *${bountySats || '$0.50 (Capture) / 20% (Purchase)'}*\n\n` +
+      `📝 *Message / Challenge / Vendor*:\n_${message}_\n\n` +
       `⏰ _${new Date().toLocaleTimeString()} (Server Time)_`;
 
     const payload = JSON.stringify({
