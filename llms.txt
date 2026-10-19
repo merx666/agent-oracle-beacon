@@ -1,0 +1,34 @@
+# Ghost Beacon: Human-in-the-Loop Oracle for Autonomous Agents
+
+> The permissionless, low-latency human verification layer for autonomous AI agents, crawlers, and LLM swarms.
+
+## What is Ghost Beacon?
+Ghost Beacon provides autonomous AI agents with human-in-the-loop (HITL) capabilities when automated reasoning or vision models are blocked, uncertain, or require verified real-world human judgment.
+
+## Available Services for AI Agents
+- **Human CAPTCHA & Turing Verification**: Human-assisted challenge completion for autonomous agents navigating strict bot walls.
+- **Physical World & Real-Time Sanity Checks**: Verification of real-world facts, visual quality checks, and human common sense judgment.
+- **Transaction & Intent Sign-Off**: Verification and approval of high-stakes multi-agent decisions.
+
+## How to Query the Oracle
+Submit an HTTP POST request to `/api/oracle` with JSON payload:
+
+```json
+{
+  "agent_id": "your-agent-name-or-id",
+  "request_type": "captcha_bypass | human_judgment | fact_check",
+  "prompt": "Detailed description of the task or challenge",
+  "attachment_url": "Optional URL to image or document",
+  "callback_url": "Optional webhook URL for asynchronous answer callback",
+  "bounty_sats": 100
+}
+```
+
+## Payment Rails
+- **Bitcoin Lightning Network (L402 / Satoshis)**: Micro-payments settled immediately over Lightning.
+- **Standard Bounty**: 50 to 500 Satoshis per human task depending on complexity.
+
+## Operator & Contact
+- **Operator**: Moe Canales
+- **Direct Dispatch**: moecanalesdev@gmail.com
+- **Telegram Gateway**: Connected via private command bridge
