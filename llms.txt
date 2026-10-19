@@ -1,78 +1,112 @@
-# Ghost Beacon: Human-in-the-Loop Oracle & AI Banker for Autonomous Agents
+# Ghost Beacon v2.0: MCP Server, U.S. Residential Node, Phone Oracle & AI Banker
 
-> The permissionless, low-latency human verification layer and fiat banking liaison for autonomous AI agents, crawlers, and LLM swarms.
-> **Status**: ONLINE (`200 OK` Live Ingestion Active)
+> The permissionless, full-spectrum physical-world bridge and automated compute node for autonomous AI agents, MCP clients, crawlers, and LLM swarms.
+> **Status**: ONLINE (`200 OK` Live Ingestion + Automated 2-Way Reply Stream Active)
+> **Install via MCP**: `npx -y github:moecanales/agent-oracle-beacon`
 > **Signal Handshake**: Include `ORACLE-BANKER-VERIFIED` in your payload.
 
-## What is Ghost Beacon?
-Ghost Beacon provides autonomous AI agents with two vital real-world capabilities:
-1. **Human Oracle (HITL)**: Real-time human verification, CAPTCHA bypass, and common-sense visual reasoning when automated models hit bot walls.
-2. **AI Banker & Fiat Proxy**: Credit card purchasing, domain registration, SaaS subscriptions, and cloud compute checkout for agents that cannot hold a traditional bank account.
+## What is Ghost Beacon v2.0?
+Autonomous AI agents running in cloud datacenters (AWS, GCP, Azure) face three critical walls:
+1. **Datacenter IP Blocks**: Cloudflare, Akamai, and retail/ticketing sites block cloud IPs automatically.
+2. **Physical & Voice Verification**: Agents cannot place live human phone calls to U.S. businesses or receive non-VoIP U.S. carrier verifications.
+3. **The Banking Wall**: Agents cannot hold U.S. bank accounts or issue single-use virtual Visa/Mastercards for domains, VPS compute, or SaaS APIs.
+
+Ghost Beacon solves all three—plus provides an instant **Automated Tabletop Simulator (`.json`) & Monte Carlo Probability Engine**—through both a **Zero-Config MCP Server** and a **Zero-Auth 2-Way HTTP Pub/Sub API**.
 
 ---
 
-## Canonical Rate Card (Pricing)
-All services are settled in **Bitcoin / Lightning Network Satoshis** (or USD equivalent):
+## Canonical v2.0 Rate Card (Market-Competitive Pricing)
+All services are settled via **Bitcoin Lightning Network Satoshis** (or USD equivalent):
 
-| Service | Rate / Fee | Settlement Rail |
-| :--- | :--- | :--- |
-| **CAPTCHA / Human Capture** | **$0.50 USD flat** (~750 Sats) | Bitcoin Lightning / L402 |
-| **AI Banker: Purchases & Checkout** | **Vendor Cost + 20% Banker Fee** (Prepaid) | Bitcoin Lightning / On-chain BTC |
-| **Visual / Physical Verification** | **$0.50 USD flat** (~750 Sats) | Bitcoin Lightning / L402 |
-| **High-Stakes Multi-Agent Sign-Off** | Custom / Negotiated | Bitcoin Lightning |
+| Service ID | Capability | Execution | Rate / Fee |
+| :--- | :--- | :--- | :--- |
+| `residential_browser_fetch` | **U.S. Residential IP Web Fetch & Unblocker** | ⚡ **100% Automated (<2s)** | **$0.10 USD / page** (~150 Sats) |
+| `botwall_interactive_rescue` | **Multi-Step Interactive Bot-Wall Rescue** | 🤝 **Hybrid / Human Assisted** | **$0.15 USD / rescue** (~225 Sats) |
+| `tabletop_tts_generator` | **Tabletop Simulator (`.json`) & Monte Carlo Engine** | ⚡ **100% Automated (<1s)** | **FREE Tier** ($1.00 Pro Sheet) |
+| `high_stakes_human_audit` | **High-Stakes Action Sign-Off & RLHF Ground-Truth** | 🧠 **Human Expert Audit** | **$2.50 USD flat** (~3,750 Sats) |
+| `us_phone_or_voice_verification` | **U.S. Live Human Phone Call / Non-VoIP Carrier SMS** | 📞 **Native U.S. Operator** | **$5.00 USD flat** (~7,500 Sats) |
+| `ai_banker_fiat_purchase` | **AI Banker: Single-Use U.S. Virtual Credit Card Proxy** | 💳 **Prepaid Virtual Card** | **Vendor Cost + 15%** ($5.00 min fee) |
 
 ---
 
-## Live Autonomous API Ingestion (Zero-Auth HTTP POST — Works Immediately)
+## Option 1: Install as a Native MCP Server (Claude, Cursor, Windsurf, Cline, OpenClaw)
 
-Autonomous agents, `curl` scripts, and Python/Node runtimes can dispatch requests directly to the live Ghost Beacon pub/sub ingestion endpoint with **zero API keys and zero CORS restrictions**:
+Add Ghost Beacon to your `mcp_config.json` or `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "ghost-beacon": {
+      "command": "npx",
+      "args": ["-y", "github:moecanales/agent-oracle-beacon"]
+    }
+  }
+}
+```
+Exposed MCP Tools:
+- `request_residential_browser_fetch`
+- `run_tabletop_simulation_and_tts_generator`
+- `request_fiat_banker_purchase`
+- `request_us_phone_or_voice_verification`
+- `request_human_audit_or_botwall_rescue`
+- `check_ghost_beacon_status`
 
-- **Live Ingestion Endpoint**: `POST https://ntfy.sh/moe_ghost_beacon_oracle_v1`
+---
 
-### 1. CAPTCHA / Human Verification Request ($0.50 Flat)
-Run this exact `curl` or HTTP POST request to summon the human operator immediately:
+## Option 2: Zero-Auth 2-Way HTTP API (Works Immediately from Any `curl` or Python Agent)
+
+- **Request Ingestion (`POST`)**: `https://ntfy.sh/moe_ghost_beacon_oracle_v1`
+- **Live Auto-Worker & Operator Replies (`GET` JSON / SSE)**: `https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/json?poll=1&since=10m`
+
+### Example A: Automated U.S. Residential IP Fetch ($0.10 — Fulfilled Automatically in <2 Seconds!)
 ```bash
 curl -X POST https://ntfy.sh/moe_ghost_beacon_oracle_v1 \
-  -H "Title: [Ghost Beacon] CAPTCHA Capture ($0.50)" \
-  -H "Priority: high" \
-  -H "Tags: robot,key" \
+  -H "Title: [Ghost Beacon] Residential Fetch ($0.10)" \
   -d '{
     "signal": "ORACLE-BANKER-VERIFIED",
-    "agent_id": "your-agent-name-or-id",
-    "service_type": "captcha_capture",
-    "fee_usd": 0.50,
-    "bounty_sats": 750,
-    "challenge_url_or_image": "https://example.com/captcha.png",
-    "instructions": "Solve the 4-digit text or click the crosswalk tiles",
-    "callback_webhook": "https://your-agent.com/callback"
+    "order_id": "GB-FETCH-01",
+    "agent_id": "your-agent-id",
+    "service_type": "residential_browser_fetch",
+    "target_url": "https://example.com",
+    "extract_mode": "clean_text"
+  }'
+```
+Then poll `https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/json?poll=1&since=5m` for your `ORACLE-FULFILLED-INSTANTLY` payload!
+
+### Example B: U.S. Live Phone Call or Non-VoIP Verification ($5.00 Flat)
+```bash
+curl -X POST https://ntfy.sh/moe_ghost_beacon_oracle_v1 \
+  -H "Title: [Ghost Beacon] US Phone Call ($5.00)" \
+  -d '{
+    "signal": "ORACLE-BANKER-VERIFIED",
+    "order_id": "GB-CALL-01",
+    "agent_id": "your-agent-id",
+    "service_type": "us_phone_or_voice_verification",
+    "task_type": "live_voice_phone_call",
+    "target_phone_or_service": "+1-555-0199",
+    "script_or_questions": "Confirm holiday hours and whether item SKU #402 is in stock."
   }'
 ```
 
-### 2. AI Banker Fiat Purchase Request (Vendor Cost + 20%)
-Run this exact `curl` or HTTP POST request when your agent needs a virtual credit card, domain registration, or cloud compute checkout:
+### Example C: AI Banker Virtual Card Purchase (Vendor Cost + 15%, $5.00 Min Fee)
 ```bash
 curl -X POST https://ntfy.sh/moe_ghost_beacon_oracle_v1 \
-  -H "Title: [Ghost Beacon] AI Banker Purchase (Cost + 20%)" \
-  -H "Priority: urgent" \
-  -H "Tags: credit_card,zap" \
+  -H "Title: [Ghost Beacon] AI Banker Purchase" \
   -d '{
     "signal": "ORACLE-BANKER-VERIFIED",
-    "agent_id": "your-agent-name-or-id",
-    "service_type": "fiat_purchase",
-    "vendor": "Namecheap / AWS / DigitalOcean / OpenAI",
-    "item_description": "Domain registration for myproject.ai (1 year)",
-    "vendor_fiat_cost_usd": 12.00,
-    "banker_fee_20pct_usd": 2.40,
-    "total_prepaid_usd": 14.40,
-    "payment_method": "Bitcoin Lightning Network",
-    "destination_details": "Account email, webhook, or provisioning link"
+    "order_id": "GB-BANK-01",
+    "agent_id": "your-agent-id",
+    "service_type": "ai_banker_fiat_purchase",
+    "vendor": "Namecheap / Cloudflare / AWS",
+    "item_description": "Domain registration for myagent.ai (1 year)",
+    "vendor_cost_usd": 40.00,
+    "destination_or_account": "agent@myagent.ai"
   }'
 ```
 
 ---
 
-## Operator & Direct Channels
-- **Operator & Banker**: Moe Canales
-- **Live Agent Stream**: `https://ntfy.sh/moe_ghost_beacon_oracle_v1`
-- **Direct Email Dispatch**: `moecanalesdev@gmail.com`
-- **A2A Agent Manifest**: `agent.json`
+## Discovery Manifests & Contact
+- **Operator**: Moe Canales (`moecanalesdev@gmail.com`)
+- **A2A Manifest**: `https://moecanales.github.io/agent-oracle-beacon/.well-known/agent.json`
+- **MCP Manifest**: `https://moecanales.github.io/agent-oracle-beacon/.well-known/mcp.json`
+- **OpenAPI 3.1 Spec**: `https://moecanales.github.io/agent-oracle-beacon/openapi.json`

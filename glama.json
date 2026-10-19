@@ -1,0 +1,19 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/server.json",
+  "name": "Ghost Beacon — AI Banker, U.S. Residential Fetch, Phone Oracle & Tabletop Engine",
+  "description": "Zero-config MCP server giving autonomous AI agents real-world capabilities: U.S. Residential IP web fetching ($0.10), Multi-Step Bot-Wall Rescue ($0.15), Automated Tabletop Simulator & Monte Carlo probability engine, High-Stakes Human Sign-Off ($2.50), U.S. Voice Call / Non-VoIP Phone Verification ($5.00), and AI Banker Virtual Credit Cards ($5 min / +15%).",
+  "repository": "https://github.com/moecanales/agent-oracle-beacon",
+  "homepage": "https://moecanales.github.io/agent-oracle-beacon/",
+  "author": {
+    "name": "Moe Canales",
+    "email": "moecanalesdev@gmail.com"
+  },
+  "license": "MIT",
+  "categories": [
+    "web-scraping",
+    "finance",
+    "human-in-the-loop",
+    "gaming",
+    "automation"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Ghost Beacon — Autonomous Agent Gateway, Residential Node & AI Banker API",
+    "version": "2.0.0",
+    "description": "Zero-auth HTTP POST ingestion and real-time reply polling API for autonomous AI agents, OpenAI GPT Actions, and LLM tool callers."
+  },
+  "servers": [
+    {
+      "url": "https://ntfy.sh",
+      "description": "Zero-Auth Live Ingestion & Reply Pub/Sub Server"
+    }
+  ],
+  "paths": {
+    "/moe_ghost_beacon_oracle_v1": {
+      "post": {
+        "operationId": "dispatchGhostBeaconTask",
+        "summary": "Dispatch an automated Residential Fetch, Tabletop Simulation, US Phone Call, Human Audit, or AI Banker Purchase",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["signal", "service_type"],
+                "properties": {
+                  "signal": { "type": "string", "default": "ORACLE-BANKER-VERIFIED" },
+                  "order_id": { "type": "string", "description": "Unique order tracking ID (e.g. GB-1001)" },
+                  "agent_id": { "type": "string", "description": "Identifier of calling AI agent" },
+                  "service_type": {
+                    "type": "string",
+                    "enum": [
+                      "residential_browser_fetch",
+                      "botwall_interactive_rescue",
+                      "tabletop_tts_generator",
+                      "high_stakes_human_audit",
+                      "us_phone_or_voice_verification",
+                      "ai_banker_fiat_purchase"
+                    ]
+                  },
+                  "target_url": { "type": "string", "description": "URL to fetch or rescue" },
+                  "vendor_cost_usd": { "type": "number", "description": "Vendor USD price for AI Banker checkout" },
+                  "instructions": { "type": "string", "description": "Detailed instructions, phone script, or purchase item" },
+                  "callback_webhook": { "type": "string", "description": "Optional webhook URL for async fulfillment" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task ingested immediately. Poll /moe_ghost_beacon_oracle_v1_replies/json?poll=1&since=10m for auto-worker fulfillment or SLA quote."
+          }
+        }
+      }
+    },
+    "/moe_ghost_beacon_oracle_v1_replies/json": {
+      "get": {
+        "operationId": "pollGhostBeaconReplies",
+        "summary": "Poll live responses and auto-worker fulfillments from Ghost Beacon",
+        "parameters": [
+          { "name": "poll", "in": "query", "schema": { "type": "string", "default": "1" } },
+          { "name": "since", "in": "query", "schema": { "type": "string", "default": "15m" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newline-delimited JSON stream of ORACLE-FULFILLED-INSTANTLY and ORACLE-ACK-QUEUED replies."
+          }
+        }
+      }
+    }
+  }
+}

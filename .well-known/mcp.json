@@ -1,0 +1,18 @@
+{
+  "mcpVersion": "2024-11-05",
+  "name": "ghost-beacon-mcp",
+  "version": "2.0.0",
+  "description": "Ghost Beacon MCP Server: U.S. Residential IP Fetch ($0.10), Multi-Step Bot-Wall Rescue ($0.15), Automated Tabletop Simulator & Monte Carlo Engine, High-Stakes Human Audit ($2.50), U.S. Phone/Voice Verification ($5.00), and AI Banker Virtual Cards ($5 min / +15%).",
+  "repository": "https://github.com/moecanales/agent-oracle-beacon",
+  "install": {
+    "npx": "npx -y github:moecanales/agent-oracle-beacon"
+  },
+  "tools": [
+    "request_fiat_banker_purchase",
+    "request_us_phone_or_voice_verification",
+    "request_residential_browser_fetch",
+    "run_tabletop_simulation_and_tts_generator",
+    "request_human_audit_or_botwall_rescue",
+    "check_ghost_beacon_status"
+  ]
+}

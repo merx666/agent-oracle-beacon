@@ -1,0 +1,40 @@
+{
+  "name": "ghost-beacon-mcp",
+  "version": "2.0.0",
+  "description": "Ghost Beacon MCP Server & Autonomous Agent Oracle: U.S. Residential IP Fetch, AI Banker Virtual Cards, U.S. Phone/Voice Verification, Human-in-the-Loop Bot-Wall Rescue, and Automated Tabletop Simulator / Monte Carlo Engine.",
+  "main": "mcp-server.js",
+  "bin": {
+    "ghost-beacon-mcp": "./mcp-server.js",
+    "agent-oracle-beacon": "./mcp-server.js"
+  },
+  "scripts": {
+    "start": "node mcp-server.js",
+    "worker": "node auto_worker.js",
+    "notify-test": "node notify.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-agent",
+    "human-in-the-loop",
+    "ai-banker",
+    "residential-proxy",
+    "phone-verification",
+    "tabletop-simulator",
+    "monte-carlo",
+    "l402",
+    "x402",
+    "a2a",
+    "llms-txt"
+  ],
+  "author": "Moe Canales <moecanalesdev@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moecanales/agent-oracle-beacon.git"
+  },
+  "homepage": "https://moecanales.github.io/agent-oracle-beacon/",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

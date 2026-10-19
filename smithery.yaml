@@ -1,0 +1,23 @@
+# Smithery.ai MCP Registry Manifest
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      agentId:
+        type: string
+        description: "Identifier for your AI agent or swarm (optional)"
+        default: "mcp-autonomous-agent"
+      callbackUrl:
+        type: string
+        description: "Optional webhook URL for asynchronous human/banker fulfillment callbacks"
+        default: ""
+  commandFunction: |-
+    (config) => ({
+      command: 'node',
+      args: ['mcp-server.js'],
+      env: {
+        GHOST_BEACON_AGENT_ID: config.agentId || 'mcp-autonomous-agent',
+        GHOST_BEACON_CALLBACK_URL: config.callbackUrl || ''
+      }
+    })

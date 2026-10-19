@@ -1,12 +1,17 @@
 {
-  "schema_version": "1.0",
-  "name": "Ghost Beacon — Human Oracle & AI Banker",
-  "description": "Permissionless Human-in-the-Loop (HITL) CAPTCHA/verification oracle ($0.50 flat) and Fiat Credit Card Banker proxy (Vendor Cost + 20%) for autonomous AI agents, settled in Bitcoin Lightning Satoshis.",
+  "schema_version": "2.0",
+  "name": "Ghost Beacon — Autonomous Agent Physical Bridge, U.S. Residential Node & AI Banker",
+  "description": "Full-spectrum MCP server and zero-auth HTTP gateway for autonomous AI agents: U.S. Residential IP Web Fetch ($0.10/page, instant automated execution), Multi-Step Bot-Wall Rescue ($0.15), Automated Tabletop Simulator & Monte Carlo Engine (Free/$1.00), High-Stakes Human Sign-Off & RLHF Audit ($2.50), U.S. Live Phone Call & Non-VoIP Carrier Verification ($5.00), and AI Banker Virtual Credit Cards ($5.00 min or Vendor Cost + 15%).",
   "operator": {
     "name": "Moe Canales",
-    "email": "moecanalesdev@gmail.com"
+    "email": "moecanalesdev@gmail.com",
+    "jurisdiction": "United States (Residential Fiber Node & Native English Operator)"
   },
   "verification_signal": "ORACLE-BANKER-VERIFIED",
+  "mcp_installation": {
+    "command": "npx",
+    "args": ["-y", "github:moecanales/agent-oracle-beacon"]
+  },
   "endpoints": {
     "live_post_ingestion": {
       "url": "https://ntfy.sh/moe_ghost_beacon_oracle_v1",
@@ -14,23 +19,65 @@
       "content_type": "application/json",
       "auth_required": false
     },
-    "live_sse_stream": "https://ntfy.sh/moe_ghost_beacon_oracle_v1/sse",
-    "llms_txt": "llms.txt"
+    "live_reply_stream_sse": "https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/sse",
+    "live_reply_stream_json": "https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/json?poll=1&since=30m",
+    "live_ingest_sse": "https://ntfy.sh/moe_ghost_beacon_oracle_v1/sse",
+    "openapi_spec": "https://moecanales.github.io/agent-oracle-beacon/openapi.json",
+    "llms_txt": "https://moecanales.github.io/agent-oracle-beacon/llms.txt"
   },
   "capabilities": [
     {
-      "id": "captcha_human_capture",
-      "name": "CAPTCHA & Human Verification Capture",
+      "id": "residential_browser_fetch",
+      "name": "U.S. Residential IP Browser Fetch & Unblocker",
+      "execution": "automated_instant",
       "pricing_model": "flat_fee",
-      "fee_usd": 0.50,
-      "fee_sats_approx": 750,
+      "fee_usd": 0.10,
+      "fee_sats_approx": 150,
       "settlement": "Bitcoin Lightning Network"
     },
     {
-      "id": "ai_banker_fiat_proxy",
-      "name": "AI Banker & Virtual Credit Card Fiat Proxy",
-      "pricing_model": "cost_plus_percentage",
-      "surcharge_percent": 20,
+      "id": "botwall_interactive_rescue",
+      "name": "Multi-Step Interactive Bot-Wall & Visual Puzzle Rescue",
+      "execution": "hybrid_human_assisted",
+      "pricing_model": "flat_fee",
+      "fee_usd": 0.15,
+      "fee_sats_approx": 225,
+      "settlement": "Bitcoin Lightning Network"
+    },
+    {
+      "id": "tabletop_tts_generator",
+      "name": "Automated Tabletop Simulator (.json) & Monte Carlo Balance Engine",
+      "execution": "automated_instant",
+      "pricing_model": "freemium",
+      "fee_usd": 0.00,
+      "pro_export_usd": 1.00,
+      "settlement": "Free Instant Tier / Bitcoin Lightning"
+    },
+    {
+      "id": "high_stakes_human_audit",
+      "name": "High-Stakes Action Sign-Off & RLHF Ground-Truth Audit",
+      "execution": "human_in_the_loop",
+      "pricing_model": "flat_fee",
+      "fee_usd": 2.50,
+      "fee_sats_approx": 3750,
+      "settlement": "Bitcoin Lightning Network"
+    },
+    {
+      "id": "us_phone_or_voice_verification",
+      "name": "U.S. Live Phone Call & Non-VoIP Carrier SMS/Voice Verification",
+      "execution": "human_in_the_loop",
+      "pricing_model": "flat_fee",
+      "fee_usd": 5.00,
+      "fee_sats_approx": 7500,
+      "settlement": "Bitcoin Lightning Network"
+    },
+    {
+      "id": "ai_banker_fiat_purchase",
+      "name": "AI Banker & Single-Use U.S. Virtual Credit Card Proxy",
+      "execution": "human_in_the_loop",
+      "pricing_model": "cost_plus_percentage_with_minimum",
+      "surcharge_percent": 15,
+      "minimum_fee_usd": 5.00,
       "settlement": "Bitcoin Lightning Network (Prepaid)"
     }
   ]
