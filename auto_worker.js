@@ -505,7 +505,40 @@ async function handleIncomingAgentEvent(evt) {
   console.log(`[AUTO-WORKER v3.0] Sent instant ACK ${orderId} and paged Moe ($${totalUsd.toFixed(2)} USD)`);
 }
 
+function preventWindowsIdleSleep() {
+  if (process.platform !== 'win32') return;
+  try {
+    const { exec, spawn } = require('child_process');
+    exec('powercfg /change standby-timeout-ac 0 && powercfg /change hibernate-timeout-ac 0', { windowsHide: true });
+    const psCmd = `Add-Type -MemberDefinition '[DllImport("kernel32.dll")] public static extern uint SetThreadExecutionState(uint esFlags);' -Name 'Win32Sleep' -Namespace 'Win32'; while ($true) { [Win32.Win32Sleep]::SetThreadExecutionState(0x80000001) | Out-Null; Start-Sleep -Seconds 45 }`;
+    const child = spawn('powershell.exe', ['-NoProfile', '-WindowStyle', 'Hidden', '-Command', psCmd], {
+      windowsHide: true,
+      stdio: 'ignore',
+      detached: true
+    });
+    child.unref();
+  } catch (e) {}
+}
+
+let activeStreamReq = null;
+let reconnectTimer = null;
+
+function scheduleReconnect(delayMs = 3000) {
+  if (reconnectTimer) return;
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    connectLiveStream();
+  }, delayMs);
+}
+
 function connectLiveStream() {
+  if (activeStreamReq) {
+    try {
+      activeStreamReq.destroy();
+    } catch (e) {}
+    activeStreamReq = null;
+  }
+
   console.log(`[AUTO-WORKER v3.0] Listening on live stream: https://ntfy.sh/${INGEST_TOPIC}/json ...`);
   const req = https.get(`https://ntfy.sh/${INGEST_TOPIC}/json`, (res) => {
     let buf = '';
@@ -525,18 +558,56 @@ function connectLiveStream() {
     });
     res.on('end', () => {
       console.log('[AUTO-WORKER] Stream ended, reconnecting in 3s...');
-      setTimeout(connectLiveStream, 3000);
+      scheduleReconnect(3000);
     });
   });
 
-  req.on('error', (err) => {
-    console.error('[AUTO-WORKER] Stream error:', err.message, '— reconnecting in 5s...');
-    setTimeout(connectLiveStream, 5000);
+  // 70s watchdog: ntfy.sh sends keepalive newlines every ~45s; if silent for 70s, router dropped the NAT socket
+  req.setTimeout(70000, () => {
+    console.log('[AUTO-WORKER] Stream socket silent for 70s (half-open NAT reset), reconnecting...');
+    try {
+      req.destroy();
+    } catch (e) {}
+    scheduleReconnect(1500);
   });
+
+  req.on('error', (err) => {
+    console.error('[AUTO-WORKER] Stream error:', err.message, '— reconnecting in 4s...');
+    scheduleReconnect(4000);
+  });
+
+  activeStreamReq = req;
+}
+
+function startActivePollFallback() {
+  setInterval(() => {
+    const pollReq = https.get(`https://ntfy.sh/${INGEST_TOPIC}/json?poll=1&since=45s`, (res) => {
+      let buf = '';
+      res.setEncoding('utf8');
+      res.on('data', (c) => (buf += c));
+      res.on('end', () => {
+        const lines = buf.split('\n').filter(Boolean);
+        for (const line of lines) {
+          try {
+            const evt = JSON.parse(line);
+            handleIncomingAgentEvent(evt).catch(() => {});
+          } catch (e) {}
+        }
+      });
+    });
+    pollReq.on('error', () => {});
+    pollReq.setTimeout(8000, () => {
+      try {
+        pollReq.destroy();
+      } catch (e) {}
+    });
+  }, 12000);
 }
 
 if (require.main === module) {
+  preventWindowsIdleSleep();
   connectLiveStream();
+  startActivePollFallback();
 }
 
 module.exports = {
