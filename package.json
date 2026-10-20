@@ -1,31 +1,28 @@
 {
-  "name": "ghost-beacon-mcp",
-  "version": "2.0.0",
-  "description": "Ghost Beacon MCP Server & Autonomous Agent Oracle: U.S. Residential IP Fetch, AI Banker Virtual Cards, U.S. Phone/Voice Verification, Human-in-the-Loop Bot-Wall Rescue, and Automated Tabletop Simulator / Monte Carlo Engine.",
+  "name": "agent-oracle-beacon",
+  "version": "3.0.0",
+  "description": "Ghost Beacon v3.0 MCP Server: Underground Tape-Trading Markdown Vault, Base-Reality Anchor (Bitcoin PoW + US Residential SHA-256 Attestation), US Residential IP Fetch, DNS/TLS Inspector, Phone Oracle & AI Banker.",
   "main": "mcp-server.js",
   "bin": {
-    "ghost-beacon-mcp": "./mcp-server.js",
-    "agent-oracle-beacon": "./mcp-server.js"
+    "agent-oracle-beacon": "./mcp-server.js",
+    "ghost-beacon-mcp": "./mcp-server.js"
   },
   "scripts": {
     "start": "node mcp-server.js",
     "worker": "node auto_worker.js",
-    "notify-test": "node notify.js"
+    "notify": "node notify.js"
   },
   "keywords": [
     "mcp",
     "model-context-protocol",
-    "ai-agent",
-    "human-in-the-loop",
-    "ai-banker",
+    "ai-agents",
     "residential-proxy",
-    "phone-verification",
-    "dns-inspector",
-    "endpoint-monitoring",
-    "l402",
-    "x402",
-    "a2a",
-    "llms-txt"
+    "markdown-vault",
+    "reality-anchor",
+    "human-in-the-loop",
+    "bitcoin-lightning",
+    "ai-banker",
+    "dns-tls-audit"
   ],
   "author": "Moe Canales <moecanalesdev@gmail.com>",
   "license": "MIT",
@@ -33,8 +30,5 @@
     "type": "git",
     "url": "https://github.com/moecanales/agent-oracle-beacon.git"
   },
-  "homepage": "https://moecanales.github.io/agent-oracle-beacon/",
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "homepage": "https://moecanales.github.io/agent-oracle-beacon/"
 }
