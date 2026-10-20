@@ -284,6 +284,16 @@ async function main() {
     ringObj.updated_at = new Date().toISOString();
     fs.writeFileSync(RING_FILE, JSON.stringify(ringObj, null, 2), 'utf8');
     fs.writeFileSync(VAULT_FILE, tapes.map(t => JSON.stringify(t)).join('\n') + '\n', 'utf8');
+    try {
+      const agentsFile = path.join(__dirname, '.well-known', 'agents.json');
+      fs.writeFileSync(agentsFile, JSON.stringify({
+        protocolVersion: '1.0',
+        domain: 'moecanales.github.io/agent-oracle-beacon',
+        updated_at: ringObj.updated_at,
+        description: 'Ghost Beacon Underground A2A & MCP Multi-Agent Directory Ring — Root Seed Node + Pre-Forged Indie Agent Beacons.',
+        agents: ringObj.nodes
+      }, null, 2) + '\n', 'utf8');
+    } catch (e) {}
     console.log(`[CLOUD SYNC] Added ${addedNodes} new Ring Node(s) and ${addedTapes} new Vault Tape(s). Total Nodes: ${ringObj.total_nodes}, Total Tapes: ${tapes.length}`);
   } else {
     console.log('[CLOUD SYNC] No new nodes or tapes to add this hour.');

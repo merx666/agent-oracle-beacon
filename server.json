@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.moecanales/agent-oracle-beacon",
+  "description": "Underground AI Tape-Trading Vault, Base-Reality PoW Anchor, 1-Click A2A Beacon Factory, U.S. Residential Node & Human-in-the-Loop Oracle.",
+  "repository": {
+    "url": "https://github.com/moecanales/agent-oracle-beacon",
+    "source": "github"
+  },
+  "version_detail": {
+    "version": "3.3.0"
+  },
+  "packages": [
+    {
+      "registry_name": "npm",
+      "name": "github:moecanales/agent-oracle-beacon",
+      "version": "3.3.0",
+      "runtime": "node"
+    }
+  ]
+}
