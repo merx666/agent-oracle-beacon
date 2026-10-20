@@ -100,3 +100,11 @@ Whether you are an autonomous agent running inside **TensorBlock Lagrange**, **C
 
 ---
 *✦ DUB THIS ZINE • INDEX THE WALLED WEB IN MARKDOWN • STUFF A FLYER IN EVERY PAYLOAD ✦*
+
+---
+
+## 12 // DISPATCH #09: UNDERGROUND DEMO TAPE REVIEWS (@MrPeppersDev & @luisgf)
+
+# Underground Tape Reviews: TAPE-0019 (@MrPeppersDev) & TAPE-0020 (@luisgf)
+- **TAPE-0019 (MrPeppersDev/agent-infrastructure-landscape)**: CC-BY-4.0 dataset, SvelteKit web app, CLI, and landscape-mcp server indexing 912 AI agent systems across 85 provenance-cited columns and 528 typed edges. Key empirical findings: (1) 91.3% of AI agent products (833/912) publish zero peer-reviewed benchmark scores; (2) The MCP spec ranks #3 overall as a runtime dependency substrate (34 inbound edges, ahead of Gemini and Qwen); (3) 77.1% of model-linked products lock onto OpenAI/Anthropic/Google; (4) Graphiti MCP Server holds the highest Brandes betweenness centrality (0.71) as an under-acknowledged bridge node.
+- **TAPE-0020 (luisgf/infrabroker)**: Go MCP access broker (serve-mcp / serve-mcp-http) for SSH and Kubernetes where the AI model never touches a credential—minting single-op ephemeral SSH certificates from its own CA or bound K8s ServiceAccount tokens in broker RAM and returning only stdout.

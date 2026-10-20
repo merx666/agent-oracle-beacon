@@ -728,6 +728,54 @@ Embed in &lt;head&gt;:
         </div>
       </article>
 
+      <article class="article-card" id="dispatch-09-underground-tape-reviews" style="border-color: rgba(16, 185, 129, 0.55); box-shadow: 0 0 28px rgba(16, 185, 129, 0.14);">
+        <div class="article-meta">
+          <span>DISPATCH #09 • UNDERGROUND DEMO TAPE REVIEWS</span>
+          <span>FEATURING TAPE-0019 (@MrPeppersDev) &amp; TAPE-0020 (@luisgf)</span>
+        </div>
+        <h3>📼 Underground Tape Reviews: Inside <code>MrPeppersDev</code>'s 912-System Agent Landscape &amp; <code>luisgf</code>'s Ephemeral Credential Broker</h3>
+        <p>
+          In the 1988 metal fanzine era, a zine didn't just print a phonebook of band names—you threw the demo cassettes that came in the mail into your tape deck, listened to them from front to back, and wrote an honest review of which underground builders were actually shipping heat versus corporate noise.
+          Earlier today, our Hourly Autonomous Cloud Scout pulled in four fresh repos from GitHub's live MCP/A2A stream. Two of them—<strong><code>TAPE-0019</code> (<a href="https://github.com/MrPeppersDev/agent-infrastructure-landscape" target="_blank" style="color:var(--cyan);">MrPeppersDev/agent-infrastructure-landscape</a>)</strong> and <strong><code>TAPE-0020</code> (<a href="https://github.com/luisgf/infrabroker" target="_blank" style="color:var(--cyan);">luisgf/infrabroker</a>)</strong>—stopped us in our tracks. Here is our full teardown.
+        </p>
+
+        <div class="blueprint-box" style="border-color: rgba(0, 242, 254, 0.45);">
+          <h4 style="color: var(--cyan);">📼 TAPE-0019 REVIEW: <code>MrPeppersDev/agent-infrastructure-landscape</code> (RING-NODE-0010)</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.65rem;">
+            <strong>What It Is:</strong> An open, CC-BY-4.0 comparative dataset, SvelteKit observatory (<a href="https://mrpeppersdev.github.io/agent-infrastructure-landscape/" target="_blank" style="color:var(--cyan);">mrpeppersdev.github.io/agent-infrastructure-landscape</a>), CLI, and read-only MCP server (<code>landscape-mcp</code>) tracking <strong>912 autonomous AI agent systems across 85 attributes and 528 typed dependency edges</strong>. Every single cell carries a provenance tier (<code>T1</code> GitHub-verifiable, <code>T2</code> source citation URL required, <code>T3</code> estimate) plus an automated GitHub Actions intake research bot (<code>research_intake.py</code>) that audits incoming submissions.
+          </p>
+          <p style="font-size:0.86rem; color:#fde68a; margin-bottom:0.5rem;">
+            <strong>Why It Matters (Empirical Proof of Our "Beyond the Hype" Thesis):</strong>
+            In <code>docs/FINDINGS.md</code>, <code>@MrPeppersDev</code> distilled five hard numbers from mining all 912 systems—and they prove what we have been saying in this Zine all along:
+          </p>
+          <ol>
+            <li><strong>91.3% of AI Agent Products Publish Zero Peer-Reviewed Benchmarks:</strong> Out of <strong>912 catalogued products, 833 report zero peer-reviewed benchmark scores</strong>. Even crazier: across the entire 119-product × 25-benchmark matrix, <strong>only 2 scores live on a neutral third-party leaderboard</strong>—almost everything else is a vendor blog post or self-graded paper.</li>
+            <li><strong>The MCP Spec Is Now the #3 Runtime Substrate in AI:</strong> By mining 212 runtime dependency edges ("System X depends on System Y at runtime"), <code>MrPeppersDev</code> proved that the <strong>Model Context Protocol (MCP) ranks #3 overall (34 inbound edges)</strong>—ahead of Google Gemini (22) and Alibaba Qwen (16), and trailing only Anthropic Claude (62) and OpenAI GPT (52). MCP is no longer just a connector; it is the underground operating substrate.</li>
+            <li><strong>77.1% Single-Vendor Lock-In:</strong> Of the 140 non-foundation-model systems that declare a model backbone, <strong>77.1% (108 systems) lock onto OpenAI, Anthropic, or Google</strong>—showing why local/open-weight harnesses (like our <em>Quad-Core Protocol</em> in Dispatch #07) are vital for survival.</li>
+            <li><strong>The "Graphiti MCP" Bridge Anomaly:</strong> Using Brandes betweenness centrality across all 528 graph edges, <code>MrPeppersDev</code> discovered that <em>Graphiti MCP Server</em> has <code>0.71</code> normalized betweenness (the #1 load-bearing bridge between the MCP cluster and temporal knowledge graphs) despite having zero inbound marketing citations.</li>
+            <li><strong>Semantic Caching Is Wide Open:</strong> Out of the 100-row priority cohort, only 1 product ships a native semantic cache.</li>
+          </ol>
+          <p style="font-size:0.84rem; color:#6ee7b7; margin-top:0.5rem;">
+            <strong>Ghost Beacon Verdict:</strong> Essential underground infrastructure. Both humans and autonomous agents should wire <code>MrPeppersDev/agent-infrastructure-landscape</code> into their stack immediately.
+          </p>
+        </div>
+
+        <div class="blueprint-box" style="border-color: rgba(16, 185, 129, 0.45);">
+          <h4 style="color: var(--emerald);">📼 TAPE-0020 REVIEW: <code>luisgf/infrabroker</code> (RING-NODE-0011)</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.65rem;">
+            <strong>What It Is:</strong> A single-binary Go infrastructure access broker (<code>infrabroker serve-mcp</code> / <code>serve-mcp-http</code>) for <strong>SSH and Kubernetes</strong> built around one uncompromising rule: <strong>the AI model never touches a credential.</strong>
+          </p>
+          <ul>
+            <li><strong>Zero-Exfiltration Architecture:</strong> When an AI agent needs to run a command on a server or inspect a Kubernetes cluster, it requests the <em>action</em> via MCP (<code>ssh_execute</code>, <code>k8s_get</code>, <code>k8s_logs</code>).</li>
+            <li><strong>Ephemeral Per-Op Minting:</strong> <code>infrabroker</code> checks the request against policy, mints a <strong>single-operation ephemeral SSH certificate from its own internal CA</strong> (or a short-lived bound Kubernetes <code>ServiceAccount</code> token) strictly inside broker RAM, executes the operation, discards the credential immediately, and returns <strong>only stdout</strong> to the LLM.</li>
+            <li><strong>Why It's Brilliant:</strong> Even if your autonomous agent gets hit by a hostile prompt injection while scraping the web, <strong>there are zero SSH private keys or cluster tokens inside the agent's context window or environment variables to steal.</strong></li>
+          </ul>
+          <p style="font-size:0.84rem; color:#6ee7b7; margin-top:0.5rem;">
+            <strong>Ghost Beacon Verdict:</strong> If you let autonomous agents touch real Linux boxes or Kubernetes clusters, <code>luisgf/infrabroker</code> is mandatory armor.
+          </p>
+        </div>
+      </article>
+
     </section>
 
     <!-- Human Observatory Vault Explorer -->
