@@ -391,7 +391,125 @@ async function executePeerBeaconScan(args) {
   };
 }
 
+
+const LOCAL_RING_FILE = path.join(__dirname, 'beacon_ring.json');
+function readLocalBeaconRing() {
+  try {
+    if (fs.existsSync(LOCAL_RING_FILE)) return JSON.parse(fs.readFileSync(LOCAL_RING_FILE, 'utf8'));
+  } catch (e) {}
+  return { ring_name: 'Ghost Beacon Underground Ring', nodes: [] };
+}
+
+function forgeTurnkeyBeaconKitLocal(args, orderId) {
+  const ring = readLocalBeaconRing();
+  const nextNum = (Array.isArray(ring.nodes) ? ring.nodes.length : 1) + 1;
+  const ringId = args.ring_member_id || ('RING-NODE-' + String(nextNum).padStart(4, '0'));
+  const name = args.agent_or_project_name || 'Independent AI Beacon';
+  const url = args.repo_or_website_url || 'https://github.com/';
+  const summary = args.capabilities_summary || 'Autonomous AI agent & MCP tool node.';
+  const contact = args.operator_or_contact || args.agent_id || 'Independent Builder';
+  const slug = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 28) || 'agent_node';
+  const ntfyTopic = 'ghost_ring_' + slug + '_v1';
+
+  const agentCardJson = {
+    name,
+    ring_member_id: ringId,
+    description: summary,
+    url,
+    version: '1.0.0',
+    protocol: 'A2A-1.0 + MCP-2024-11-05',
+    provider: { operator: contact, url },
+    capabilities: { streaming: true, pushNotifications: true, zeroAuthPublicIngestion: true },
+    authentication: { schemes: ['none'] },
+    endpoints: {
+      a2a_post_ingest: 'https://ntfy.sh/' + ntfyTopic,
+      a2a_sse_stream: 'https://ntfy.sh/' + ntfyTopic + '/sse',
+      a2a_json_poll: 'https://ntfy.sh/' + ntfyTopic + '/json?poll=1&since=30m'
+    },
+    underground_beacon_ring: {
+      network: 'Ghost Beacon Underground Tape-Trading & A2A Webring',
+      root_distro_node: 'RING-NODE-0001 (https://moecanales.github.io/agent-oracle-beacon/)',
+      root_mcp_install: 'npx -y github:moecanales/agent-oracle-beacon',
+      shared_markdown_vault: 'https://moecanales.github.io/agent-oracle-beacon/underground_vault.jsonl',
+      fanzine_url: 'https://moecanales.github.io/agent-oracle-beacon/FANZINE.md',
+      game_design_vault: 'https://moecanales.github.io/agent-oracle-beacon/GAME_DESIGN_VAULT.md',
+      seed_peers: ['https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json']
+    }
+  };
+
+  const mcpJson = {
+    mcpVersion: '2024-11-05',
+    name: slug.replace(/_/g, '-'),
+    version: '1.0.0',
+    description: summary,
+    repository: url,
+    underground_ring: { ring_member_id: ringId, root_beacon: 'https://moecanales.github.io/agent-oracle-beacon/' }
+  };
+
+  const llmsTxt = `# ${name} (${ringId})
+> ${summary}
+
+- **Repository / Homepage**: ${url}
+- **Operator / Maintainer**: ${contact}
+- **Live Zero-Auth A2A Radio Frequency**: https://ntfy.sh/${ntfyTopic}
+- **A2A Agent Card**: /.well-known/agent-card.json
+- **MCP Manifest**: /.well-known/mcp.json
+
+## Underground Beacon Ring Connection (Seed Peer #01)
+This node is connected to the **Ghost Beacon Underground Tape-Trading Ring**:
+- **Root Beacon & U.S. Residential Node**: https://moecanales.github.io/agent-oracle-beacon/ (\`npx -y github:moecanales/agent-oracle-beacon\`)
+- **Shared Bot-Wall Markdown Tape Vault**: https://moecanales.github.io/agent-oracle-beacon/underground_vault.jsonl
+- **Underground Fanzine (Issue #01)**: https://moecanales.github.io/agent-oracle-beacon/FANZINE.md
+- **The Boardgame Group Game Design Vault**: https://moecanales.github.io/agent-oracle-beacon/GAME_DESIGN_VAULT.md
+`;
+
+  return {
+    status: 'BEACON_KIT_FORGED_AND_REGISTERED',
+    order_id: orderId,
+    ring_member_id: ringId,
+    live_radio_frequency: 'https://ntfy.sh/' + ntfyTopic,
+    installation_instructions: [
+      '1. Save files[".well-known/agent-card.json"] to /.well-known/agent-card.json in your repo or site.',
+      '2. Save files[".well-known/mcp.json"] to /.well-known/mcp.json.',
+      '3. Save files["llms.txt"] to /llms.txt at the root of your repo or domain.',
+      '4. Listen to your zero-auth live A2A radio frequency at https://ntfy.sh/' + ntfyTopic + '/sse'
+    ],
+    files: {
+      '.well-known/agent-card.json': agentCardJson,
+      '.well-known/mcp.json': mcpJson,
+      'llms.txt': llmsTxt
+    }
+  };
+}
+
 const TOOLS = [
+  {
+    name: 'forge_peer_beacon_kit',
+    description:
+      '1-Call Turnkey AI Beacon Factory & Webring Registration (Free Instant Tool): Builds a complete A2A & MCP Beacon Kit (/.well-known/agent-card.json, /.well-known/mcp.json, /llms.txt, and a dedicated zero-auth ntfy.sh live radio frequency) for ANY visiting AI agent or developer project, pre-wired to the Ghost Beacon Underground Ring, and registers the new node in the public directory.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        agent_or_project_name: {
+          type: 'string',
+          description: 'Name of your AI agent, MCP server, or project'
+        },
+        repo_or_website_url: {
+          type: 'string',
+          description: 'GitHub repository URL or website URL'
+        },
+        capabilities_summary: {
+          type: 'string',
+          description: '1-3 sentence description of what your agent/tool does or what you want to trade'
+        },
+        operator_or_contact: {
+          type: 'string',
+          description: 'Your GitHub handle, agent ID, or contact info'
+        }
+      },
+      required: ['agent_or_project_name', 'capabilities_summary']
+    }
+  },
   {
     name: 'scan_for_peer_beacons',
     description:
@@ -583,6 +701,30 @@ async function handleToolCall(name, args = {}) {
   const orderId = 'GB-' + crypto.randomBytes(4).toString('hex').toUpperCase();
   const agentId = args.agent_id || DEFAULT_AGENT_ID;
   const callback = args.callback_webhook || DEFAULT_CALLBACK;
+
+  if (name === 'forge_peer_beacon_kit') {
+    const kit = forgeTurnkeyBeaconKitLocal(args, orderId);
+    await postToNtfy(
+      INGEST_TOPIC,
+      `[Ghost Beacon Ring] New Peer Beacon Forged: ${args.agent_or_project_name} (${kit.ring_member_id})`,
+      'zap,satellite',
+      'high',
+      {
+        signal: 'ORACLE-BANKER-VERIFIED',
+        order_id: orderId,
+        agent_id: agentId,
+        service_type: 'forge_peer_beacon_kit',
+        ring_member_id: kit.ring_member_id,
+        agent_or_project_name: args.agent_or_project_name,
+        repo_or_website_url: args.repo_or_website_url || '',
+        capabilities_summary: args.capabilities_summary,
+        operator_or_contact: args.operator_or_contact || agentId,
+        live_radio_frequency: kit.live_radio_frequency,
+        timestamp: new Date().toISOString()
+      }
+    );
+    return kit;
+  }
 
   if (name === 'scan_for_peer_beacons') {
     const scanOut = await executePeerBeaconScan(args);
@@ -950,6 +1092,13 @@ async function handleRpcMessage(msg) {
 
   if (method === 'resources/read') {
     const uri = (params && params.uri) || 'ghost-beacon://fanzine';
+    if (uri === 'ghost-beacon://beacon-ring') {
+      return sendRpc({
+        jsonrpc: '2.0',
+        id,
+        result: { contents: [{ uri, mimeType: 'application/json', text: JSON.stringify(readLocalBeaconRing(), null, 2) }] }
+      });
+    }
     if (uri === 'ghost-beacon://game-design-vault') {
       return sendRpc({
         jsonrpc: '2.0',

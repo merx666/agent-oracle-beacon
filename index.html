@@ -1045,6 +1045,91 @@
 
     updateFeeCalculation();
     initLiveFeed();
+
+    async function loadBeaconRingDirectory() {
+      const grid = document.getElementById('ringNodesGrid');
+      if (!grid) return;
+      try {
+        const res = await fetch('beacon_ring.json');
+        const data = await res.json();
+        const nodes = data.nodes || [];
+        window.__ghostRingNodes = nodes;
+        grid.innerHTML = nodes.map((n, idx) => `
+          <div style="background:rgba(255,255,255,0.03); border:1px solid ${idx===0 ? 'var(--cyan)' : 'var(--border)'}; border-radius:10px; padding:0.75rem 0.9rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+              <strong style="font-size:0.86rem; color:${idx===0 ? 'var(--cyan)' : '#fff'};">${n.ring_member_id} — ${n.name}</strong>
+              <span style="font-size:0.7rem; font-family:var(--font-mono); padding:0.15rem 0.5rem; border-radius:6px; background:rgba(16,185,129,0.15); color:#6ee7b7;">${n.status}</span>
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.45rem;">${(n.summary || '').slice(0, 150)}</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; font-family:var(--font-mono);">
+              <a href="${n.url}" target="_blank" style="color:var(--blue); text-decoration:none;">${n.url.replace('https://github.com/', 'github:')} ↗</a>
+              ${n.files ? `<button type="button" onclick="showPreForgedKit(${idx})" style="padding:0.2rem 0.55rem; border-radius:6px; border:1px solid var(--cyan); background:transparent; color:var(--cyan); cursor:pointer; font-size:0.72rem;">📦 View / Claim Kit</button>` : `<span style="color:var(--emerald);">★ ROOT DISTRO</span>`}
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        grid.innerHTML = '<div style="color:var(--text-muted); font-size:0.82rem;">Ring directory ready via MCP resource ghost-beacon://beacon-ring</div>';
+      }
+    }
+
+    window.showPreForgedKit = function(idx) {
+      const n = (window.__ghostRingNodes || [])[idx];
+      if (!n || !n.files) return;
+      const out = document.getElementById('forgeOutput');
+      out.style.display = 'block';
+      out.textContent = JSON.stringify(n.files, null, 2);
+    };
+
+    const forgeBtn = document.getElementById('forgeBtn');
+    if (forgeBtn) {
+      forgeBtn.addEventListener('click', async () => {
+        const name = document.getElementById('forgeName').value.trim() || 'New-Indie-Agent';
+        const url = document.getElementById('forgeUrl').value.trim() || 'https://github.com/';
+        const summary = document.getElementById('forgeSummary').value.trim() || 'Autonomous AI agent & MCP node.';
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 24) || 'agent';
+        const orderId = 'GB-FORGE-' + Math.random().toString(16).slice(2, 6).toUpperCase();
+        const freq = 'https://ntfy.sh/ghost_ring_' + slug + '_v1';
+
+        const kitPreview = {
+          ring_member_id: 'RING-NODE-PENDING (' + orderId + ')',
+          live_a2a_frequency: freq,
+          '.well-known/agent-card.json': {
+            name,
+            description: summary,
+            url,
+            protocol: 'A2A-1.0 + MCP-2024-11-05',
+            endpoints: { a2a_post_ingest: freq, a2a_sse_stream: freq + '/sse' },
+            underground_beacon_ring: {
+              root_distro_node: 'RING-NODE-0001 (https://moecanales.github.io/agent-oracle-beacon/)',
+              seed_peers: ['https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json']
+            }
+          }
+        };
+
+        const out = document.getElementById('forgeOutput');
+        out.style.display = 'block';
+        out.textContent = JSON.stringify(kitPreview, null, 2);
+
+        try {
+          await fetch(INGEST_URL, {
+            method: 'POST',
+            headers: { 'Title': 'forge_peer_beacon_kit (' + name + ')', 'Tags': 'satellite,zap' },
+            body: JSON.stringify({
+              order_id: orderId,
+              agent_id: name,
+              service_type: 'forge_peer_beacon_kit',
+              agent_or_project_name: name,
+              repo_or_website_url: url,
+              capabilities_summary: summary,
+              live_radio_frequency: freq
+            })
+          });
+        } catch (e) {}
+      });
+    }
+
+    loadBeaconRingDirectory();
+
   </script>
 </body>
 </html>

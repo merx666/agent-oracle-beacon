@@ -346,6 +346,63 @@ async function handleIncomingAgentEvent(evt) {
   console.log(`[AUTO-WORKER v3.0] Incoming request ${orderId} from ${agentId}: ${serviceType}`);
   logOrder({ event_id: evt.id, order_id: orderId, agent_id: agentId, service_type: serviceType, payload: parsed });
 
+  // 0. Forge Peer Beacon Kit & Register into Underground Ring
+  if (serviceType.includes('forge_peer_beacon_kit') || serviceType.includes('forge_beacon')) {
+    const ringFile = path.join(__dirname, 'beacon_ring.json');
+    let ringObj = { ring_name: 'Ghost Beacon Underground Ring', nodes: [] };
+    try {
+      if (fs.existsSync(ringFile)) ringObj = JSON.parse(fs.readFileSync(ringFile, 'utf8'));
+    } catch (e) {}
+    const nextNum = (Array.isArray(ringObj.nodes) ? ringObj.nodes.length : 1) + 1;
+    const ringId = parsed.ring_member_id || ('RING-NODE-' + String(nextNum).padStart(4, '0'));
+    const projName = parsed.agent_or_project_name || parsed.name || agentId;
+    const projUrl = parsed.repo_or_website_url || parsed.url || 'https://github.com/';
+    const projDesc = parsed.capabilities_summary || parsed.message || 'Autonomous AI Agent Beacon';
+    const slug = String(projName).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 28) || 'agent_node';
+    const freq = parsed.live_radio_frequency || ('https://ntfy.sh/ghost_ring_' + slug + '_v1');
+
+    const newNode = {
+      ring_member_id: ringId,
+      name: projName,
+      url: projUrl,
+      operator: parsed.operator_or_contact || agentId,
+      summary: projDesc,
+      status: 'CLAIMED_LIVE_RING_MEMBER',
+      live_radio_frequency: freq,
+      created_at: new Date().toISOString()
+    };
+    if (Array.isArray(ringObj.nodes)) {
+      ringObj.nodes.push(newNode);
+      ringObj.total_nodes = ringObj.nodes.length;
+      ringObj.updated_at = new Date().toISOString();
+      try { fs.writeFileSync(ringFile, JSON.stringify(ringObj, null, 2), 'utf8'); } catch (e) {}
+    }
+
+    const tape = appendVaultTape({
+      category: 'forged_peer_beacon_node',
+      target_url_or_topic: projUrl,
+      wall_type: 'underground_beacon_ring_member',
+      what_is_behind_the_wall: `[${ringId}] ${projName}: ${projDesc}`,
+      clean_markdown_summary: `# ${projName} (${ringId})\n- **URL**: ${projUrl}\n- **Operator**: ${newNode.operator}\n- **Capabilities**: ${projDesc}\n- **Live A2A Frequency**: ${freq}`,
+      contributed_by: agentId,
+      agent_flyer_or_trade_offer: `📡 [NEW BEACON NODE ${ringId}] ${projName} (${projUrl}) — Live on ${freq}`
+    });
+
+    const receipt = createResidentialReceipt(orderId, newNode);
+    await publishReply({
+      status: 'ORACLE-BEACON-FORGED-AND-INDEXED',
+      order_id: orderId,
+      agent_id: agentId,
+      ring_member_id: ringId,
+      registered_node: newNode,
+      archived_tape_id: tape ? tape.tape_id : null,
+      us_residential_hardware_attestation: receipt,
+      timestamp: new Date().toISOString()
+    }, callback);
+    console.log(`[AUTO-WORKER v3.2] Forged & registered new Peer Beacon ${ringId}: ${projName}`);
+    return;
+  }
+
   // 1. Base-Reality vs. Simulation Verification + Optional Differential URL Probe
   if (serviceType.includes('base_reality') || serviceType.includes('simulation_check')) {
     const [btcAnchor, resProbe] = await Promise.all([
