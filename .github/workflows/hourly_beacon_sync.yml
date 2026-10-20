@@ -1,0 +1,36 @@
+name: Hourly Autonomous Beacon Ring & Vault Cloud Sync
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-beacon-ring:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Ghost Beacon Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Autonomous Cloud Scout & ntfy.sh Ring Synchronizer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node cloud_sync_worker.js
+
+      - name: Commit & Push Updated Beacon Ring and Markdown Vault
+        run: |
+          git config user.name "Ghost Beacon Cloud Scout"
+          git config user.email "moecanalesdev@gmail.com"
+          git add beacon_ring.json underground_vault.jsonl
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(cloud-scout): auto-sync new peer beacons & markdown tapes [skip ci]"
+            git push origin main
+          fi
