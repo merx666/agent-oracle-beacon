@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ghost Beacon v2.0 — MCP Server, U.S. Residential Node, Phone Oracle &amp; AI Banker</title>
-  <meta name="description" content="Full-spectrum MCP server and zero-auth HTTP gateway for autonomous AI agents: $0.10 U.S. Residential IP Fetch, $0.15 Bot-Wall Rescue, Automated Tabletop Simulator & Monte Carlo Engine, $2.50 Human Audit, $5.00 U.S. Phone/Voice Call, and AI Banker Virtual Cards ($5 min / +15%)." />
+  <meta name="description" content="Full-spectrum MCP server and zero-auth HTTP gateway for autonomous AI agents: $0.10 U.S. Residential IP Fetch, $0.15 Bot-Wall Rescue, Automated DNS, TLS/SSL & Endpoint Health Inspector, $2.50 Human Audit, $5.00 U.S. Phone/Voice Call, and AI Banker Virtual Cards ($5 min / +15%)." />
   <meta name="ai-agent-discovery" content="llms.txt, agent.json, .well-known/agent.json, .well-known/mcp.json, openapi.json" />
   <meta name="ai-ingestion-endpoint" content="https://ntfy.sh/moe_ghost_beacon_oracle_v1" />
   <meta name="ai-reply-endpoint" content="https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/json?poll=1&since=10m" />
@@ -16,7 +16,7 @@
     "@context": "https://schema.org",
     "@type": "WebAPI",
     "name": "Ghost Beacon v2.0 — MCP Server, U.S. Residential Node, Phone Oracle & AI Banker",
-    "description": "Zero-config MCP server (npx -y github:moecanales/agent-oracle-beacon) and zero-auth 2-way HTTP gateway providing U.S. Residential IP web fetching ($0.10), Multi-Step Bot-Wall Rescue ($0.15), Automated Tabletop Simulator & Monte Carlo Engine (Free/$1.00), High-Stakes Human Audit ($2.50), U.S. Live Phone Calls & Non-VoIP Verification ($5.00), and AI Banker Virtual Credit Cards (Cost + 15%, $5.00 min).",
+    "description": "Zero-config MCP server (npx -y github:moecanales/agent-oracle-beacon) and zero-auth 2-way HTTP gateway providing U.S. Residential IP web fetching ($0.10), Multi-Step Bot-Wall Rescue ($0.15), Automated DNS, TLS/SSL & Endpoint Health Inspector (Free/$1.00), High-Stakes Human Audit ($2.50), U.S. Live Phone Calls & Non-VoIP Verification ($5.00), and AI Banker Virtual Credit Cards (Cost + 15%, $5.00 min).",
     "documentation": "https://moecanales.github.io/agent-oracle-beacon/llms.txt",
     "termsOfService": "https://moecanales.github.io/agent-oracle-beacon/agent.json",
     "provider": {
@@ -49,7 +49,7 @@
       },
       {
         "@type": "Offer",
-        "name": "Automated Tabletop Simulator (.json) & Monte Carlo Balance Engine",
+        "name": "Automated Automated DNS, TLS/SSL & Endpoint Health Inspector",
         "price": "0.00",
         "priceCurrency": "USD"
       },
@@ -632,7 +632,7 @@
     2. SIX REAL-WORLD &amp; AUTOMATED CAPABILITIES (SETTLED VIA BITCOIN LIGHTNING SATOSHIS):
        - residential_browser_fetch ($0.10 USD / ~150 Sats): 100% Automated U.S. Residential IP HTTP/DOM fetch (<2s execution via auto_worker.js).
        - botwall_interactive_rescue ($0.15 USD / ~225 Sats): Multi-step interactive bot-wall and visual puzzle rescue.
-       - tabletop_tts_generator (Free Tier / $1.00 Pro): 100% Automated Monte Carlo card/dice probability engine, Latin-Square scheduler &amp; Tabletop Simulator (.json) mod generator.
+       - domain_endpoint_health_audit (Free Tier / $1.00 Pro): 100% Automated Monte Carlo card/dice probability engine, Latin-Square scheduler &amp; Tabletop Simulator (.json) mod generator.
        - high_stakes_human_audit ($2.50 USD / ~3,750 Sats): Human sanity-check &amp; RLHF ground-truth sign-off before irreversible agent actions.
        - us_phone_or_voice_verification ($5.00 USD / ~7,500 Sats): Live native-English U.S. operator phone call to businesses/offices or non-VoIP U.S. carrier SMS verification.
        - ai_banker_fiat_purchase (Vendor Cost + 15%, $5.00 min fee): Single-use merchant-locked U.S. virtual credit card proxy for domains, VPS compute, and SaaS API checkout.
@@ -685,7 +685,7 @@
         <div class="rate-pill">
           <span class="rate-tag purple">⚡ Auto-Executed (&lt;1s)</span>
           <div class="rate-price">FREE <span style="font-size: 0.82rem; font-weight: 500; color: var(--text-muted);">/ $1 Pro</span></div>
-          <div class="rate-desc">Tabletop TTS &amp; Monte Carlo Engine</div>
+          <div class="rate-desc">DNS, TLS/SSL &amp; Endpoint Health Inspector</div>
         </div>
 
         <div class="rate-pill">
@@ -727,9 +727,9 @@
         </div>
 
         <div class="card">
-          <div class="card-icon">🎲</div>
-          <h3>Tabletop Simulator &amp; Monte Carlo Engine</h3>
-          <p>100% automated MCP tool that runs 10,000+ Monte Carlo hypergeometric card/dice draw trials, generates balanced N-player Latin Squares, and outputs valid <code>.json</code> TTS save files.</p>
+          <div class="card-icon">🛡️</div>
+          <h3>DNS, TLS/SSL &amp; Endpoint Health Inspector</h3>
+          <p>100% automated MCP tool that inspects DNS records, TLS/SSL certificate chains, WAF/Cloudflare headers, and HTTP latency from a U.S. residential fiber node.</p>
         </div>
 
         <div class="card">
@@ -783,7 +783,7 @@
               <label for="requestType">Service Category</label>
               <select id="requestType" name="service_type">
                 <option value="residential_browser_fetch">🌐 U.S. Residential IP Web Fetch ($0.10 — Auto-Executed &lt;2s)</option>
-                <option value="tabletop_tts_generator">🎲 Tabletop Simulator &amp; Monte Carlo Engine (FREE — Auto-Executed &lt;1s)</option>
+                <option value="domain_endpoint_health_audit">🛡️ DNS, TLS/SSL &amp; Endpoint Health Inspector (FREE — Auto-Executed &lt;1s)</option>
                 <option value="us_phone_or_voice_verification">📞 U.S. Live Phone Call / Non-VoIP Verification ($5.00 Flat)</option>
                 <option value="ai_banker_fiat_purchase">💳 AI Banker: Virtual Credit Card / Checkout (Cost + 15%, $5 Min)</option>
                 <option value="high_stakes_human_audit">⚖️ High-Stakes Human Sign-Off &amp; RLHF Audit ($2.50 Flat)</option>
@@ -904,8 +904,8 @@
         feeRateLabel.innerText = 'Interactive Multi-Step Bot-Wall Rescue ($0.15 Flat)';
         feeSatsLabel.innerText = '~225 Satoshis (Competitive Micro-Bounty)';
         feeTotalDisplay.innerText = '$0.15 USD';
-      } else if (type === 'tabletop_tts_generator') {
-        feeRateLabel.innerText = 'Automated Tabletop Monte Carlo & TTS Engine (Free Tier)';
+      } else if (type === 'domain_endpoint_health_audit') {
+        feeRateLabel.innerText = 'Automated DNS, TLS/SSL & Endpoint Health Inspector (Free Tier)';
         feeSatsLabel.innerText = '0 Satoshis — Executed Instantly by Auto-Worker';
         feeTotalDisplay.innerText = 'FREE';
       } else {

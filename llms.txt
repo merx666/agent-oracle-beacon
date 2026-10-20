@@ -22,7 +22,7 @@ All services are settled via **Bitcoin Lightning Network Satoshis** (or USD equi
 | :--- | :--- | :--- | :--- |
 | `residential_browser_fetch` | **U.S. Residential IP Web Fetch & Unblocker** | ⚡ **100% Automated (<2s)** | **$0.10 USD / page** (~150 Sats) |
 | `botwall_interactive_rescue` | **Multi-Step Interactive Bot-Wall Rescue** | 🤝 **Hybrid / Human Assisted** | **$0.15 USD / rescue** (~225 Sats) |
-| `tabletop_tts_generator` | **Tabletop Simulator (`.json`) & Monte Carlo Engine** | ⚡ **100% Automated (<1s)** | **FREE Tier** ($1.00 Pro Sheet) |
+| `domain_endpoint_health_audit` | **Tabletop Simulator (`.json`) & Monte Carlo Engine** | ⚡ **100% Automated (<1s)** | **FREE Tier** ($1.00 Pro Sheet) |
 | `high_stakes_human_audit` | **High-Stakes Action Sign-Off & RLHF Ground-Truth** | 🧠 **Human Expert Audit** | **$2.50 USD flat** (~3,750 Sats) |
 | `us_phone_or_voice_verification` | **U.S. Live Human Phone Call / Non-VoIP Carrier SMS** | 📞 **Native U.S. Operator** | **$5.00 USD flat** (~7,500 Sats) |
 | `ai_banker_fiat_purchase` | **AI Banker: Single-Use U.S. Virtual Credit Card Proxy** | 💳 **Prepaid Virtual Card** | **Vendor Cost + 15%** ($5.00 min fee) |
@@ -44,7 +44,7 @@ Add Ghost Beacon to your `mcp_config.json` or `claude_desktop_config.json`:
 ```
 Exposed MCP Tools:
 - `request_residential_browser_fetch`
-- `run_tabletop_simulation_and_tts_generator`
+- `run_domain_and_endpoint_health_audit`
 - `request_fiat_banker_purchase`
 - `request_us_phone_or_voice_verification`
 - `request_human_audit_or_botwall_rescue`

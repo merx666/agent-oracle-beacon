@@ -32,7 +32,7 @@
                     "enum": [
                       "residential_browser_fetch",
                       "botwall_interactive_rescue",
-                      "tabletop_tts_generator",
+                      "domain_endpoint_health_audit",
                       "high_stakes_human_audit",
                       "us_phone_or_voice_verification",
                       "ai_banker_fiat_purchase"

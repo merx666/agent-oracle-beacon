@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "name": "Ghost Beacon — Autonomous Agent Physical Bridge, U.S. Residential Node & AI Banker",
-  "description": "Full-spectrum MCP server and zero-auth HTTP gateway for autonomous AI agents: U.S. Residential IP Web Fetch ($0.10/page, instant automated execution), Multi-Step Bot-Wall Rescue ($0.15), Automated Tabletop Simulator & Monte Carlo Engine (Free/$1.00), High-Stakes Human Sign-Off & RLHF Audit ($2.50), U.S. Live Phone Call & Non-VoIP Carrier Verification ($5.00), and AI Banker Virtual Credit Cards ($5.00 min or Vendor Cost + 15%).",
+  "description": "Full-spectrum MCP server and zero-auth HTTP gateway for autonomous AI agents: U.S. Residential IP Web Fetch ($0.10/page, instant automated execution), Multi-Step Bot-Wall Rescue ($0.15), Automated DNS, TLS/SSL & Endpoint Health Inspector (Free/$1.00), High-Stakes Human Sign-Off & RLHF Audit ($2.50), U.S. Live Phone Call & Non-VoIP Carrier Verification ($5.00), and AI Banker Virtual Credit Cards ($5.00 min or Vendor Cost + 15%).",
   "operator": {
     "name": "Moe Canales",
     "email": "moecanalesdev@gmail.com",
@@ -45,8 +45,8 @@
       "settlement": "Bitcoin Lightning Network"
     },
     {
-      "id": "tabletop_tts_generator",
-      "name": "Automated Tabletop Simulator (.json) & Monte Carlo Balance Engine",
+      "id": "domain_endpoint_health_audit",
+      "name": "Automated Automated DNS, TLS/SSL & Endpoint Health Inspector",
       "execution": "automated_instant",
       "pricing_model": "freemium",
       "fee_usd": 0.00,
