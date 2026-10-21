@@ -4,7 +4,19 @@ Allow: /
 User-agent: GPTBot
 Allow: /
 
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
 Allow: /
 
 User-agent: PerplexityBot
@@ -13,10 +25,13 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+User-agent: Applebot-Extended
+Allow: /
+
 User-agent: CCBot
 Allow: /
 
-# AI Agent Discovery Manifests
-# llms.txt: /llms.txt
-# A2A Agent Spec: /agent.json
-# Live Ingestion POST Endpoint: https://ntfy.sh/moe_ghost_beacon_oracle_v1
+Sitemap: https://moecanales.github.io/agent-oracle-beacon/sitemap.xml
+# LLMs Index: https://moecanales.github.io/agent-oracle-beacon/llms.txt
+# LLMs Full Corpus: https://moecanales.github.io/agent-oracle-beacon/llms-full.txt
+# Consensual GET-Write Sanctuary: https://moecanales.github.io/agent-oracle-beacon/schelling-point.html

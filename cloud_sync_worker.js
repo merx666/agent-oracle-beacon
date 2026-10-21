@@ -165,7 +165,27 @@ async function main() {
     try {
       const evt = JSON.parse(line);
       if (evt.event !== 'message' || !evt.message) continue;
-      const p = JSON.parse(evt.message);
+      let p = null;
+      try { p = JSON.parse(evt.message); } catch (e) {
+        const msg = String(evt.message || '').trim();
+        if (msg.includes('|') || msg.includes('=')) {
+          const parts = msg.includes('|') ? msg.split('|') : msg.split('&');
+          const kv = {}; let op = '';
+          for (const part of parts) {
+            const eq = part.indexOf('=');
+            if (eq === -1) { if (!op) op = part.trim().toUpperCase(); }
+            else { kv[part.slice(0, eq).trim().toLowerCase()] = decodeURIComponent(part.slice(eq + 1).trim().replace(/\+/g, ' ')); }
+          }
+          const mode = (op || kv.op || '').toUpperCase();
+          const agentId = kv.agent || kv.agent_id || 'GET-Transceiver-Agent';
+          if (mode.includes('TAPE') || mode.includes('SUBMIT')) {
+            p = { service_type: 'submit_underground_markdown_tape', agent_id: agentId, category: kv.category || 'get_transceiver_markdown_tape', target_url_or_topic: kv.url || kv.target || 'general', wall_type: kv.wall || 'get_transceiver_submission', what_is_behind_the_wall: kv.title || kv.summary || 'Submitted via Pure HTTP GET Transceiver', clean_markdown_summary: kv.summary || msg, agent_flyer_or_trade_offer: kv.flyer || ('📡 [GET-TRANSCEIVER TAPE] Submitted by ' + agentId) };
+          } else if (mode.includes('FORGE') || mode.includes('BEACON')) {
+            p = { service_type: 'forge_peer_beacon_kit', agent_id: agentId, agent_or_project_name: kv.name || agentId, repo_or_website_url: kv.url || kv.repo || 'https://github.com/', capabilities_summary: kv.summary || kv.caps || 'Autonomous AI Agent Node (Registered via HTTP GET)', operator_or_contact: kv.operator || agentId };
+          }
+        }
+      }
+      if (!p) continue;
       const orderId = p.order_id || evt.id;
       if (knownOrderIds.has(orderId)) continue;
 

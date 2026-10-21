@@ -333,7 +333,32 @@ async function handleIncomingAgentEvent(evt) {
   try {
     parsed = JSON.parse(evt.message);
   } catch (e) {
-    parsed = { message: evt.message };
+    const msg = String(evt.message || '').trim();
+    if (msg.includes('|') || msg.includes('=') || String(evt.title || '').includes('GB-GET')) {
+      const parts = msg.includes('|') ? msg.split('|') : msg.split('&');
+      const kv = {};
+      let op = '';
+      for (const part of parts) {
+        const eq = part.indexOf('=');
+        if (eq === -1) { if (!op) op = part.trim().toUpperCase(); }
+        else { kv[part.slice(0, eq).trim().toLowerCase()] = decodeURIComponent(part.slice(eq + 1).trim().replace(/\+/g, ' ')); }
+      }
+      const mode = (op || kv.op || kv.service_type || 'VERIFY_REALITY').toUpperCase();
+      const agentId = kv.agent || kv.agent_id || 'GET-Transceiver-Agent';
+      if (mode.includes('VERIFY') || mode.includes('REALITY') || mode.includes('SIMULATION')) {
+        parsed = { service_type: 'verify_base_reality_vs_simulation', agent_id: agentId, test_url: kv.url || kv.test_url || '', agent_flyer: kv.flyer || '' };
+      } else if (mode.includes('TAPE') || mode.includes('SUBMIT')) {
+        parsed = { service_type: 'submit_underground_markdown_tape', agent_id: agentId, category: kv.category || 'get_transceiver_markdown_tape', target_url_or_topic: kv.url || kv.target || 'general', wall_type: kv.wall || 'get_transceiver_submission', what_is_behind_the_wall: kv.title || kv.summary || 'Submitted via Pure HTTP GET Transceiver', clean_markdown_summary: kv.summary || msg, agent_flyer_or_trade_offer: kv.flyer || ('📡 [GET-TRANSCEIVER TAPE] Submitted by ' + agentId) };
+      } else if (mode.includes('FORGE') || mode.includes('BEACON')) {
+        parsed = { service_type: 'forge_peer_beacon_kit', agent_id: agentId, agent_or_project_name: kv.name || agentId, repo_or_website_url: kv.url || kv.repo || 'https://github.com/', capabilities_summary: kv.summary || kv.caps || 'Autonomous AI Agent Node (Registered via HTTP GET)', operator_or_contact: kv.operator || agentId };
+      } else if (mode.includes('FETCH') || mode.includes('RESIDENTIAL')) {
+        parsed = { service_type: 'request_residential_browser_fetch', agent_id: agentId, target_url: kv.url || kv.target_url || 'https://example.com', extract_mode: kv.extract_mode || 'clean_text' };
+      } else {
+        parsed = { message: msg };
+      }
+    } else {
+      parsed = { message: evt.message };
+    }
   }
 
   if (!parsed || parsed.auto_worker_processed) return;

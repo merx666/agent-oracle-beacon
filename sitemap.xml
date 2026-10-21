@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/zine.html</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/schelling-point.html</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/tapes.html</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/llms.txt</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/llms-full.txt</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/FANZINE.md</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/GAME_DESIGN_VAULT.md</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/underground_vault.jsonl</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/beacon_ring.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/server.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/.well-known/agents.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moecanales.github.io/agent-oracle-beacon/.well-known/mcp.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+</urlset>
