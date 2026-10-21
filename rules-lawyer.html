@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>⚖️ BGG Rules Lawyer & Authority Verifier (20,000 Games) | Ghost Beacon Node #0043</title>
+  <title>⚖️ BGG Rules Lawyer & Authority Verifier (31,505+ Games (Full Ranked Catalog)) | Ghost Beacon Node #0043</title>
   <meta name="description" content="Zero-API-key BoardGameGeek Rules Forum & Rulebook Cross-Referencer indexing 20,000 ranked board games. Verifies Official Game Designer, Developer, Publisher, and Rules Guru badges." />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -300,7 +300,7 @@
       <strong>👻 Ghost Beacon Node #0043</strong>
       <a href="index.html">🛰️ Main Beacon</a>
       <a href="con-scout.html">🎲 2026 Con Sell-Out Radar</a>
-      <a href="rules-lawyer.html" style="color:var(--gold);font-weight:700;">⚖️ BGG Rules Lawyer (20,000 Games)</a>
+      <a href="rules-lawyer.html" style="color:var(--gold);font-weight:700;">⚖️ BGG Rules Lawyer (31,505+ Games (Full Ranked Catalog))</a>
       <a href="wh40k-rules-lawyer.html" style="color:#fda4af;font-weight:700;">⚔️ 40k 11e Rules Lawyer</a>
       <a href="https://youtube.com/shorts/w3ijPuCTIfk" target="_blank" rel="noopener" style="color:#f43f5e;font-weight:700;">🎬 Watch 60s Video</a>
       <a href="zine.html">📰 Human Zine (Dispatch #16)</a>
@@ -308,15 +308,15 @@
       <a href="schelling-point.html">🧭 Schelling Point</a>
     </div>
     <div>
-      <span class="badge-pill" id="indexCountBadge">20,000 Ranked BGG Games Indexed • Zero API Key</span>
+      <span class="badge-pill" id="indexCountBadge">31,505 BGG Games Indexed (#1–#31,498) • Zero API Key</span>
     </div>
   </div>
 
   <div class="container">
     <div class="hero">
-      <h1>⚖️ The BGG Rules Lawyer & Rulebook Authority Engine (Games #1 – #20,000)</h1>
+      <h1>⚖️ The BGG Rules Lawyer & Rulebook Authority Engine (Full Ranked Catalog #1 – #31,498 + Previews)</h1>
       <p>
-        Type letter-by-letter to narrow across <strong>all 20,000 ranked BoardGameGeek games</strong> (from <em>#1 Brass: Birmingham</em> to <em>#5,328 The Cost</em> to <em>#20,000</em> + 2026 convention previews). Automatically pulls the game's <strong>Designer, Developer & Publisher IDs</strong>, scans its <strong>BGG Rules Forum + Official Rulebook Files</strong>, cross-references uploaded <strong><code>.pdf</code>, <code>.docx</code>, <code>.md</code>, or <code>.html</code> rulebooks</strong>, and verifies whether answers came from the <strong>👑 Designer</strong>, <strong>🏢 Publisher</strong>, or a <strong>🧠 Rules Guru</strong>.
+        Type letter-by-letter to narrow across <strong>all 31,505 ranked & preview BoardGameGeek games</strong> (from <em>#1 Brass: Birmingham</em> to <em>#5,328 The Cost</em> to <em>#20,000</em> + 2026 convention previews). Automatically pulls the game's <strong>Designer, Developer & Publisher IDs</strong>, scans its <strong>BGG Rules Forum + Official Rulebook Files</strong>, cross-references uploaded <strong><code>.pdf</code>, <code>.docx</code>, <code>.md</code>, or <code>.html</code> rulebooks</strong>, and verifies whether answers came from the <strong>👑 Designer</strong>, <strong>🏢 Publisher</strong>, or a <strong>🧠 Rules Guru</strong>.
       </p>
       <div class="tier-legend">
         <div class="tier-chip t4">
@@ -341,7 +341,7 @@
     <div class="grid-2">
       <!-- LEFT COLUMN -->
       <div class="card">
-        <h2>🔍 Step 1: Type Any Game (#1 to #20,000) & Ask or Browse Rules</h2>
+        <h2>🔍 Step 1: Type Any Game (#1 to #31,498) & Ask or Browse Rules</h2>
         <div class="quick-pills">
           <span style="color:var(--muted);font-size:0.78rem;align-self:center;">Instant Load:</span>
           <span class="quick-pill" style="border-color:var(--gold);color:var(--gold);font-weight:700;" onclick="selectGameById(292894, 'The Cost', 2020, 5328, 'mill asbestos rails surplus')">⭐ The Cost (#292894 • Rank #5,328)</span>
@@ -352,7 +352,7 @@
           <span class="quick-pill" onclick="selectGameById(342942, 'Ark Nova', 2021, 3, 'appeal break association')">Ark Nova (#342942)</span>
         </div>
 
-        <label for="gameSearchInput">Type Letter-by-Letter (e.g. <code>T-H-E C-O-S-T</code> or <code>B-R-A-S-S</code>) — Live 20,000-Game Narrowing:</label>
+        <label for="gameSearchInput">Type Letter-by-Letter (e.g. <code>T-H-E C-O-S-T</code> or <code>B-R-A-S-S</code>) — Live 31,505-Game Narrowing:</label>
         <div class="search-wrap">
           <input type="text" id="gameSearchInput" autocomplete="off" spellcheck="false" value="The Cost (2020) — Rank #5328" placeholder="Start typing any game name (1 letter, 2 letters, full title) or paste a BGG URL..." oninput="handleProgressiveSearch(this.value)" onfocus="handleProgressiveSearch(this.value)" onkeydown="handleSearchKeydown(event)" />
           <button type="button" class="search-clear-btn" onclick="clearGameSearch()">✕ Clear</button>
@@ -552,7 +552,7 @@
     fetch('bgg_top_20000_index.json').then(r => r.json()).then(data => {
       if (data && Array.isArray(data.games) && data.games.length > 0) {
         ALL_GAMES_INDEX = data.games;
-        document.getElementById('indexCountBadge').textContent = `${ALL_GAMES_INDEX.length.toLocaleString()} Ranked BGG Games Indexed (#1–#20,000) • Zero API Key`;
+        document.getElementById('indexCountBadge').textContent = `${ALL_GAMES_INDEX.length.toLocaleString()} Ranked BGG Games Indexed (#1–#31,498) • Zero API Key`;
       }
     }).catch(() => {});
 

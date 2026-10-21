@@ -1,5 +1,5 @@
 /**
- * Ghost Beacon — Automated 3-Stage BGG Rules & Authority Background Harvester (#1 to #20,000)
+ * Ghost Beacon — Automated 3-Stage BGG Rules & Authority Background Harvester (Full Ranked Catalog + 2026 Previews)
  *
  * Crawls through bgg_top_20000_index.json in resumable batches, executing the 3-stage JSON calls
  * against api.geekdo.com:
@@ -8,13 +8,15 @@
  *   3. /api/forums/threads (pulls hot Rules threads & pinned FAQs)
  *
  * Saves sharded JSON bundles into bgg_rules_shards/shard_XXX.json (500 games per shard)
- * and updates bgg_harvester_cursor.json after every 25 games so it can run unattended
+ * and updates bgg_harvester_cursor.json after every 50 games so it can run unattended
  * in the background and resume seamlessly across reboots or GitHub Action runs.
  */
 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+
+const keepAliveAgent = new https.Agent({ keepAlive: true, maxSockets: 28 });
 
 const DIR = __dirname;
 const INDEX_PATH = path.join(DIR, 'bgg_top_20000_index.json');
@@ -28,6 +30,7 @@ function getJson(urlPath) {
     const req = https.get({
       hostname: 'api.geekdo.com',
       path: urlPath,
+      agent: keepAliveAgent,
       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Accept': 'application/json' },
       timeout: 6500
     }, (res) => {
@@ -97,40 +100,49 @@ async function main() {
     try { cursor = JSON.parse(fs.readFileSync(CURSOR_PATH, 'utf8')); } catch (e) {}
   }
 
-  const maxGamesThisRun = Number(process.env.MAX_BGG_HARVEST || 20000);
+  const maxGamesThisRun = Number(process.env.MAX_BGG_HARVEST || 40000);
   const startIdx = cursor.nextIndex || 0;
   const endIdx = Math.min(games.length, startIdx + maxGamesThisRun);
 
   console.log(`[BGG 3-Stage Harvester] Starting at rank index ${startIdx} / ${games.length} (target: ${endIdx})...`);
 
-  const CONCURRENCY = 5;
+  const CONCURRENCY = Number(process.env.BGG_CONCURRENCY || 12);
   for (let i = startIdx; i < endIdx; i += CONCURRENCY) {
-    const shardId = String(Math.floor(i / 500)).padStart(3, '0');
-    const shardPath = path.join(SHARDS_DIR, `shard_${shardId}.json`);
-    let shardObj = {};
-    if (fs.existsSync(shardPath)) {
-      try { shardObj = JSON.parse(fs.readFileSync(shardPath, 'utf8')); } catch (e) {}
-    }
-
     const batch = games.slice(i, Math.min(i + CONCURRENCY, endIdx));
-    const results = await Promise.all(batch.map((g) => harvestThreeStageGame(g)));
-    for (const res of results) {
+    const results = await Promise.all(batch.map((g, bIdx) => harvestThreeStageGame(g).then(res => ({ res, absIdx: i + bIdx }))));
+
+    const touchedShards = new Map();
+    for (const { res, absIdx } of results) {
       if (res && res.objectid) {
-        shardObj[res.objectid] = res;
+        const shardId = String(Math.floor(absIdx / 500)).padStart(3, '0');
+        if (!touchedShards.has(shardId)) {
+          const shardPath = path.join(SHARDS_DIR, `shard_${shardId}.json`);
+          let obj = {};
+          if (fs.existsSync(shardPath)) {
+            try { obj = JSON.parse(fs.readFileSync(shardPath, 'utf8')); } catch (e) {}
+          }
+          touchedShards.set(shardId, { shardPath, obj });
+        }
+        touchedShards.get(shardId).obj[res.objectid] = res;
       }
     }
 
-    fs.writeFileSync(shardPath, JSON.stringify(shardObj), 'utf8');
+    let lastShardId = '000';
+    for (const [shardId, { shardPath, obj }] of touchedShards.entries()) {
+      fs.writeFileSync(shardPath, JSON.stringify(obj), 'utf8');
+      lastShardId = shardId;
+    }
+
     cursor.nextIndex = i + batch.length;
     cursor.totalHarvested = cursor.nextIndex;
     cursor.updatedAt = new Date().toISOString();
-    cursor.currentShard = `shard_${shardId}.json`;
+    cursor.currentShard = `shard_${lastShardId}.json`;
     fs.writeFileSync(CURSOR_PATH, JSON.stringify(cursor, null, 2), 'utf8');
 
-    if (cursor.nextIndex % 25 === 0 || cursor.nextIndex === endIdx) {
-      console.log(`[BGG 3-Stage Harvester] Checkpointed ${cursor.nextIndex} / ${games.length} games (Shard: shard_${shardId}.json)`);
+    if (cursor.nextIndex % 60 < CONCURRENCY || cursor.nextIndex === endIdx) {
+      console.log(`[BGG 3-Stage Harvester] Checkpointed ${cursor.nextIndex} / ${games.length} games (Shard: shard_${lastShardId}.json)`);
     }
-    await new Promise((r) => setTimeout(r, 180));
+    await new Promise((r) => setTimeout(r, 40));
   }
 
   console.log('[BGG 3-Stage Harvester] Run complete!');

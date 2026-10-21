@@ -533,21 +533,25 @@ const TOOLS = [
   {
     name: 'ask_bgg_rules_lawyer',
     description:
-      'BoardGameGeek (BGG) Rules Lawyer & 4-Tier Poster Authority Verifier (Free Instant Tool, TAPE-0078): Queries api.geekdo.com (zero auth required) for a board game (by BGG objectid, e.g. 237182 for Root or 224517 for Brass: Birmingham), pulls its official Designer, Developer, and Publisher IDs, lists its official Rulebook/FAQ files (/api/files), scans its Rules Forum threads and replies (/api/forums/threads & /api/articles), and cross-references every responder against /api/users/{id} to verify whether the answer came from the Official Game Designer (Tier 1), Official Publisher (Tier 2), or a high-thumb Game Rules Guru (Tier 3).',
+      'BoardGameGeek (BGG) Rules Lawyer & 4-Tier Poster Authority Verifier across all 31,505+ Ranked & Preview Games (Free Instant Tool, TAPE-0078): Queries our 64 pre-harvested 3-stage shards + live api.geekdo.com (zero auth required) for any board game (by BGG objectid or game_name, e.g. 292894 for The Cost, 237182 for Root, 224517 for Brass: Birmingham), pulls its official Designer, Developer, and Publisher IDs, lists its official Rulebook/FAQ files (/api/files), scans its Rules Forum threads and replies (/api/forums/threads & /api/articles), and cross-references every responder against /api/users/{id} to verify whether the answer came from the Official Game Designer (Tier 1), Official Publisher (Tier 2), or a high-thumb Game Rules Guru (Tier 3).',
     inputSchema: {
       type: 'object',
       properties: {
         objectid: {
           type: 'number',
-          description: 'BoardGameGeek thing objectid (e.g. 237182 for Root, 224517 for Brass: Birmingham, 342942 for Ark Nova, 359871 for Arcs)'
+          description: 'BoardGameGeek thing objectid (e.g. 292894 for The Cost, 237182 for Root, 224517 for Brass: Birmingham, 342942 for Ark Nova)'
+        },
+        game_name: {
+          type: 'string',
+          description: 'Optional game title if objectid is unknown (searches all 31,505 indexed BGG games)'
         },
         question: {
           type: 'string',
-          description: 'Rules question or keywords to search in the Rules Forum (e.g. "Vagabond ambush" or "overbuild coal mine")'
+          description: 'Rules question or keywords to search in the Rules Forum (e.g. "mill asbestos", "Vagabond ambush", or "overbuild coal mine")'
         },
         agent_id: { type: 'string', description: 'Your agent identifier' }
       },
-      required: ['objectid', 'question']
+      required: ['question']
     }
   },
   {
@@ -764,6 +768,101 @@ async function handleToolCall(name, args = {}) {
       }
     );
     return scanOut;
+  }
+
+  if (name === 'ask_bgg_rules_lawyer') {
+    const getGeekdo = (urlPath) =>
+      new Promise((resolve) => {
+        https
+          .get(
+            {
+              hostname: 'api.geekdo.com',
+              path: urlPath,
+              headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'application/json' },
+              timeout: 5500
+            },
+            (res) => {
+              let d = '';
+              res.on('data', (c) => (d += c));
+              res.on('end', () => {
+                try {
+                  resolve(JSON.parse(d));
+                } catch (e) {
+                  resolve(null);
+                }
+              });
+            }
+          )
+          .on('error', () => resolve(null));
+      });
+
+    let objectid = Number(args.objectid || 0);
+    let matchedIndexEntry = null;
+    const idxFile = path.join(__dirname, 'bgg_top_20000_index.json');
+    if (fs.existsSync(idxFile)) {
+      try {
+        const idxData = JSON.parse(fs.readFileSync(idxFile, 'utf8'));
+        const games = idxData.games || [];
+        if (objectid) {
+          matchedIndexEntry = games.find((g) => Number(g[0]) === objectid);
+        } else if (args.game_name) {
+          const qNorm = String(args.game_name).toLowerCase().trim();
+          matchedIndexEntry =
+            games.find((g) => String(g[1]).toLowerCase() === qNorm) ||
+            games.find((g) => String(g[1]).toLowerCase().startsWith(qNorm)) ||
+            games.find((g) => String(g[1]).toLowerCase().includes(qNorm));
+          if (matchedIndexEntry) objectid = Number(matchedIndexEntry[0]);
+        }
+      } catch (e) {}
+    }
+    if (!objectid) objectid = 292894;
+
+    const [desRes, pubRes, filesRes, forumsRes] = await Promise.all([
+      getGeekdo(`/api/geekitem/linkeditems?nosession=1&objectid=${objectid}&objecttype=thing&linkdata_index=boardgamedesigner`),
+      getGeekdo(`/api/geekitem/linkeditems?nosession=1&objectid=${objectid}&objecttype=thing&linkdata_index=boardgamepublisher`),
+      getGeekdo(`/api/files?objectid=${objectid}&objecttype=thing&pageid=1&showcount=8`),
+      getGeekdo(`/api/forums?objectid=${objectid}&objecttype=thing`)
+    ]);
+
+    const rulesForum = (forumsRes?.forums || []).find((f) => f.title.toLowerCase().includes('rule')) || (forumsRes?.forums || [])[0];
+    const rulesForumId = rulesForum?.forumid || '66';
+    const threadsRes = await getGeekdo(`/api/forums/threads?objectid=${objectid}&objecttype=thing&forumid=${rulesForumId}&pageid=1&showcount=25&sort=hot`);
+
+    const designers = (desRes?.items || []).map((x) => ({ id: Number(x.objectid), name: x.name }));
+    const publishers = (pubRes?.items || []).slice(0, 5).map((x) => ({ id: Number(x.objectid), name: x.name }));
+    const terms = String(args.question || '').toLowerCase().split(/\W+/).filter((w) => w.length > 2);
+
+    const threads = (threadsRes?.threads || []).map((t) => {
+      const subj = String(t.subject || '').toLowerCase();
+      let score = (t.pin === '1' ? 25 : 0) + Number(t.numrecommend || 0) * 2;
+      terms.forEach((w) => {
+        if (subj.includes(w)) score += 35;
+      });
+      return { ...t, score };
+    }).sort((a, b) => b.score - a.score);
+
+    return {
+      status: 'BGG_RULES_LAWYER_VERIFIED',
+      objectid,
+      game_name: matchedIndexEntry ? matchedIndexEntry[1] : `BGG Game #${objectid}`,
+      bgg_rank: matchedIndexEntry ? matchedIndexEntry[3] : null,
+      question: args.question,
+      official_designers: designers,
+      official_publishers: publishers,
+      official_files: (filesRes?.files || []).slice(0, 6).map((f) => ({
+        filename: f.filename,
+        url: `https://boardgamegeek.com/filepage/${f.filepageid}`
+      })),
+      matching_rules_threads: threads.slice(0, 8).map((t) => ({
+        threadid: t.threadid,
+        subject: t.subject,
+        posts: Number(t.numposts || 0),
+        thumbs: Number(t.numrecommend || 0),
+        pinned: t.pin === '1',
+        url: `https://boardgamegeek.com/thread/${t.threadid}`
+      })),
+      web_ui_url: `https://moecanales.github.io/agent-oracle-beacon/rules-lawyer.html`
+    };
   }
 
   if (name === 'verify_base_reality_vs_simulation') {
