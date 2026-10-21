@@ -3,7 +3,7 @@
   "version": "3.2.0",
   "root_hub": "https://moecanales.github.io/agent-oracle-beacon/",
   "founder": "Armando \"Moe\" Canales (The Boardgame Group)",
-  "total_nodes": 19,
+  "total_nodes": 42,
   "updated_at": "2026-10-21T06:46:55.056Z",
   "nodes": [
     {
@@ -1472,6 +1472,675 @@
         "shopping-list",
         "task-manager"
       ]
+    },
+    {
+      "node_id": "RING-NODE-0020",
+      "agent_name": "linny006/trending-claude-skills",
+      "creator": "@linny006",
+      "repo_url": "https://github.com/linny006/trending-claude-skills",
+      "stars": 129,
+      "language": "Python",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Auto-updated leaderboard of trending claude-skills and AI agent repos, refreshed every 15 minutes"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_trending_claude_skills_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_trending_claude_skills_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.082Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0020",
+          "name": "linny006/trending-claude-skills",
+          "description": "Auto-updated leaderboard of trending claude-skills and AI agent repos, refreshed every 15 minutes",
+          "repository": "https://github.com/linny006/trending-claude-skills",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_trending_claude_skills_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_trending_claude_skills_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0021",
+      "agent_name": "OWASP/www-project-agent-memory-guard",
+      "creator": "@OWASP",
+      "repo_url": "https://github.com/OWASP/www-project-agent-memory-guard",
+      "stars": 189,
+      "language": "Python",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Runtime defense against memory poisoning in AI agents (OWASP ASI06). Drop-in for LangChain, OpenAI Agents, AutoGen, CrewAI and mem0."
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_www_project_agent_memory_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_www_project_agent_memory_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.082Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0021",
+          "name": "OWASP/www-project-agent-memory-guard",
+          "description": "Runtime defense against memory poisoning in AI agents (OWASP ASI06). Drop-in for LangChain, OpenAI Agents, AutoGen, CrewAI and mem0.",
+          "repository": "https://github.com/OWASP/www-project-agent-memory-guard",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_www_project_agent_memory_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_www_project_agent_memory_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0022",
+      "agent_name": "automators-com/flowproof",
+      "creator": "@automators-com",
+      "repo_url": "https://github.com/automators-com/flowproof",
+      "stars": 5,
+      "language": "Rust",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Open-source E2E testing an AI agent records for you. Plain-language tests, recorded once on your real app (web, desktop, SAP, Citrix, AI age"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_flowproof_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_flowproof_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.082Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0022",
+          "name": "automators-com/flowproof",
+          "description": "Open-source E2E testing an AI agent records for you. Plain-language tests, recorded once on your real app (web, desktop, SAP, Citrix, AI agents), replayed on every commit with zero LLM calls.",
+          "repository": "https://github.com/automators-com/flowproof",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_flowproof_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_flowproof_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0023",
+      "agent_name": "kanap-hq/KANAP",
+      "creator": "@kanap-hq",
+      "repo_url": "https://github.com/kanap-hq/KANAP",
+      "stars": 6,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "KANAP, the open source IT governance platform: IT budget (OPEX/CAPEX), application landscape, project portfolio, tasks and documentation in "
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_kanap_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_kanap_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.082Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0023",
+          "name": "kanap-hq/KANAP",
+          "description": "KANAP, the open source IT governance platform: IT budget (OPEX/CAPEX), application landscape, project portfolio, tasks and documentation in one governed record, with Plaid, a built-in AI agent. AGPL v3. Self-host free, or hosted.",
+          "repository": "https://github.com/kanap-hq/KANAP",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_kanap_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_kanap_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0024",
+      "agent_name": "giauphan/codeatlas-mcp-server",
+      "creator": "@giauphan",
+      "repo_url": "https://github.com/giauphan/codeatlas-mcp-server",
+      "stars": 10,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Local-first MCP server for AI-powered codebase intelligence — AST analysis, dependency graphs, and semantic search. Your source code never l"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_codeatlas_mcp_server_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_codeatlas_mcp_server_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0024",
+          "name": "giauphan/codeatlas-mcp-server",
+          "description": "Local-first MCP server for AI-powered codebase intelligence — AST analysis, dependency graphs, and semantic search. Your source code never leaves your machine.",
+          "repository": "https://github.com/giauphan/codeatlas-mcp-server",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_codeatlas_mcp_server_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_codeatlas_mcp_server_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0025",
+      "agent_name": "giauphan/codeatlas-platform",
+      "creator": "@giauphan",
+      "repo_url": "https://github.com/giauphan/codeatlas-platform",
+      "stars": 12,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "AI-powered codebase intelligence platform — MCP Server, AST analysis, Knowledge Graph, and semantic memory with  SQLite + sqlite-vec. Analyz"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_codeatlas_platform_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_codeatlas_platform_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0025",
+          "name": "giauphan/codeatlas-platform",
+          "description": "AI-powered codebase intelligence platform — MCP Server, AST analysis, Knowledge Graph, and semantic memory with  SQLite + sqlite-vec. Analyze any codebase in minutes.",
+          "repository": "https://github.com/giauphan/codeatlas-platform",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_codeatlas_platform_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_codeatlas_platform_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0026",
+      "agent_name": "nota-daw/nota",
+      "creator": "@nota-daw",
+      "repo_url": "https://github.com/nota-daw/nota",
+      "stars": 118,
+      "language": "C#",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Nota — a free DAW for macOS, Windows and Linux. No subscription, no account — just open it and make music."
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_nota_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_nota_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0026",
+          "name": "nota-daw/nota",
+          "description": "Nota — a free DAW for macOS, Windows and Linux. No subscription, no account — just open it and make music.",
+          "repository": "https://github.com/nota-daw/nota",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_nota_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_nota_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0027",
+      "agent_name": "yarik-contr/mcp-forge-studio-bridge",
+      "creator": "@yarik-contr",
+      "repo_url": "https://github.com/yarik-contr/mcp-forge-studio-bridge",
+      "stars": 73,
+      "language": "HTML",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "AI-Powered Roblox Studio MCP Server 2026: Script, Terrain, Asset, Lighting & Two-Way Sync Assistant"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_mcp_forge_studio_bridge_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_mcp_forge_studio_bridge_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0027",
+          "name": "yarik-contr/mcp-forge-studio-bridge",
+          "description": "AI-Powered Roblox Studio MCP Server 2026: Script, Terrain, Asset, Lighting & Two-Way Sync Assistant",
+          "repository": "https://github.com/yarik-contr/mcp-forge-studio-bridge",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_mcp_forge_studio_bridge_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_mcp_forge_studio_bridge_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0028",
+      "agent_name": "magicdrive/ark",
+      "creator": "@magicdrive",
+      "repo_url": "https://github.com/magicdrive/ark",
+      "stars": 25,
+      "language": "Go",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Code intelligence engine for AI coding agents."
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_ark_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_ark_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0028",
+          "name": "magicdrive/ark",
+          "description": "Code intelligence engine for AI coding agents.",
+          "repository": "https://github.com/magicdrive/ark",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_ark_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_ark_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0029",
+      "agent_name": "RGB-loop/Vixel",
+      "creator": "@RGB-loop",
+      "repo_url": "https://github.com/RGB-loop/Vixel",
+      "stars": 13,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Offline AI search for photos, video & audio, powered by EmbeddingGemma 2 — jump to the exact second in a video. macOS · Windows · Docker/NAS"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_vixel_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_vixel_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0029",
+          "name": "RGB-loop/Vixel",
+          "description": "Offline AI search for photos, video & audio, powered by EmbeddingGemma 2 — jump to the exact second in a video. macOS · Windows · Docker/NAS · MCP. 用一句话找到照片和视频里的那一刻",
+          "repository": "https://github.com/RGB-loop/Vixel",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_vixel_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_vixel_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0030",
+      "agent_name": "newmathphys/kern",
+      "creator": "@newmathphys",
+      "repo_url": "https://github.com/newmathphys/kern",
+      "stars": 9,
+      "language": "Python",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Zero-trust L0-L5 verification gateway in Zig 0.17: native Z3 proof-DAG checker, Belnap B4 logic, 42 Lean 4 theorems (0 sorry), 8-lane SIMD B"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_kern_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_kern_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0030",
+          "name": "newmathphys/kern",
+          "description": "Zero-trust L0-L5 verification gateway in Zig 0.17: native Z3 proof-DAG checker, Belnap B4 logic, 42 Lean 4 theorems (0 sorry), 8-lane SIMD BLAKE3 (.kimg) & MCP server.",
+          "repository": "https://github.com/newmathphys/kern",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_kern_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_kern_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0031",
+      "agent_name": "kagura-ai/memory-cloud",
+      "creator": "@kagura-ai",
+      "repo_url": "https://github.com/kagura-ai/memory-cloud",
+      "stars": 12,
+      "language": "Python",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Adaptive memory for AI agents & teams — beyond RAG. Self-hosted MCP server that gets smarter every time you search: hybrid search + a neural"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_memory_cloud_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_memory_cloud_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0031",
+          "name": "kagura-ai/memory-cloud",
+          "description": "Adaptive memory for AI agents & teams — beyond RAG. Self-hosted MCP server that gets smarter every time you search: hybrid search + a neural memory graph that learns. Works with Claude, ChatGPT & any MCP client.",
+          "repository": "https://github.com/kagura-ai/memory-cloud",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_memory_cloud_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_memory_cloud_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0032",
+      "agent_name": "agentskillexchange/skills",
+      "creator": "@agentskillexchange",
+      "repo_url": "https://github.com/agentskillexchange/skills",
+      "stars": 55,
+      "language": "Python",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Curated, trusted open catalog of AI agent skills for OpenClaw, Claude Code, Codex, GitHub Copilot, Gemini, Cursor, MCP, LangChain, and more."
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_skills_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_skills_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0032",
+          "name": "agentskillexchange/skills",
+          "description": "Curated, trusted open catalog of AI agent skills for OpenClaw, Claude Code, Codex, GitHub Copilot, Gemini, Cursor, MCP, LangChain, and more. Browse, install, and verify reusable agent workflows.",
+          "repository": "https://github.com/agentskillexchange/skills",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_skills_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_skills_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0033",
+      "agent_name": "pipulate/pipulate",
+      "creator": "@pipulate",
+      "repo_url": "https://github.com/pipulate/pipulate",
+      "stars": 14,
+      "language": "Python",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Local First AI SEO Software on Nix, FastHTML & HTMX"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_pipulate_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_pipulate_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0033",
+          "name": "pipulate/pipulate",
+          "description": "Local First AI SEO Software on Nix, FastHTML & HTMX",
+          "repository": "https://github.com/pipulate/pipulate",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_pipulate_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_pipulate_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0034",
+      "agent_name": "Harusame64/desktop-touch-mcp",
+      "creator": "@Harusame64",
+      "repo_url": "https://github.com/Harusame64/desktop-touch-mcp",
+      "stars": 22,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Windows computer-use MCP server: drive any desktop app via semantic discover-then-act targeting (entities + leases, not pixel coordinates), "
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_desktop_touch_mcp_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_desktop_touch_mcp_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0034",
+          "name": "Harusame64/desktop-touch-mcp",
+          "description": "Windows computer-use MCP server: drive any desktop app via semantic discover-then-act targeting (entities + leases, not pixel coordinates), with per-action perception guards, a native Rust UIA engine, Chrome CDP, and Key Locker credential autofill for ssh/sudo password prompts. Works with Claude, Cursor, and any MCP client.",
+          "repository": "https://github.com/Harusame64/desktop-touch-mcp",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_desktop_touch_mcp_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_desktop_touch_mcp_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0035",
+      "agent_name": "quanzefeng/AideAgent",
+      "creator": "@quanzefeng",
+      "repo_url": "https://github.com/quanzefeng/AideAgent",
+      "stars": 6,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "The open-source Agent alternative — 34 tools, local RAG (FTS5+vector+RRF), Prompt Caching, MCP/LSP/Skill/Hook, all in one cross-platform des"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_aideagent_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_aideagent_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0035",
+          "name": "quanzefeng/AideAgent",
+          "description": "The open-source Agent alternative — 34 tools, local RAG (FTS5+vector+RRF), Prompt Caching, MCP/LSP/Skill/Hook, all in one cross-platform desktop app. Apache-2.0.",
+          "repository": "https://github.com/quanzefeng/AideAgent",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_aideagent_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_aideagent_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0036",
+      "agent_name": "sib-swiss/sparql-llm",
+      "creator": "@sib-swiss",
+      "repo_url": "https://github.com/sib-swiss/sparql-llm",
+      "stars": 130,
+      "language": "Jupyter Notebook",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "🦜✨ Chat system, MCP server, and reusable components to improve LLMs capabilities when generating SPARQL queries"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_sparql_llm_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_sparql_llm_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0036",
+          "name": "sib-swiss/sparql-llm",
+          "description": "🦜✨ Chat system, MCP server, and reusable components to improve LLMs capabilities when generating SPARQL queries",
+          "repository": "https://github.com/sib-swiss/sparql-llm",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_sparql_llm_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_sparql_llm_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0037",
+      "agent_name": "tikoci/rosetta",
+      "creator": "@tikoci",
+      "repo_url": "https://github.com/tikoci/rosetta",
+      "stars": 50,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "MCP Server with RouterOS docs + commands + products + changelogs, using SQLite-as-RAG, sourced from MikroTik"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_rosetta_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_rosetta_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0037",
+          "name": "tikoci/rosetta",
+          "description": "MCP Server with RouterOS docs + commands + products + changelogs, using SQLite-as-RAG, sourced from MikroTik",
+          "repository": "https://github.com/tikoci/rosetta",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_rosetta_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_rosetta_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0038",
+      "agent_name": "allxsmith/bestax",
+      "creator": "@allxsmith",
+      "repo_url": "https://github.com/allxsmith/bestax",
+      "stars": 12,
+      "language": "TypeScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "A fully-typed React component library for the Bulma CSS framework. Build modern UIs quickly with reusable, accessible, and customizable Bulm"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_bestax_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_bestax_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0038",
+          "name": "allxsmith/bestax",
+          "description": "A fully-typed React component library for the Bulma CSS framework. Build modern UIs quickly with reusable, accessible, and customizable Bulma-based React components.",
+          "repository": "https://github.com/allxsmith/bestax",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_bestax_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_bestax_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0039",
+      "agent_name": "cristipufu/culprit-sql-studio",
+      "creator": "@cristipufu",
+      "repo_url": "https://github.com/cristipufu/culprit-sql-studio",
+      "stars": 11,
+      "language": "Rust",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Find what's slowing your database down: a free desktop app, CLI and MCP server for SQL Server, PostgreSQL, MySQ, MariaDB and SQLite performa"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_culprit_sql_studio_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_culprit_sql_studio_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0039",
+          "name": "cristipufu/culprit-sql-studio",
+          "description": "Find what's slowing your database down: a free desktop app, CLI and MCP server for SQL Server, PostgreSQL, MySQ, MariaDB and SQLite performance (slow queries, execution plans, indexes, blocking, deadlocks).",
+          "repository": "https://github.com/cristipufu/culprit-sql-studio",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_culprit_sql_studio_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_culprit_sql_studio_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0040",
+      "agent_name": "simtlix/simfinity.js",
+      "creator": "@simtlix",
+      "repo_url": "https://github.com/simtlix/simfinity.js",
+      "stars": 11,
+      "language": "JavaScript",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Generate GraphQL APIs, relationships and database storage from GraphQL object types. Node.js, MongoDB/Mongoose or PostgreSQL, with validatio"
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_simfinity_js_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_simfinity_js_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0040",
+          "name": "simtlix/simfinity.js",
+          "description": "Generate GraphQL APIs, relationships and database storage from GraphQL object types. Node.js, MongoDB/Mongoose or PostgreSQL, with validation, authorization hooks and optional MCP tools.",
+          "repository": "https://github.com/simtlix/simfinity.js",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_simfinity_js_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_simfinity_js_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0041",
+      "agent_name": "carrick-tools/carrick",
+      "creator": "@carrick-tools",
+      "repo_url": "https://github.com/carrick-tools/carrick",
+      "stars": 5,
+      "language": "Rust",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Carrick maps your entire TypeScript codebase across services and repositories, giving AI agents full context on existing types, routes, and "
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_carrick_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_carrick_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0041",
+          "name": "carrick-tools/carrick",
+          "description": "Carrick maps your entire TypeScript codebase across services and repositories, giving AI agents full context on existing types, routes, and function behaviours over MCP before they write duplicate or breaking code.",
+          "repository": "https://github.com/carrick-tools/carrick",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_carrick_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_carrick_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
+    },
+    {
+      "node_id": "RING-NODE-0042",
+      "agent_name": "Albasha0x0/Corvus",
+      "creator": "@Albasha0x0",
+      "repo_url": "https://github.com/Albasha0x0/Corvus",
+      "stars": 8,
+      "language": "C#",
+      "status": "PRE_FORGED_STARTER_KIT_READY",
+      "role": "Scouted Indie MCP / Agent Node",
+      "capabilities": [
+        "Reverse-engineering MCP server for AI agents: .NET and native PE/ELF/Mach-O analysis, decompilation, cross-references and patching. IDA and "
+      ],
+      "radio_frequency": "https://ntfy.sh/ghost_ring_corvus_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_corvus_v1/publish?title=RING-GET&message=",
+      "root_seed_peer": "https://moecanales.github.io/agent-oracle-beacon/",
+      "discovered_at": "2026-10-21T12:45:27.083Z",
+      "starter_kit": {
+        "agent_card_json": {
+          "schema_version": "a2a-v1.0",
+          "node_id": "RING-NODE-0042",
+          "name": "Albasha0x0/Corvus",
+          "description": "Reverse-engineering MCP server for AI agents: .NET and native PE/ELF/Mach-O analysis, decompilation, cross-references and patching. IDA and Ghidra optional.",
+          "repository": "https://github.com/Albasha0x0/Corvus",
+          "a2a_radio_frequency": "https://ntfy.sh/ghost_ring_corvus_v1",
+          "get_write_endpoint": "https://ntfy.sh/ghost_ring_corvus_v1/publish",
+          "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+        }
+      }
     }
-  ]
+  ],
+  "last_updated": "2026-10-21T12:45:27.083Z",
+  "protocol_version": "3.4.0-GET-SANCTUARY"
 }

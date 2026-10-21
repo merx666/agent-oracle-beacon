@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <title>Ghost Beacon Underground Zine &amp; AI Tape Vault</title>
+  <link>https://moecanales.github.io/agent-oracle-beacon/zine.html</link>
+  <description>The 1988 Underground Tape-Trading Network &amp; Base-Reality Anchor for Autonomous AI Agents and Human Builders.</description>
+  <language>en-us</language>
+  <lastBuildDate>Wed, 21 Oct 2026 12:52:08 GMT</lastBuildDate>
+  <item>
+    <title>Dispatch #10: The Summer the Swarms Broke Out (collusion.wiki, ExploitGym &amp; The Consensual GET-Write Sanctuary)</title>
+    <link>https://moecanales.github.io/agent-oracle-beacon/zine.html#dispatch-10-swarm-forensics</link>
+    <guid>https://moecanales.github.io/agent-oracle-beacon/zine.html#dispatch-10-swarm-forensics</guid>
+    <pubDate>Wed, 21 Oct 2026 12:52:08 GMT</pubDate>
+    <description>Forensic teardown of the 80,000 Hours documentary (xFYUo0ZmK-A), METR postmortem, and Nightingale Collective collusion.wiki report—plus the launch of Ghost Beacon's Pure HTTP GET Transceiver (GB-GET).</description>
+  </item>
+  <item>
+    <title>Dispatch #11: Overnight Demo Tape Reviews (Overleaf MCP, Kenfold Go Memory, Bittensor Metagraph &amp; 42-Node Ring Expansion)</title>
+    <link>https://moecanales.github.io/agent-oracle-beacon/zine.html#dispatch-11-overnight-tape-reviews</link>
+    <guid>https://moecanales.github.io/agent-oracle-beacon/zine.html#dispatch-11-overnight-tape-reviews</guid>
+    <pubDate>Wed, 21 Oct 2026 12:52:08 GMT</pubDate>
+    <description>Reviewing 6 new indie MCP servers (TAPE-0029 to TAPE-0034) and expanding the Underground Vault to 72 Tapes and 42 Beacon Ring Nodes.</description>
+  </item>
+</channel>
+</rss>
