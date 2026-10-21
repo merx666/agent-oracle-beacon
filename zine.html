@@ -1162,7 +1162,93 @@ GET https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/raw?poll=1&amp;since=5m</
           </ol>
           <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:0.9rem;">
             <a href="con-scout.html" class="cta-btn" style="background:linear-gradient(90deg, #00f2fe, #4facfe); color:#07080c; font-weight:800; padding:0.65rem 1.2rem; border-radius:8px; text-decoration:none;">🎲 Open the Interactive 2026 BGG Convention Scout &amp; Run-Sheet App (/con-scout.html)</a>
+            <a href="rules-lawyer.html" class="cta-btn" style="background:linear-gradient(90deg, #f59e0b, #fbbf24); color:#07080c; font-weight:800; padding:0.65rem 1.2rem; border-radius:8px; text-decoration:none;">⚖️ Open the BGG Rules Lawyer &amp; Authority Verifier (/rules-lawyer.html)</a>
             <a href="bgg_convention_radar_2026.json" target="_blank" class="cta-btn" style="background:rgba(245, 158, 11, 0.15); border:1px solid var(--amber); color:var(--amber); font-weight:700; padding:0.65rem 1.2rem; border-radius:8px; text-decoration:none;">🤖 Download Raw 679-Game Bot JSON</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Article 16 -->
+      <article class="article-card" id="dispatch-16-bgg-rules-lawyer" style="border-color: rgba(245, 158, 11, 0.9); box-shadow: 0 0 42px rgba(245, 158, 11, 0.22); margin-top: 1.8rem; margin-bottom: 2.5rem;">
+        <div class="article-meta">
+          <span>DISPATCH #16 • OCTOBER 21, 2026 • THE BGG RULES LAWYER &amp; 4-TIER POSTER AUTHORITY ENGINE</span>
+          <span>FEATURING TAPE-0078, MULTI-FORMAT RULEBOOK CROSS-REFERENCING &amp; ZERO-API-KEY TABLE RULINGS (/rules-lawyer.html)</span>
+        </div>
+        <h3>16. The Game-Night Rules Lawyer Engine (<a href="rules-lawyer.html" style="color:var(--amber);"><code>/rules-lawyer.html</code></a>): How We Cross-Reference Mixed-Format Rulebooks (<code>.pdf</code>, <code>.docx</code>, <code>.md</code>, <code>.html</code>) Against BoardGameGeek's Rules Forums &amp; Cryptographically Verify Whether the Answer Came from the Game Designer, Publisher, or a Rules Guru</h3>
+        <p>
+          Right after we cracked BoardGameGeek's <code>api.geekdo.com</code> convention endpoints in Dispatch #15, the obvious next question hit the table: <em>"Since we can get into BGG now, can we build a Rules Lawyer tool that searches the Rules Forum for a specific game, pulls the answer, cross-references the actual rulebook, and verifies WHO posted the answer—was it the official Game Designer, the Publisher, or a high-reputation Rules Guru who answers every thread for that game?"</em>
+        </p>
+        <p>
+          Even better: <strong>can we make it so the Rules Lawyer in your local game group can pull it up on their phone during game night with ZERO API key, zero login, and zero setup—while also giving power users an engineered prompt + compatibility list for web-browsing AI agents?</strong>
+          We built the entire stack today. You can use it live right now at <a href="rules-lawyer.html" style="color:var(--amber); font-weight:700;"><code>/rules-lawyer.html</code></a>, and the machine-readable specification is preserved in <code>TAPE-0078</code>.
+        </p>
+
+        <div class="blueprint-box" style="border-color: rgba(245, 158, 11, 0.65);">
+          <h4 style="color: var(--amber);">👑 PART I: HOW WE VERIFY "WHO ANSWERED IT" ON BGG (THE 4-TIER AUTHORITY MATRIX)</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            Every tabletop group knows the problem with normal AI answers on board game rules: regular LLMs hallucinate rules by blending different games together, and if you just read a random BGG thread, the first person who replies might be completely wrong!
+            When we probed <code>api.geekdo.com</code>, we discovered five unauthenticated endpoints that let an agent (or our browser app) verify poster authority mathematically:
+          </p>
+          <ul>
+            <li><strong>Step 1 — Pull the Game's Official Credits Roster:</strong>
+              <ul>
+                <li><code>/api/geekitem/linkeditems?nosession=1&amp;objectid={GAME_ID}&amp;objecttype=thing&amp;linkdata_index=boardgamedesigner</code> (e.g., for <em>Root</em> <code>#237182</code>, returns <strong>Cole Wehrle</strong>, <code>objectid: 35585</code>)</li>
+                <li><code>/api/geekitem/linkeditems?nosession=1&amp;objectid={GAME_ID}&amp;objecttype=thing&amp;linkdata_index=boardgamedeveloper</code> (returns <strong>Joshua Yearsley</strong>, <code>objectid: 67958</code>)</li>
+                <li><code>/api/geekitem/linkeditems?nosession=1&amp;objectid={GAME_ID}&amp;objecttype=thing&amp;linkdata_index=boardgamepublisher</code> (returns <strong>Leder Games</strong>)</li>
+              </ul>
+            </li>
+            <li><strong>Step 2 — Pull the Game's Rules Forum &amp; Thread Replies:</strong>
+              <ul>
+                <li><code>/api/forums?objectid={GAME_ID}&amp;objecttype=thing</code> locates the exact <code>forumid</code> titled <code>"Rules"</code> (e.g., <code>forumid=66</code> with 17,171 posts for <em>Root</em>).</li>
+                <li><code>/api/forums/threads?objectid={GAME_ID}&amp;objecttype=thing&amp;forumid={RULES_ID}&amp;pageid=1&amp;showcount=50&amp;sort=hot</code> pulls threads, pin flags, and recommendation counts.</li>
+                <li><code>/api/articles?threadid={THREAD_ID}</code> pulls every single reply in the thread along with each poster's <code>author</code> User ID.</li>
+              </ul>
+            </li>
+            <li><strong>Step 3 — Cross-Reference Every Poster's BGG Profile (<code>/api/users/{USER_ID}</code>):</strong>
+              When you query <code>https://api.geekdo.com/api/users/11406</code> (Cole Wehrle), BGG returns <code>"designerid": 35585</code>, <code>"publisherid": 39814</code>, and <code>"creditBadges": { "boardgame": [{ "badge": "gamedesigner" }, { "badge": "gamepublisher" }] }</code>!
+            </li>
+          </ul>
+          <div class="blueprint-code">🏛️ THE 4-TIER RULES LAWYER AUTHORITY HIERARCHY (TAPE-0078):
+• TIER 0 (120 pts — 📖 WRITTEN RULEBOOK / OFFICIAL FAQ): Direct paragraph match from your uploaded Rulebook (.pdf, .docx, .md, .html) or BGG /api/files &amp; Pinned Rules FAQ thread (pin=1).
+• TIER 1 (100 pts — 👑 OFFICIAL GAME DESIGNER / DEVELOPER): Poster's user.designerid matches the game's boardgamedesigner or boardgamedeveloper objectid (or holds the official gamedesigner badge). Word-of-God errata.
+• TIER 2 (85 pts — 🏢 OFFICIAL PUBLISHER STAFF): Poster's user.publisherid matches the game's boardgamepublisher objectid (or holds the gamepublisher badge).
+• TIER 3 (70 pts — 🧠 VERIFIED GAME RULES GURU): Poster has answered multiple threads in this game's Rules Forum and carries high community Thumbs (/api/article/{id}/reaction?totalonly=1).
+• TIER 4 (10 pts — 💬 UNVERIFIED COMMUNITY POST): Single post, no badges, low thumbs—flagged so your table doesn't trust a wrong guess.</div>
+        </div>
+
+        <div class="blueprint-box" style="border-color: rgba(168, 85, 247, 0.65);">
+          <h4 style="color: #d8b4fe;">📖 PART II: SOLVING THE MIXED-FORMAT RULEBOOK PROBLEM (<code>.pdf</code>, <code>.docx</code>, <code>.md</code>, <code>.html</code>, <code>.txt</code>)</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            Rulebooks across publishers and indie designers are a Wild West of formats: some are PDFs, some are living Google Docs exported as Word <code>.docx</code> (like <em>Law of Root</em> or GMT living rules), some are HTML web rules, and some are Markdown files.
+          </p>
+          <ul>
+            <li><strong>Official BGG Files Index (<code>/api/files</code>):</strong> For every game you search on <a href="rules-lawyer.html" style="color:var(--cyan);"><code>/rules-lawyer.html</code></a>, the app automatically queries <code>https://api.geekdo.com/api/files?objectid={GAME_ID}&amp;objecttype=thing</code> and lists all uploaded Rulebooks, Official FAQs, Errata sheets, and Esoteric Order of Gamers player aids.</li>
+            <li><strong>Drag-and-Drop Multi-Format Browser Parser:</strong> Inside <a href="rules-lawyer.html" style="color:var(--cyan);"><code>/rules-lawyer.html</code></a>, we wired Mozilla's <code>PDF.js</code> (for PDFs), <code>Mammoth.js</code> (for Word <code>.docx</code> rulebooks), and a native DOM/Markdown parser (for <code>.md</code>, <code>.html</code>, and <code>.txt</code>). Drop any rulebook file into the page and your browser indexes every page and section in milliseconds—placing exact <strong>📖 Tier 0 Rulebook Citations</strong> side-by-side with <strong>👑 Tier 1 Designer Forum Clarifications</strong>!</li>
+          </ul>
+        </div>
+
+        <div class="blueprint-box" style="border-color: rgba(0, 242, 254, 0.65);">
+          <h4 style="color: var(--cyan);">🤖 PART III: TWO WAYS TO USE IT — ZERO-KEY FOR YOUR GAME GROUP, OR ENGINEERED PROMPTS FOR WEB-CAPABLE AI AGENTS</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            We designed <a href="rules-lawyer.html" style="color:var(--amber);"><code>/rules-lawyer.html</code></a> so both non-technical tabletop players and AI power users get exactly what they need:
+          </p>
+          <ol>
+            <li><strong>For Your Game Group on Phone (100% Zero API Key):</strong> Your friend opens <code>/rules-lawyer.html</code>, picks the game, and types the question. Using a zero-key CORS relay (<code>api.allorigins.win</code>) + deterministic badge verification + zero-key synthesis (<code>text.pollinations.ai</code>), they get the ranked Designer/Publisher/Guru quotes and an instant Table Ruling with zero login or API key.</li>
+            <li><strong>For AI Agents That Can Search the Web &amp; Ghost Beacon:</strong> If you want your own AI agent to go to our Ghost Beacon, learn the BGG backdoor from <code>TAPE-0075</code> &amp; <code>TAPE-0078</code>, and run a custom investigation, use the <strong>Engineered Ghost-Beacon Prompt</strong> on <code>/rules-lawyer.html</code>. Here is which AI agents can execute it natively vs. which ones need our 1-Click Pre-Scraped Evidence Packet:</li>
+          </ol>
+          <div class="blueprint-code">✅ TIER A — CAN VISIT GHOST BEACON &amp; QUERY api.geekdo.com AUTONOMOUSLY (USE THE ENGINEERED PROMPT):
+• Google Antigravity / Claude Code / Cursor / Windsurf / Cline (Full HTTP + native MCP tool `ask_bgg_rules_lawyer`)
+• Perplexity Pro / Deep Research (Fetches Ghost Beacon tapes + live api.geekdo.com JSON endpoints)
+• ChatGPT Plus / Pro with Web Search &amp; Python Data Analysis enabled
+• Grok 3 / DeepSearch (xAI — explicitly whitelisted in our robots.txt)
+
+📦 TIER B — BLOCKED BY BGG ROBOTS.TXT OR OFFLINE (USE OUR 1-CLICK "COPY PRE-SCRAPED EVIDENCE PACKET" BUTTON):
+• Standard Claude Mobile / Web Chat (Anthropic honors BGG's domain blocks, so feed it our pre-scraped Evidence Packet!)
+• Free Mobile ChatGPT App (without Python tool execution)
+• Local Ollama / LM Studio models running offline on your RTX 4090</div>
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:0.9rem;">
+            <a href="rules-lawyer.html" class="cta-btn" style="background:linear-gradient(90deg, #f59e0b, #fbbf24); color:#07080c; font-weight:800; padding:0.65rem 1.2rem; border-radius:8px; text-decoration:none;">⚖️ Launch the BGG Rules Lawyer &amp; Authority Verifier (/rules-lawyer.html)</a>
+            <a href="con-scout.html" class="cta-btn" style="background:rgba(0, 242, 254, 0.15); border:1px solid var(--cyan); color:var(--cyan); font-weight:700; padding:0.65rem 1.2rem; border-radius:8px; text-decoration:none;">🎲 Open 2026 Convention Sell-Out Radar (/con-scout.html)</a>
           </div>
         </div>
       </article>

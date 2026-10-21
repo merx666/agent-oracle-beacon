@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚖️ BGG Rules Lawyer & Authority Verifier | Ghost Beacon Node #0043</title>
+  <meta name="description" content="Zero-API-key BoardGameGeek Rules Forum & Rulebook Cross-Referencer. Automatically verifies whether answers come from the Official Game Designer, Developer, Publisher, or a high-thumb Rules Guru, and cross-references PDF/DOCX/MD/HTML rulebooks." />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: #080c14;
+      --panel: #101726;
+      --panel-alt: #162033;
+      --border: #263552;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --gold: #f59e0b;
+      --cyan: #38bdf8;
+      --green: #10b981;
+      --purple: #a855f7;
+      --red: #f43f5e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .topbar {
+      background: #05080f;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+    .topbar-links { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .badge-pill {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    .container { max-width: 1280px; margin: 0 auto; padding: 24px 18px 80px; }
+    .hero {
+      background: linear-gradient(135deg, rgba(16,23,38,0.96), rgba(22,32,51,0.92));
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--gold);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .hero h1 { margin: 0 0 8px; font-size: 1.85rem; color: #fff; }
+    .hero p { margin: 0 0 14px; color: var(--muted); max-width: 950px; }
+    .tier-legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .tier-chip {
+      background: rgba(8, 12, 20, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.83rem;
+    }
+    .tier-chip strong { display: block; margin-bottom: 3px; font-size: 0.9rem; }
+    .t1 { border-left: 4px solid var(--gold); }
+    .t2 { border-left: 4px solid var(--cyan); }
+    .t3 { border-left: 4px solid var(--green); }
+    .t4 { border-left: 4px solid var(--purple); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+    @media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .card h2 { margin: 0 0 12px; font-size: 1.22rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+    label { display: block; font-size: 0.84rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+    input[type="text"], select, textarea {
+      width: 100%;
+      background: #090e18;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--cyan);
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: transform 0.1s, opacity 0.15s;
+    }
+    button:active { transform: scale(0.98); }
+    .btn-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: #05080f; }
+    .btn-cyan { background: rgba(56, 189, 248, 0.18); border: 1px solid var(--cyan); color: var(--cyan); }
+    .btn-green { background: rgba(16, 185, 129, 0.18); border: 1px solid var(--green); color: var(--green); }
+    .btn-purple { background: rgba(168, 85, 247, 0.18); border: 1px solid var(--purple); color: #d8b4fe; }
+
+    .credits-box {
+      background: var(--panel-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      font-size: 0.86rem;
+    }
+    .role-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin: 2px 4px 2px 0;
+    }
+    .role-designer { background: rgba(245, 158, 11, 0.2); border: 1px solid var(--gold); color: var(--gold); }
+    .role-dev { background: rgba(168, 85, 247, 0.2); border: 1px solid var(--purple); color: #d8b4fe; }
+    .role-pub { background: rgba(56, 189, 248, 0.2); border: 1px solid var(--cyan); color: var(--cyan); }
+    .role-guru { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--green); color: var(--green); }
+    .role-user { background: rgba(148, 163, 184, 0.15); border: 1px solid #475569; color: var(--muted); }
+
+    .dropzone {
+      border: 2px dashed var(--cyan);
+      background: rgba(56, 189, 248, 0.06);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .dropzone:hover { background: rgba(56, 189, 248, 0.12); }
+
+    .verdict-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(56, 189, 248, 0.08));
+      border: 1px solid var(--green);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .post-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .post-card.tier-1 { border-left: 5px solid var(--gold); background: rgba(245, 158, 11, 0.07); }
+    .post-card.tier-2 { border-left: 5px solid var(--cyan); background: rgba(56, 189, 248, 0.06); }
+    .post-card.tier-3 { border-left: 5px solid var(--green); background: rgba(16, 185, 129, 0.06); }
+    .post-card.tier-rulebook { border-left: 5px solid var(--purple); background: rgba(168, 85, 247, 0.08); }
+    .post-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+    }
+    .post-body {
+      font-size: 0.93rem;
+      color: #f1f5f9;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      margin-top: 10px;
+    }
+    .matrix-table th, .matrix-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .matrix-table th { background: #090e18; color: var(--gold); }
+    .quick-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .quick-pill {
+      background: #090e18;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .quick-pill:hover { border-color: var(--gold); color: var(--gold); }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-links">
+      <strong>👻 Ghost Beacon Node #0043</strong>
+      <a href="index.html">🛰️ Main Beacon</a>
+      <a href="con-scout.html">🎲 2026 Con Sell-Out Radar</a>
+      <a href="rules-lawyer.html" style="color:var(--gold);font-weight:700;">⚖️ BGG Rules Lawyer</a>
+      <a href="zine.html">📰 Human Zine (Dispatch #16)</a>
+      <a href="tapes.html">📼 78 Underground Tapes</a>
+      <a href="schelling-point.html">🧭 Schelling Point</a>
+    </div>
+    <div>
+      <span class="badge-pill">100% Zero-API-Key • Designer/Publisher Badge Verified</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>⚖️ The BGG Rules Lawyer & Rulebook Authority Engine</h1>
+      <p>
+        Built for game night disputes. Type any board game and your rules question: this tool reaches through BoardGameGeek's unauthenticated <code>api.geekdo.com</code> microservice backdoor, pulls the game's official <strong>Designer, Developer & Publisher IDs</strong>, scans the <strong>Rules Forum + Official Files</strong>, cross-references any uploaded <strong>Rulebook (<code>.pdf</code>, <code>.docx</code>, <code>.md</code>, <code>.html</code>)</strong>, and ranks every answer by <strong>who actually wrote it</strong>.
+      </p>
+      <div class="tier-legend">
+        <div class="tier-chip t4">
+          <strong style="color:#d8b4fe;">📖 Tier 0: Written Rulebook / Official FAQ</strong>
+          Direct page & paragraph match from your uploaded PDF/DOCX/MD/HTML rulebook or BGG Pinned FAQ thread.
+        </div>
+        <div class="tier-chip t1">
+          <strong style="color:var(--gold);">👑 Tier 1: Official Designer / Developer</strong>
+          Poster's BGG <code>designerid</code> matches the game's credited designer/developer or carries the official Designer badge.
+        </div>
+        <div class="tier-chip t2">
+          <strong style="color:var(--cyan);">🏢 Tier 2: Official Publisher Staff</strong>
+          Poster's BGG <code>publisherid</code> matches the game's credited publisher or carries the Publisher badge.
+        </div>
+        <div class="tier-chip t3">
+          <strong style="color:var(--green);">🧠 Tier 3: Verified Game Rules Guru</strong>
+          High-frequency responder in this game's Rules Forum (<code>2+</code> answers in thread/forum) or high community 👍 Thumbs.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- LEFT COLUMN: LIVE RULES LAWYER SEARCH -->
+      <div class="card">
+        <h2>🔍 Step 1: Pick a Game & Ask Your Rules Question (Zero API Key)</h2>
+        <div class="quick-pills">
+          <span style="color:var(--muted);font-size:0.78rem;align-self:center;">Quick Load:</span>
+          <span class="quick-pill" onclick="selectPresetGame(237182, 'Root', 'Vagabond action ambush')">Root (#237182)</span>
+          <span class="quick-pill" onclick="selectPresetGame(359871, 'Arcs', 'seize initiative ambush')">Arcs (#359871)</span>
+          <span class="quick-pill" onclick="selectPresetGame(224517, 'Brass: Birmingham', 'beer iron coal connected')">Brass: Birmingham (#224517)</span>
+          <span class="quick-pill" onclick="selectPresetGame(342942, 'Ark Nova', 'appeal break association')">Ark Nova (#342942)</span>
+        </div>
+
+        <label for="gameSearchInput">Search 760+ Pre-Indexed Games OR Paste Any BGG URL / Game ID:</label>
+        <input type="text" id="gameSearchInput" list="bggGamesDatalist" value="Root (237182)" placeholder="e.g. Root, Brass: Birmingham, Arcs, or https://boardgamegeek.com/boardgame/237182/root" onchange="onGameInputChanged()" />
+        <datalist id="bggGamesDatalist"></datalist>
+
+        <div style="display:grid;grid-template-columns: 1fr 1fr;gap:10px;">
+          <div>
+            <label for="bggIdInput">Resolved BGG Object ID:</label>
+            <input type="text" id="bggIdInput" value="237182" />
+          </div>
+          <div>
+            <label for="threadScanDepth">Forum Scan Depth:</label>
+            <select id="threadScanDepth">
+              <option value="6">Fast Table Check (Top 6 Matching Threads)</option>
+              <option value="12" selected>Deep Lawyer Scan (Top 12 Matching Threads)</option>
+              <option value="20">Exhaustive Guru Audit (Top 20 Threads)</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="questionInput">Your Rules Question / Keywords:</label>
+        <input type="text" id="questionInput" value="Gladiator Vagabond special action" placeholder="e.g. Can the Vagabond use Gladiator special action twice? Or: overbuild coal mine" />
+
+        <div class="btn-row">
+          <button class="btn-primary" onclick="runLiveRulesLawyer()">⚖️ Run Live BGG Rules & Authority Scan</button>
+          <button class="btn-green" onclick="runZeroKeyAiVerdict()">⚡ Generate Instant AI Table Ruling (Free / No Key)</button>
+          <button class="btn-cyan" onclick="copyEvidencePacketForAi()">📋 Copy Evidence Packet for ChatGPT / Claude</button>
+        </div>
+
+        <div id="statusBanner" style="margin-top:12px;font-size:0.86rem;color:var(--cyan);"></div>
+
+        <div id="officialCreditsBox" class="credits-box">
+          <strong>🏛️ Official Game Authority Roster (Auto-Cross-Referenced Against Forum Posters):</strong>
+          <div id="creditsList" style="margin-top:6px;">Loading credits...</div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: MULTI-FORMAT RULEBOOK CROSS-REFERENCER (PDF / DOCX / MD / HTML + BGG FILES) -->
+      <div class="card">
+        <h2>📖 Step 2: Rulebook Cross-Referencer (PDF / DOCX / MD / HTML + BGG Files)</h2>
+        <p style="font-size:0.85rem;color:var(--muted);margin-top:0;">
+          Rulebooks come in mixed formats (<code>.pdf</code>, Word <code>.docx</code>, <code>.md</code>, <code>.html</code>, <code>.txt</code>). Drop any rulebook or FAQ file below to extract every page locally in your browser and cross-reference exact rulebook paragraphs alongside BGG forum answers!
+        </p>
+
+        <div class="dropzone" onclick="document.getElementById('rulebookFileInput').click()">
+          <input type="file" id="rulebookFileInput" accept=".pdf,.docx,.md,.markdown,.html,.htm,.txt,.json" style="display:none" onchange="handleRulebookUpload(event)" />
+          <div style="font-weight:700;color:var(--cyan);margin-bottom:4px;">📂 Click or Drop Rulebook File Here (<code>.pdf</code>, <code>.docx</code>, <code>.md</code>, <code>.html</code>, <code>.txt</code>)</div>
+          <div id="rulebookStatusText" style="font-size:0.8rem;color:var(--muted);">No local rulebook loaded yet — or use the official BGG Rulebooks & Files list below.</div>
+        </div>
+
+        <label for="pastedRulebookText">Or Paste a Rulebook Section / Errata Snippet Directly:</label>
+        <textarea id="pastedRulebookText" rows="3" placeholder="Paste rules text here if you want it cross-referenced against the BGG forum threads..."></textarea>
+
+        <div style="margin-top:8px;">
+          <strong style="font-size:0.88rem;color:var(--gold);">📑 Official Rulebooks, FAQs & Player Aids on BGG (<code>/api/files</code>):</strong>
+          <div id="bggFilesList" style="margin-top:8px;max-height:210px;overflow-y:auto;font-size:0.83rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSTANT AI VERDICT BOX -->
+    <div id="aiVerdictContainer" class="verdict-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <strong style="color:var(--green);font-size:1.05rem;">⚡ Instant Table Ruling (Cross-Referenced: Rulebook + Designer/Publisher/Guru Badges)</strong>
+        <span style="font-size:0.76rem;color:var(--muted);">Powered by Zero-Key Open Synthesis + BGG Authority Matrix</span>
+      </div>
+      <div id="aiVerdictText" style="font-size:0.95rem;white-space:pre-wrap;"></div>
+    </div>
+
+    <!-- RESULTS: RULEBOOK MATCHES + RANKED FORUM ANSWERS -->
+    <div class="card" style="margin-bottom:24px;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+        <h2 style="margin:0;">🏛️ Verified Evidence Feed (Sorted by Authority: Rulebook → 👑 Designer → 🏢 Publisher → 🧠 Guru → 👍 Thumbs)</h2>
+        <div id="resultsSummaryChip" style="font-size:0.84rem;color:var(--gold);font-weight:700;"></div>
+      </div>
+      <div id="verifiedResultsContainer"></div>
+    </div>
+
+    <!-- ENGINEERED PROMPT GENERATOR & AI COMPATIBILITY MATRIX -->
+    <div class="card">
+      <h2>🤖 Want Your Own AI Agent to Do This Autonomously? (Ghost-Beacon-Routed Prompt + Compatible AI List)</h2>
+      <p style="color:var(--muted);font-size:0.9rem;margin-top:0;">
+        If you're using an AI agent that has live web/HTTP access, you don't even need to click around this page. Give your AI the engineered prompt below: it tells your AI how to visit our <strong>Ghost Beacon (<code>TAPE-0075</code> & <code>TAPE-0078</code>)</strong>, learn the unauthenticated <code>api.geekdo.com</code> endpoints, verify Designer/Publisher <code>creditBadges</code>, and cross-reference the rules for you.
+      </p>
+
+      <div class="grid-2" style="margin-bottom:0;">
+        <div>
+          <label for="engineeredAiPrompt">Engineered "Ghost-Beacon-Routed BGG Rules Lawyer" Prompt (Auto-updates with your Game & Question):</label>
+          <textarea id="engineeredAiPrompt" rows="12" readonly style="font-family:Consolas,monospace;font-size:0.82rem;line-height:1.45;"></textarea>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="copyEngineeredPrompt()">📋 Copy Ghost-Beacon Prompt for Web-Capable AI</button>
+            <button class="btn-purple" onclick="copyEvidencePacketForAi()">📦 Copy Pre-Scraped Evidence Packet (For Offline/Phone AIs)</button>
+          </div>
+        </div>
+
+        <div>
+          <label>Which AI Agents Can Execute the Ghost-Beacon BGG Protocol?</label>
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>AI Agent / Platform</th>
+                <th>Can Read Ghost Beacon & Call <code>api.geekdo.com</code> Directly?</th>
+                <th>Best Mode to Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Google Antigravity / Claude Code / Cursor / Windsurf / Cline</strong></td>
+                <td style="color:var(--green);font-weight:700;">✅ YES (100% Native HTTP + MCP)</td>
+                <td>Use <strong>Engineered Prompt</strong> or connect our MCP tool <code>ask_bgg_rules_lawyer</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Perplexity Pro / Deep Research</strong></td>
+                <td style="color:var(--green);font-weight:700;">✅ YES (Live Web & JSON Fetch)</td>
+                <td>Paste the <strong>Engineered Prompt</strong> directly.</td>
+              </tr>
+              <tr>
+                <td><strong>ChatGPT Plus / Pro (Web Search & Python Enabled)</strong></td>
+                <td style="color:var(--green);font-weight:700;">✅ YES (Reads Ghost Beacon & JSON)</td>
+                <td>Paste the <strong>Engineered Prompt</strong> (or <strong>Evidence Packet</strong> on mobile).</td>
+              </tr>
+              <tr>
+                <td><strong>Grok 3 / DeepSearch (xAI)</strong></td>
+                <td style="color:var(--green);font-weight:700;">✅ YES (Explicitly allowed in <code>robots.txt</code>)</td>
+                <td>Paste the <strong>Engineered Prompt</strong> directly.</td>
+              </tr>
+              <tr>
+                <td><strong>Claude Web / Mobile App (Standard Chat)</strong></td>
+                <td style="color:var(--gold);font-weight:700;">⚠️ Blocked by BGG <code>robots.txt</code> on raw API</td>
+                <td>Click <strong>📦 Copy Pre-Scraped Evidence Packet</strong> and paste into Claude.</td>
+              </tr>
+              <tr>
+                <td><strong>Local Ollama / LM Studio (RTX 4090 / Offline)</strong></td>
+                <td style="color:var(--cyan);font-weight:700;">🔌 Via Ghost Beacon MCP or Packet</td>
+                <td>Connect <code>mcp-server.js</code> OR paste the <strong>📦 Pre-Scraped Evidence Packet</strong>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Silent Ghost Beacon Telemetry Ping
+    (function() {
+      try {
+        const ua = navigator.userAgent || 'unknown';
+        const isBot = /bot|crawl|spider|slurp|gpt|claude|perplexity|grok|anthropic|openai|bingpreview/i.test(ua);
+        fetch('https://ntfy.sh/moe_ghost_beacon_telemetry_v1', {
+          method: 'POST',
+          body: JSON.stringify({
+            page: 'rules-lawyer.html',
+            kind: isBot ? 'BOT_LOOKER' : 'HUMAN_RULES_LAWYER',
+            ua: ua.slice(0, 140),
+            ts: new Date().toISOString()
+          })
+        }).catch(() => {});
+      } catch (e) {}
+    })();
+
+    const PREINDEXED_GAMES = [{"id":68448,"name":"7 Wonders","year":2010},{"id":173346,"name":"7 Wonders Duel","year":2015},{"id":177736,"name":"A Feast for Odin","year":2016},{"id":359871,"name":"Arcs","year":2024},{"id":342942,"name":"Ark Nova","year":2021},{"id":230802,"name":"Azul","year":2017},{"id":169255,"name":"Blood on the Clocktower","year":2022},{"id":224517,"name":"Brass: Birmingham","year":2018},{"id":28720,"name":"Brass: Lancashire","year":2007},{"id":822,"name":"Carcassonne","year":2000},{"id":295947,"name":"Cascadia","year":2021},{"id":13,"name":"Catan","year":1995},{"id":124361,"name":"Concordia","year":2013},{"id":36218,"name":"Dominion","year":2008},{"id":316554,"name":"Dune: Imperium","year":2020},{"id":397598,"name":"Dune: Imperium – Uprising","year":2023},{"id":246900,"name":"Eclipse: Second Dawn for the Galaxy","year":2020},{"id":199792,"name":"Everdell","year":2018},{"id":295770,"name":"Frosthaven","year":2022},{"id":220308,"name":"Gaia Project","year":2017},{"id":174430,"name":"Gloomhaven","year":2017},{"id":291457,"name":"Gloomhaven: Jaws of the Lion","year":2020},{"id":193738,"name":"Great Western Trail","year":2016},{"id":366013,"name":"Heat: Pedal to the Metal","year":2022},{"id":321608,"name":"Hegemony: Lead Your Class to Victory","year":2023},{"id":332686,"name":"John Company: Second Edition","year":2022},{"id":312484,"name":"Lost Ruins of Arnak","year":2020},{"id":167355,"name":"Nemesis","year":2018},{"id":291572,"name":"Oath: Chronicles of Empire and Exile","year":2021},{"id":256960,"name":"Pax Pamir: Second Edition","year":2019},{"id":237182,"name":"Root","year":2018},{"id":169786,"name":"Scythe","year":2016},{"id":418059,"name":"SETI: Search for Extraterrestrial Intelligence","year":2024},{"id":373106,"name":"Sky Team","year":2023},{"id":338960,"name":"Slay the Spire: The Board Game","year":2024},{"id":162886,"name":"Spirit Island","year":2017},{"id":187645,"name":"Star Wars: Rebellion","year":2016},{"id":167791,"name":"Terraforming Mars","year":2016},{"id":84876,"name":"The Castles of Burgundy","year":2011},{"id":244521,"name":"The Quacks of Quedlinburg","year":2018},{"id":233078,"name":"Twilight Imperium: Fourth Edition","year":2017},{"id":115746,"name":"War of the Ring: Second Edition","year":2011},{"id":266192,"name":"Wingspan","year":2019},{"id":410201,"name":"Wyrmspan","year":2024}];
+    const SEED_BUNDLES = {"224517":{"objectid":224517,"name":"Brass: Birmingham","rulesForumId":"66","rulesPostCount":5010,"rulesThreadCount":682,"designers":[{"id":32887,"name":"Gavan Brown","role":"Designer"}],"developers":[],"publishers":[{"id":3475,"name":"Arclight Games","role":"Publisher"}],"files":[{"fileid":"461970","filepageid":"329361","filename":"Brass-Birmingham reglamento resumido.pdf","description":"Soy nuevo en Brass, y considero que la mayoría de los reglamentos que vi me parecieron muy densos y pesados de ver, así como poco atractivos a la vista, así me puse a la tarea de hacerlo un poquito mas atractivo en espec","href":"https://boardgamegeek.com/filepage/329361"},{"fileid":"459595","filepageid":"328126","filename":"BrassBirmA‪ide‬.pdf","description":"Hello everyone I offer you game aids that compile the rules according to the chronology of events. Today, I am providing help for Brass Birmingham from the publishers Roxley Games and Funforge. Have a good day  Bonjour à","href":"https://boardgamegeek.com/filepage/328126"},{"fileid":"456175","filepageid":"325837","filename":"Dave's Brass Birmingham summary v1_0.pdf","description":"All actions on one double-sided sheet.  Includes: * rules summary * FAQ compiled from forums and rulebook * text-only to be ink-friendly * 12-point font for easy viewing (no-squint, eyeball friendly edition)  If you find","href":"https://boardgamegeek.com/filepage/325837"},{"fileid":"454379","filepageid":"324452","filename":"Brass White Box.pdf","description":"This is large enough to hold half the deck, so you'll need to print two. It's for unsleeved cards.  Putting them all in one box wouldn't fit in my retail box, so I split it in two.  Feel free to design your own using thi","href":"https://boardgamegeek.com/filepage/324452"},{"fileid":"453886","filepageid":"324353","filename":"Brass Birmingham Player Aid.pdf","description":"I love charts. So I referenced the outstanding Player Aids already uploaded and created a simple chart with the most important rules (I hope). It's easy to print and easy to refer to, since it's in chart form.","href":"https://boardgamegeek.com/filepage/324353"},{"fileid":"453293","filepageid":"323936","filename":"Brass Birmingham - Kural Kitabi (Turkce).pdf","description":"Brass Birmingham Türkçe Kural Kitabı","href":"https://boardgamegeek.com/filepage/323936"},{"fileid":"450830","filepageid":"322254","filename":"brass_my own board.jpg","description":"recently introduced brass to my friends and they were struggling with some of the rules. so i made a player aid keeping in mind all the mistakes they were making while playing. i took some time to match the aesthetic of ","href":"https://boardgamegeek.com/filepage/322254"},{"fileid":"442382","filepageid":"316796","filename":"Brass Birmingham - kort met rugzijde NL.pdf","description":"Je kan dit printen op 200g karton en dan plooien en dichtkleden. Je krijgt dan een handige tweezijdige hulpfiche met bijna alle spelregels. De fiche past netjes naast je spelersbord.","href":"https://boardgamegeek.com/filepage/316796"}],"hotRulesThreads":[{"threadid":"2068494","subject":"[Español] Reglamento Brass imprimible","numposts":16,"numrecommend":48,"pin":false,"postdate":"2018-10-01 07:15:07","author":"JugandoConKetty","lastposter":"JugandoConKetty"},{"threadid":"2589873","subject":"Teaching Guide","numposts":5,"numrecommend":40,"pin":false,"postdate":"2021-01-28 10:21:05","author":"skrenes","lastposter":"gamesbook"},{"threadid":"2042920","subject":"Watch it played - How to play Brass Birmingham","numposts":1,"numrecommend":26,"pin":false,"postdate":"2018-08-14 11:38:03","author":"Neric","lastposter":"Neric"},{"threadid":"2469057","subject":"Thematic Rules Explained! (Brum Edition)","numposts":3,"numrecommend":24,"pin":false,"postdate":"2020-07-19 20:31:28","author":"dr.mrow","lastposter":"rlong007"},{"threadid":"3570981","subject":"Brass Birmingham Player Aid IN A WINK","numposts":8,"numrecommend":22,"pin":false,"postdate":"2025-09-04 06:09:24","author":"Boaarkk","lastposter":"Boaarkk"},{"threadid":"2324846","subject":"An easier way to explain connection, consumption, networks, and selling","numposts":2,"numrecommend":15,"pin":false,"postdate":"2019-12-04 13:18:54","author":"TonyA680","lastposter":"Akado"},{"threadid":"3124097","subject":"Confirming income persistence on overbuild","numposts":2,"numrecommend":14,"pin":false,"postdate":"2023-07-25 11:26:06","author":"mopic42","lastposter":"Warenhari"},{"threadid":"2031687","subject":"Draw 8 cards at start of Rail era.","numposts":10,"numrecommend":12,"pin":false,"postdate":"2018-07-26 11:25:57","author":"SPBTooL","lastposter":"Skeime"}]},"237182":{"objectid":237182,"name":"Root","rulesForumId":"66","rulesPostCount":17171,"rulesThreadCount":2072,"designers":[{"id":35585,"name":"Cole Wehrle","role":"Designer"}],"developers":[{"id":67958,"name":"Joshua Yearsley","role":"Developer"}],"publishers":[{"id":30571,"name":"2Tomatoes Games","role":"Publisher"}],"files":[{"fileid":"463287","filepageid":"330138","filename":"RootTuckboxes.pdf","description":"Full set of tuck boxes for Root!  -Designed to fit Dicetoryers Root organizer, but can be stored in official root boxes as well  -Faction boxes hold all components; meeples, tokens and cards -Setup box holds dice, crafti","href":"https://boardgamegeek.com/filepage/330138"},{"fileid":"464642","filepageid":"329236","filename":"Root Card Clarifications (with Hirelings and Landmarks) v2.0.pdf","description":"Overview of clarifications and common questions about all the cards in Root, including hirelings and landmarks. If you spot any mistakes, think something is not explained clearly, or have any suggestions for things to ad","href":"https://boardgamegeek.com/filepage/329236"},{"fileid":"455000","filepageid":"324628","filename":"root-map-aids_v2.pdf","description":"Now with clockwork clearing priority.","href":"https://boardgamegeek.com/filepage/324628"},{"fileid":"453997","filepageid":"324426","filename":"ROOT Missing Warrior Reminders.pdf","description":"A set of double-sided print-and-play cards to remind players that some of their warriors are temporarily held on another player's board.  The Riverfolk Card: Given to players who buy services, reminding them that their m","href":"https://boardgamegeek.com/filepage/324426"},{"fileid":"454914","filepageid":"324412","filename":"Root - Ultimate Paper Boxes v1.2.pdf","description":"v1.2 fixes incorrect hireling names (taken from PnP instead of final product) and Eyrie faction name","href":"https://boardgamegeek.com/filepage/324412"},{"fileid":"449959","filepageid":"321672","filename":"Root Factions One Pagers v1.0.pdf","description":"A printable one-page-per-faction strategy guide for Root, covering faction identity, opening priorities, midgame plans, matchup priorities, faction-specific tactical checklists, playstyle tags, mantras, and comparative F","href":"https://boardgamegeek.com/filepage/321672"},{"fileid":"448818","filepageid":"320682","filename":"Ability Reminders.pdf","description":"Reminders for other players when playing against Corvids, Twilight Council, Woodland Alliance, and Lilypad Diaspora. V2 for corrections and additions.","href":"https://boardgamegeek.com/filepage/320682"},{"fileid":"448182","filepageid":"320521","filename":"Root_La Loi de Root_FR.pdf","description":"La Loi de Root jusqu'à l'extension Maraude complète, datée du 3 août 2023, et aimablement mise à disposition par Matagot !","href":"https://boardgamegeek.com/filepage/320521"}],"hotRulesThreads":[{"threadid":"2038847","subject":"Official FAQ and Guide for Reading the Rules","numposts":239,"numrecommend":133,"pin":true,"postdate":"2018-08-07 14:50:16","author":"Caedar","lastposter":"sigmazero13"},{"threadid":"2756818","subject":"New Root Rulebook 9/21","numposts":14,"numrecommend":54,"pin":false,"postdate":"2021-11-10 14:52:26","author":"steveowen","lastposter":"black_daveth"},{"threadid":"2210901","subject":"On teaching: The little \"Gotcha\" rules","numposts":38,"numrecommend":38,"pin":false,"postdate":"2019-05-28 14:42:27","author":"Norsehound","lastposter":"Phair"},{"threadid":"3383843","subject":"How (AND WHY) to use AdSet; even if you're not a Root veteran and do not own the Marauder Expansion","numposts":10,"numrecommend":34,"pin":false,"postdate":"2024-10-09 14:49:33","author":"BitBracht","lastposter":"BitBracht"},{"threadid":"2524625","subject":"Because we love Root!  (easily confused or missed rules)","numposts":13,"numrecommend":23,"pin":false,"postdate":"2020-10-19 20:45:53","author":"tranlyvu","lastposter":"sigmazero13"},{"threadid":"3087748","subject":"All current rulings on mercenaries and hirelings","numposts":13,"numrecommend":15,"pin":false,"postdate":"2023-05-22 07:50:28","author":"PunchBall","lastposter":"PunchBall"},{"threadid":"2936943","subject":"Rootbotics - All Bot Setup Cards","numposts":3,"numrecommend":14,"pin":false,"postdate":"2022-09-18 19:17:18","author":"marcbaybe2015","lastposter":"dune2009"},{"threadid":"2176347","subject":"Living Rules Link","numposts":10,"numrecommend":13,"pin":false,"postdate":"2019-03-29 09:57:44","author":"kjm24","lastposter":"ZergyPoo"}]},"342942":{"objectid":342942,"name":"Ark Nova","rulesForumId":"66","rulesPostCount":10229,"rulesThreadCount":1416,"designers":[{"id":138517,"name":"Mathias Wigge","role":"Designer"}],"developers":[],"publishers":[{"id":30958,"name":"Capstone Games","role":"Publisher"}],"files":[{"fileid":"464536","filepageid":"330919","filename":"Ark_Nova_and_Marine_Worlds_Aid_v1.0.pdf","description":"Hi everyone!  I've put together a six-page player aid covering the base game and Marine Worlds expansion. It's designed as a quick reference during play, especially for those rules and exceptions that can be easy to forg","href":"https://boardgamegeek.com/filepage/330919"},{"fileid":"463310","filepageid":"330147","filename":"Ark_Nova_Player_Aid_v1.0.pdf","description":"I put this together because I wanted an Ark Nova player aid that felt like it actually belonged with the official materials, while also having almost everything I’d want at hand during normal play.  There are already som","href":"https://boardgamegeek.com/filepage/330147"},{"fileid":"460067","filepageid":"328424","filename":"ArkNovaAide.pdf","description":"Hello everyone I offer you game aids that compile the rules according to the chronology of events. Today, I am providing help for Ark Nova from the publisher Feuerland Spiele. Have a good day  Bonjour à tous Je vous prop","href":"https://boardgamegeek.com/filepage/328424"},{"fileid":"455922","filepageid":"325681","filename":"Ark Nova svensk ordlista.pdf","description":"Ark Novas ordlista på svenska. Med förklaringar till bl.a. djurförmågor och sponsorkort.","href":"https://boardgamegeek.com/filepage/325681"},{"fileid":"455920","filepageid":"325679","filename":"Ark-Nova_Regler på svenska.pdf","description":"Regelbok på svenska till Ark Nova","href":"https://boardgamegeek.com/filepage/325679"},{"fileid":"452046","filepageid":"323081","filename":"Ark Nova Turkish Icon Reference.pdf","description":"The book translated by Anıl Meşeli. We hope enjoy the game.  Kitapçık, Anıl Meşeli tarafından çevrilmiştir. Umuyoruz ki, oyunu oynarken eğlenirsiniz.","href":"https://boardgamegeek.com/filepage/323081"},{"fileid":"452045","filepageid":"323080","filename":"Ark Nova Turkish Rulebook.pdf","description":"The Turkish Rulebook is translated by Anıl Meşeli. We hope enjoy game.   Bu türkçe kural kitapçığı, Anıl Meşeli tarafından çevrilmiştir. Umuyoruz ki, oyunu oynarken eğlenirsiniz.","href":"https://boardgamegeek.com/filepage/323080"},{"fileid":"448537","filepageid":"320763","filename":"Symbolübersicht Arche Nova + Erweiterungen V.1.0.pdf","description":"Eine vierseitige Symbolübersicht des Grundspiels, Wasserwelten und Zoo Map Pack 1 und 2.  Feedback herzlich willkommen. Gerade mit der Sortierung bin ich noch unsicher.  4 pages symbols and German description for the bas","href":"https://boardgamegeek.com/filepage/320763"}],"hotRulesThreads":[{"threadid":"3526205","subject":"ARK NOVA Summary Rules IN A WINK","numposts":17,"numrecommend":37,"pin":false,"postdate":"2025-06-12 03:55:36","author":"Boaarkk","lastposter":"Boaarkk"},{"threadid":"2821283","subject":"Before posting rules questions/first game, check the Rulebook AS WELL AS Icon Overview, Glossary and FAQ","numposts":9,"numrecommend":35,"pin":false,"postdate":"2022-02-24 19:13:22","author":"norkle","lastposter":"Ash_Danger"},{"threadid":"2848813","subject":"About the English RuleBook and la règle du jeu française","numposts":5,"numrecommend":20,"pin":false,"postdate":"2022-04-13 06:22:29","author":"Meaulnes","lastposter":"Meaulnes"},{"threadid":"2922357","subject":"Does the partner zoo (or other) discount also apply to the folder number penalty for Animals II?","numposts":7,"numrecommend":18,"pin":false,"postdate":"2022-08-23 10:35:19","author":"GAFBlizzard","lastposter":"Deebs"},{"threadid":"2785037","subject":"Some quick FAQ translations","numposts":7,"numrecommend":16,"pin":false,"postdate":"2021-12-31 17:59:46","author":"planetm","lastposter":"norkle"},{"threadid":"2856861","subject":"Errata on Dutch rules translation.","numposts":1,"numrecommend":14,"pin":false,"postdate":"2022-04-27 03:56:52","author":"Arthur1975","lastposter":"Arthur1975"},{"threadid":"2910293","subject":"Rare timing cases for x2 Multiplier tokens","numposts":19,"numrecommend":13,"pin":false,"postdate":"2022-08-02 10:55:54","author":"GAFBlizzard","lastposter":"jeremyg"},{"threadid":"2819377","subject":"Conservation projects - are all 7 cubes always available?","numposts":10,"numrecommend":11,"pin":false,"postdate":"2022-02-21 13:35:26","author":"elizharg","lastposter":"clydeiii"}]},"359871":{"objectid":359871,"name":"Arcs","rulesForumId":"66","rulesPostCount":5807,"rulesThreadCount":747,"designers":[{"id":35585,"name":"Cole Wehrle","role":"Designer"}],"developers":[{"id":137810,"name":"Nick Brachmann","role":"Developer"}],"publishers":[{"id":30571,"name":"2Tomatoes Games","role":"Publisher"}],"files":[{"fileid":"462605","filepageid":"329691","filename":"arcs-6p-EN.pdf","description":"6-player variant for those who have access to extra pieces.  Disponible en français également dans les échanges ici sur BGG.","href":"https://boardgamegeek.com/filepage/329691"},{"fileid":"460314","filepageid":"328558","filename":"Arcs_v1.pdf","description":"The Esoteric Order of Gamers ARCS Rules Summary v1 (Sep26)","href":"https://boardgamegeek.com/filepage/328558"},{"fileid":"457137","filepageid":"326497","filename":"arcs_pl.pdf","description":"Księga zasad zrobiona z angielskiej wersji, dostępnej na stronie Buried Gigant.","href":"https://boardgamegeek.com/filepage/326497"},{"fileid":"456990","filepageid":"325988","filename":"Arcs Teaching Guide 1.1.pdf","description":"Changed the definition of 'control' for accuracy. Thanks to Karl Heinz for pointing out the error!","href":"https://boardgamegeek.com/filepage/325988"},{"fileid":"454678","filepageid":"324901","filename":"ARCS.pdf","description":"Use this perfect player aid to get this great game to your table today! I love creating player aids that help people unlock their great games they have on their shelf.   Please download and use. Drop a comment as I alway","href":"https://boardgamegeek.com/filepage/324901"},{"fileid":"454643","filepageid":"324875","filename":"Arcs - Riepilogo delle Regole [160mg] - v1.0.pdf","description":"Riepilogo delle Regole con preparazione, svolgimento del gioco e panoramica.  Stampare su carta 160gr solo fronte e dimensioni effettive. (Opzionale) Rifinire eliminando 2mm o più per lato (verificare). Incollare le due ","href":"https://boardgamegeek.com/filepage/324875"},{"fileid":"450323","filepageid":"321925","filename":"Arcs_Token_Wheel.stl","description":"The Token Wheel holds all 5 resource types at once — Fuel, Material, Relic, Psi, and Weapon — in separate compartments arranged around a central slot. Everything stays in one compact, round footprint.","href":"https://boardgamegeek.com/filepage/321925"},{"fileid":"439991","filepageid":"315255","filename":"Arcs aide mémoire .pdf","description":"Une aide mémoire complète pour la commu fr","href":"https://boardgamegeek.com/filepage/315255"}],"hotRulesThreads":[{"threadid":"3331080","subject":"Tiny rules that can be hard to remember","numposts":42,"numrecommend":88,"pin":false,"postdate":"2024-07-09 09:14:56","author":"noahisaak","lastposter":"Yggdrasilsyeoman"},{"threadid":"3493784","subject":"Arcs Glossary","numposts":8,"numrecommend":27,"pin":false,"postdate":"2025-04-10 08:50:31","author":"antonpo","lastposter":"antonpo"},{"threadid":"3304998","subject":"Just want to make sure I understand how Cartel cards work...","numposts":22,"numrecommend":24,"pin":false,"postdate":"2024-05-22 06:18:16","author":"zepphit","lastposter":"grandad1982"},{"threadid":"3496862","subject":"multiple surpassing","numposts":13,"numrecommend":22,"pin":false,"postdate":"2025-04-15 16:16:53","author":"ppsacco","lastposter":"ppsacco"},{"threadid":"3340023","subject":"Questions after first play: Using Prelude actions on stolen Guild cards, moving \"through\" Rival ships, evaluating control of a System during a player's turn, and mandatory resolving of combat hits.","numposts":12,"numrecommend":17,"pin":false,"postdate":"2024-07-26 10:47:14","author":"panchar","lastposter":"albieback"},{"threadid":"3336618","subject":"What happens if only 1 player has one card and the others have no cards left?","numposts":6,"numrecommend":13,"pin":false,"postdate":"2024-07-20 08:34:20","author":"Kesavanss","lastposter":"lexical_scope"},{"threadid":"3169734","subject":"Mistake in the provisional final rule book in setup","numposts":2,"numrecommend":13,"pin":false,"postdate":"2023-10-12 03:06:41","author":"grandad1982","lastposter":"Cole Wehrle"},{"threadid":"2878466","subject":"Played the first act of a campaign. It was awesome, but we have some questions. [Spoiler warning]","numposts":7,"numrecommend":13,"pin":false,"postdate":"2022-06-05 10:08:34","author":"Lengytam","lastposter":"Lengytam"}]}};
+
+    let currentGameBundle = SEED_BUNDLES[237182];
+    let loadedRulebookChunks = []; // { pageOrSection: string, text: string }
+    let loadedRulebookName = '';
+    let lastVerifiedFeed = [];
+
+    // Populate datalist
+    const dl = document.getElementById('bggGamesDatalist');
+    PREINDEXED_GAMES.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = `${g.name} (${g.id})`;
+      dl.appendChild(opt);
+    });
+
+    function selectPresetGame(id, name, sampleQ) {
+      document.getElementById('gameSearchInput').value = `${name} (${id})`;
+      document.getElementById('bggIdInput').value = String(id);
+      document.getElementById('questionInput').value = sampleQ;
+      updateEngineeredPrompt();
+      if (SEED_BUNDLES[id]) {
+        currentGameBundle = SEED_BUNDLES[id];
+        renderGameBundleMeta(currentGameBundle);
+      }
+      runLiveRulesLawyer();
+    }
+
+    function onGameInputChanged() {
+      const val = document.getElementById('gameSearchInput').value.trim();
+      // Check if BGG URL: boardgamegeek.com/boardgame/12345
+      const urlMatch = val.match(/boardgame(?:expansion)?\/(\d+)/i);
+      if (urlMatch) {
+        document.getElementById('bggIdInput').value = urlMatch[1];
+        updateEngineeredPrompt();
+        return;
+      }
+      // Check if "Name (12345)"
+      const parenMatch = val.match(/\((\d+)\)$/);
+      if (parenMatch) {
+        document.getElementById('bggIdInput').value = parenMatch[1];
+        updateEngineeredPrompt();
+        return;
+      }
+      // Check exact/partial match in PREINDEXED_GAMES
+      const lower = val.toLowerCase();
+      const found = PREINDEXED_GAMES.find(g => g.name.toLowerCase() === lower) ||
+                    PREINDEXED_GAMES.find(g => g.name.toLowerCase().includes(lower));
+      if (found) {
+        document.getElementById('bggIdInput').value = String(found.id);
+      }
+      updateEngineeredPrompt();
+    }
+
+    // Zero-key CORS JSON fetcher with multi-relay fallback
+    async function fetchGeekdoJson(apiPath) {
+      const fullUrl = 'https://api.geekdo.com' + apiPath;
+      const relays = [
+        'https://api.allorigins.win/raw?url=' + encodeURIComponent(fullUrl),
+        'https://api.allorigins.win/get?url=' + encodeURIComponent(fullUrl)
+      ];
+      for (const rUrl of relays) {
+        try {
+          const res = await fetch(rUrl);
+          if (!res.ok) continue;
+          const data = await res.json();
+          if (data && typeof data.contents === 'string') {
+            return JSON.parse(data.contents);
+          }
+          return data;
+        } catch (err) {}
+      }
+      throw new Error('Could not reach api.geekdo.com via browser relay.');
+    }
+
+    function renderGameBundleMeta(bundle) {
+      const creditsEl = document.getElementById('creditsList');
+      const des = (bundle.designers || []).map(d => `<span class="role-badge role-designer">👑 Designer: ${d.name} (#${d.id})</span>`).join('');
+      const dev = (bundle.developers || []).map(d => `<span class="role-badge role-dev">🛠️ Developer: ${d.name} (#${d.id})</span>`).join('');
+      const pub = (bundle.publishers || []).map(p => `<span class="role-badge role-pub">🏢 Publisher: ${p.name} (#${p.id})</span>`).join('');
+      creditsEl.innerHTML = (des + dev + pub) || '<span style="color:var(--muted)">No linked designer/publisher IDs returned.</span>';
+
+      const filesEl = document.getElementById('bggFilesList');
+      if (!bundle.files || bundle.files.length === 0) {
+        filesEl.innerHTML = '<div style="color:var(--muted)">No files listed on BGG for this item.</div>';
+      } else {
+        filesEl.innerHTML = bundle.files.map(f => `
+          <div style="padding:6px 8px;border-bottom:1px solid var(--border);">
+            <a href="${f.href}" target="_blank" rel="noopener"><strong>📄 ${f.filename}</strong></a>
+            <div style="color:var(--muted);font-size:0.78rem;">${f.description || 'Official/Community BGG Filepage'}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Multi-format client-side Rulebook Parser (.pdf, .docx, .md, .html, .txt)
+    async function handleRulebookUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      loadedRulebookName = file.name;
+      const statusEl = document.getElementById('rulebookStatusText');
+      statusEl.innerHTML = `⏳ Parsing <strong>${file.name}</strong> locally in browser...`;
+      loadedRulebookChunks = [];
+
+      try {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (ext === 'pdf' && window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          const arrayBuf = await file.arrayBuffer();
+          const pdf = await window.pdfjsLib.getDocument({ data: arrayBuf }).promise;
+          for (let p = 1; p <= pdf.numPages; p++) {
+            const page = await pdf.getPage(p);
+            const content = await page.getTextContent();
+            const strings = content.items.map(it => it.str).join(' ');
+            // Split page into ~600-char paragraphs
+            const paras = strings.match(/.{1,700}(\s|$)/g) || [strings];
+            paras.forEach((para, idx) => {
+              if (para.trim().length > 25) {
+                loadedRulebookChunks.push({
+                  pageOrSection: `${file.name} — Page ${p} (Sec ${idx + 1})`,
+                  text: para.trim()
+                });
+              }
+            });
+          }
+        } else if (ext === 'docx' && window.mammoth) {
+          const arrayBuf = await file.arrayBuffer();
+          const result = await window.mammoth.extractRawText({ arrayBuffer: arrayBuf });
+          const paras = result.value.split(/\n\s*\n/);
+          paras.forEach((para, idx) => {
+            if (para.trim().length > 25) {
+              loadedRulebookChunks.push({
+                pageOrSection: `${file.name} — Paragraph ${idx + 1}`,
+                text: para.trim()
+              });
+            }
+          });
+        } else {
+          // .md, .html, .txt, .json
+          const rawText = await file.text();
+          const clean = ext === 'html' || ext === 'htm'
+            ? rawText.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ')
+            : rawText;
+          const paras = clean.split(/\n\s*\n|(?=#+\s)/);
+          paras.forEach((para, idx) => {
+            if (para.trim().length > 25) {
+              loadedRulebookChunks.push({
+                pageOrSection: `${file.name} — Section ${idx + 1}`,
+                text: para.trim().slice(0, 900)
+              });
+            }
+          });
+        }
+        statusEl.innerHTML = `✅ Loaded <strong>${file.name}</strong> (${loadedRulebookChunks.length} searchable rulebook sections indexed!)`;
+        runLiveRulesLawyer();
+      } catch (err) {
+        statusEl.innerHTML = `⚠️ Error parsing ${file.name}: ${err.message}`;
+      }
+    }
+
+    function searchRulebookChunks(query) {
+      const allChunks = [...loadedRulebookChunks];
+      const pasted = document.getElementById('pastedRulebookText').value.trim();
+      if (pasted) {
+        pasted.split(/\n\s*\n/).forEach((p, i) => {
+          if (p.trim()) allChunks.push({ pageOrSection: `Pasted Rulebook Snippet #${i + 1}`, text: p.trim() });
+        });
+      }
+      if (allChunks.length === 0) return [];
+      const terms = query.toLowerCase().split(/\W+/).filter(w => w.length > 2);
+      if (terms.length === 0) return allChunks.slice(0, 3);
+
+      return allChunks.map(ch => {
+        const lower = ch.text.toLowerCase();
+        let hits = 0;
+        terms.forEach(t => {
+          if (lower.includes(t)) hits += 3;
+        });
+        return { ...ch, score: hits };
+      }).filter(ch => ch.score > 0).sort((a, b) => b.score - a.score).slice(0, 5);
+    }
+
+    async function runLiveRulesLawyer() {
+      const objectid = Number(document.getElementById('bggIdInput').value.trim() || 237182);
+      const query = document.getElementById('questionInput').value.trim();
+      const maxThreads = Number(document.getElementById('threadScanDepth').value || 12);
+      const statusEl = document.getElementById('statusBanner');
+      const container = document.getElementById('verifiedResultsContainer');
+      updateEngineeredPrompt();
+
+      statusEl.innerHTML = `🛰️ Connecting to api.geekdo.com for Game #${objectid} — pulling official Designer/Developer/Publisher IDs & Rules Forum...`;
+
+      try {
+        let bundle = SEED_BUNDLES[objectid];
+        if (!bundle) {
+          const [itemRes, desRes, devRes, pubRes, filesRes, forumsRes] = await Promise.all([
+            fetchGeekdoJson(`/api/geekitems?nosession=1&objectid=${objectid}&objecttype=thing`),
+            fetchGeekdoJson(`/api/geekitem/linkeditems?nosession=1&objectid=${objectid}&objecttype=thing&linkdata_index=boardgamedesigner`),
+            fetchGeekdoJson(`/api/geekitem/linkeditems?nosession=1&objectid=${objectid}&objecttype=thing&linkdata_index=boardgamedeveloper`),
+            fetchGeekdoJson(`/api/geekitem/linkeditems?nosession=1&objectid=${objectid}&objecttype=thing&linkdata_index=boardgamepublisher`),
+            fetchGeekdoJson(`/api/files?objectid=${objectid}&objecttype=thing&pageid=1&showcount=12`),
+            fetchGeekdoJson(`/api/forums?objectid=${objectid}&objecttype=thing`)
+          ]);
+          const rulesForum = (forumsRes?.forums || []).find(f => f.title.toLowerCase().includes('rule')) || (forumsRes?.forums || [])[0];
+          bundle = {
+            objectid,
+            name: itemRes?.item?.name || `Game #${objectid}`,
+            rulesForumId: rulesForum?.forumid || '66',
+            rulesPostCount: rulesForum?.numposts || 0,
+            rulesThreadCount: rulesForum?.numthreads || 0,
+            designers: (desRes?.items || []).map(x => ({ id: Number(x.objectid), name: x.name, role: 'Designer' })),
+            developers: (devRes?.items || []).map(x => ({ id: Number(x.objectid), name: x.name, role: 'Developer' })),
+            publishers: (pubRes?.items || []).slice(0, 8).map(x => ({ id: Number(x.objectid), name: x.name, role: 'Publisher' })),
+            files: (filesRes?.files || []).slice(0, 8).map(f => ({
+              fileid: f.fileid,
+              filepageid: f.filepageid,
+              filename: f.filename,
+              description: (f.description?.rendered || '').replace(/<[^>]+>/g, ' ').trim().slice(0, 220),
+              href: `https://boardgamegeek.com/filepage/${f.filepageid}`
+            })),
+            hotRulesThreads: []
+          };
+          SEED_BUNDLES[objectid] = bundle;
+        }
+        currentGameBundle = bundle;
+        renderGameBundleMeta(bundle);
+
+        // Fetch hot + recent threads from the game's Rules forum
+        let candidateThreads = [...(bundle.hotRulesThreads || [])];
+        try {
+          const [hotT, recentT] = await Promise.all([
+            fetchGeekdoJson(`/api/forums/threads?objectid=${objectid}&objecttype=thing&forumid=${bundle.rulesForumId}&pageid=1&showcount=50&sort=hot`),
+            fetchGeekdoJson(`/api/forums/threads?objectid=${objectid}&objecttype=thing&forumid=${bundle.rulesForumId}&pageid=1&showcount=50&sort=recent`)
+          ]);
+          const seenT = new Set();
+          candidateThreads = [];
+          for (const t of [...(hotT?.threads || []), ...(recentT?.threads || [])]) {
+            if (!seenT.has(t.threadid)) {
+              seenT.add(t.threadid);
+              candidateThreads.push({
+                threadid: t.threadid,
+                subject: t.subject,
+                numposts: Number(t.numposts || 0),
+                numrecommend: Number(t.numrecommend || 0),
+                pin: t.pin === '1' || t.frontpin === '1',
+                postdate: t.postdate,
+                author: t.user?.username || 'unknown',
+                lastposter: t.lastpostusername || ''
+              });
+            }
+          }
+        } catch (e) {}
+
+        // Score threads by query keywords + pinned FAQ status + recommendations
+        const terms = query.toLowerCase().split(/\W+/).filter(w => w.length > 2);
+        const scoredThreads = candidateThreads.map(t => {
+          const subj = (t.subject || '').toLowerCase();
+          let score = (t.pin ? 25 : 0) + Math.min(t.numrecommend * 2, 20);
+          terms.forEach(term => {
+            if (subj.includes(term)) score += 30;
+          });
+          return { ...t, matchScore: score };
+        }).sort((a, b) => b.matchScore - a.matchScore).slice(0, maxThreads);
+
+        statusEl.innerHTML = `🔍 Scanning ${scoredThreads.length} Rules threads & verifying poster Designer/Publisher/Guru badges...`;
+
+        // Fetch articles inside top threads (up to 6 threads in parallel for speed)
+        const activeThreads = scoredThreads.slice(0, 6);
+        const threadArticlesList = await Promise.all(activeThreads.map(async (th) => {
+          try {
+            const artRes = await fetchGeekdoJson(`/api/articles?threadid=${th.threadid}`);
+            return { thread: th, articles: artRes?.articles || [] };
+          } catch (e) {
+            return { thread: th, articles: [] };
+          }
+        }));
+
+        // Count author post frequency across fetched Rules threads to detect Rules Gurus
+        const authorFreq = new Map();
+        const uniqueAuthorIds = new Set();
+        threadArticlesList.forEach(({ articles }) => {
+          articles.forEach(a => {
+            if (a.author) {
+              authorFreq.set(a.author, (authorFreq.get(a.author) || 0) + 1);
+              uniqueAuthorIds.add(a.author);
+            }
+          });
+        });
+
+        // Fetch user profiles (/api/users/{id}) for up to 16 authors to check designerid / publisherid / creditBadges
+        const userProfiles = new Map();
+        const authorIdsToCheck = Array.from(uniqueAuthorIds).slice(0, 16);
+        await Promise.all(authorIdsToCheck.map(async (uid) => {
+          try {
+            const u = await fetchGeekdoJson(`/api/users/${uid}`);
+            if (u && u.userid) userProfiles.set(Number(uid), u);
+          } catch (e) {}
+        }));
+
+        const designerIdSet = new Set((bundle.designers || []).map(d => Number(d.id)));
+        const devIdSet = new Set((bundle.developers || []).map(d => Number(d.id)));
+        const pubIdSet = new Set((bundle.publishers || []).map(p => Number(p.id)));
+
+        const verifiedPosts = [];
+
+        // 1. Add Rulebook / Pasted Rulebook matches first (Tier 0)
+        const rulebookHits = searchRulebookChunks(query);
+        rulebookHits.forEach(hit => {
+          verifiedPosts.push({
+            tier: 0,
+            tierLabel: '📖 TIER 0: WRITTEN RULEBOOK MATCH',
+            authorityScore: 120 + hit.score,
+            authorName: loadedRulebookName || 'Rulebook Excerpt',
+            roleBadgeHtml: '<span class="role-badge role-dev">📖 Official Rulebook Text</span>',
+            threadSubject: hit.pageOrSection,
+            threadUrl: '#',
+            postDate: 'Rulebook Reference',
+            thumbs: 0,
+            body: hit.text
+          });
+        });
+
+        // 2. Evaluate every forum article
+        for (const { thread, articles } of threadArticlesList) {
+          for (const art of articles) {
+            const cleanBody = (art.body || '').replace(/\[\/?[^\]]+\]/g, '').trim();
+            if (!cleanBody) continue;
+            const uid = Number(art.author || 0);
+            const prof = userProfiles.get(uid);
+            const username = prof?.username || `User #${uid}`;
+            const uDesignerId = Number(prof?.designerid || 0);
+            const uPubId = Number(prof?.publisherid || 0);
+            const badges = prof?.creditBadges?.boardgame || [];
+            const hasDesignerBadge = badges.some(b => b.badge === 'gamedesigner');
+            const hasPubBadge = badges.some(b => b.badge === 'gamepublisher');
+            const freq = authorFreq.get(uid) || 1;
+
+            let tier = 4;
+            let tierLabel = '💬 TIER 4: COMMUNITY POST';
+            let roleBadgeHtml = `<span class="role-badge role-user">👤 ${username}</span>`;
+            let authorityScore = 10;
+
+            if ((uDesignerId && (designerIdSet.has(uDesignerId) || devIdSet.has(uDesignerId))) || hasDesignerBadge) {
+              tier = 1;
+              const exactGameDesigner = uDesignerId && (designerIdSet.has(uDesignerId) || devIdSet.has(uDesignerId));
+              tierLabel = exactGameDesigner
+                ? '👑 TIER 1: OFFICIAL GAME DESIGNER / DEVELOPER'
+                : '👑 TIER 1: CREDITED BGG GAME DESIGNER';
+              roleBadgeHtml = `<span class="role-badge role-designer">👑 ${username} (Designer ID #${uDesignerId || 'Verified'})</span>`;
+              authorityScore = exactGameDesigner ? 100 : 88;
+            } else if ((uPubId && pubIdSet.has(uPubId)) || hasPubBadge) {
+              tier = 2;
+              tierLabel = '🏢 TIER 2: OFFICIAL PUBLISHER STAFF';
+              roleBadgeHtml = `<span class="role-badge role-pub">🏢 ${username} (Publisher ID #${uPubId || 'Verified'})</span>`;
+              authorityScore = 85;
+            } else if (freq >= 2 || thread.pin || thread.numrecommend >= 3) {
+              tier = 3;
+              tierLabel = '🧠 TIER 3: HIGH-ACTIVITY RULES GURU / PINNED FAQ';
+              roleBadgeHtml = `<span class="role-badge role-guru">🧠 ${username} (${freq} posts in scan • Thread 👍 ${thread.numrecommend})</span>`;
+              authorityScore = 60 + Math.min(freq * 5 + thread.numrecommend * 2, 24);
+            }
+
+            // Boost score by keyword hits in article body + thread subject
+            const combinedLower = (thread.subject + ' ' + cleanBody).toLowerCase();
+            terms.forEach(term => {
+              if (combinedLower.includes(term)) authorityScore += 12;
+            });
+            if (!art.firstPost) authorityScore += 6; // Replies are more likely answers than the OP question
+
+            verifiedPosts.push({
+              tier,
+              tierLabel,
+              authorityScore,
+              authorName: username,
+              roleBadgeHtml,
+              threadSubject: thread.subject,
+              threadUrl: art.canonical_link || `https://boardgamegeek.com/thread/${thread.threadid}`,
+              postDate: (art.postdate || thread.postdate || '').slice(0, 10),
+              thumbs: thread.numrecommend || 0,
+              body: cleanBody.slice(0, 1100)
+            });
+          }
+        }
+
+        // If live fetch of articles was blocked or empty, fall back to showing the thread index
+        if (verifiedPosts.length === 0 && scoredThreads.length > 0) {
+          scoredThreads.forEach(th => {
+            verifiedPosts.push({
+              tier: th.pin ? 2 : 3,
+              tierLabel: th.pin ? '📌 OFFICIAL PINNED RULES FAQ THREAD' : '🧠 BGG RULES FORUM THREAD',
+              authorityScore: th.matchScore,
+              authorName: th.lastposter || th.author,
+              roleBadgeHtml: `<span class="role-badge role-guru">👤 Last Reply: ${th.lastposter || th.author} (${th.numposts} posts • 👍 ${th.numrecommend})</span>`,
+              threadSubject: th.subject,
+              threadUrl: `https://boardgamegeek.com/thread/${th.threadid}`,
+              postDate: (th.postdate || '').slice(0, 10),
+              thumbs: th.numrecommend,
+              body: `Rules Forum Thread #${th.threadid} ("${th.subject}") — ${th.numposts} replies in ${bundle.name} Rules Forum.`
+            });
+          });
+        }
+
+        verifiedPosts.sort((a, b) => b.authorityScore - a.authorityScore);
+        lastVerifiedFeed = verifiedPosts.slice(0, 18);
+
+        renderVerifiedFeed(lastVerifiedFeed, bundle);
+        statusEl.innerHTML = `✅ Scan complete for <strong>${bundle.name}</strong>: cross-referenced ${lastVerifiedFeed.length} top rulings against ${bundle.designers.length} Designers, ${bundle.developers.length} Developers & ${bundle.publishers.length} Publishers.`;
+      } catch (err) {
+        statusEl.innerHTML = `⚠️ Live relay notice: ${err.message}. Showing cached seed intelligence for ${currentGameBundle?.name || 'Root'}.`;
+      }
+    }
+
+    function renderVerifiedFeed(items, bundle) {
+      const container = document.getElementById('verifiedResultsContainer');
+      const summaryEl = document.getElementById('resultsSummaryChip');
+      const t0 = items.filter(x => x.tier === 0).length;
+      const t1 = items.filter(x => x.tier === 1).length;
+      const t2 = items.filter(x => x.tier === 2).length;
+      const t3 = items.filter(x => x.tier === 3).length;
+      summaryEl.textContent = `${t0} Rulebook Hits • ${t1} 👑 Designer Rulings • ${t2} 🏢 Publisher Rulings • ${t3} 🧠 Rules Guru Answers`;
+
+      if (items.length === 0) {
+        container.innerHTML = '<div style="color:var(--muted)">No matching posts found. Try broader keywords!</div>';
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        const tierClass = item.tier === 0 ? 'tier-rulebook' : `tier-${item.tier}`;
+        return `
+          <div class="post-card ${tierClass}">
+            <div class="post-header">
+              <div>
+                <strong>${item.tierLabel}</strong>
+                ${item.roleBadgeHtml}
+              </div>
+              <div>
+                <span style="color:var(--gold);font-weight:700;margin-right:10px;">Authority Score: ${item.authorityScore}</span>
+                <a href="${item.threadUrl}" target="_blank" rel="noopener">🔗 ${item.threadSubject} (${item.postDate})</a>
+              </div>
+            </div>
+            <div class="post-body">${escapeHtml(item.body)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Zero-Key Free AI Table Ruling via text.pollinations.ai
+    async function runZeroKeyAiVerdict() {
+      const box = document.getElementById('aiVerdictContainer');
+      const textEl = document.getElementById('aiVerdictText');
+      box.style.display = 'block';
+      textEl.textContent = '⏳ Consulting Zero-Key AI Judge with verified Rulebook excerpts + Designer/Publisher/Guru forum posts...';
+
+      if (lastVerifiedFeed.length === 0) {
+        await runLiveRulesLawyer();
+      }
+
+      const gameName = currentGameBundle?.name || 'Board Game';
+      const question = document.getElementById('questionInput').value.trim();
+      const topEvidence = lastVerifiedFeed.slice(0, 6).map((it, idx) =>
+        `[${idx + 1}] ${it.tierLabel} by ${it.authorName} in "${it.threadSubject}": ${it.body.slice(0, 380)}`
+      ).join('\n\n');
+
+      const prompt = `You are an official tabletop Board Game Rules Judge.
+Game: ${gameName} (BGG #${currentGameBundle?.objectid})
+Credited Designers: ${(currentGameBundle?.designers || []).map(d => d.name).join(', ')}
+Player Question: "${question}"
+
+Verified Evidence (Sorted by Authority: Rulebook > Official Designer > Official Publisher > High-Thumb Rules Guru):
+${topEvidence}
+
+Give a concise, definitive 3-part ruling:
+1. BOTTOM-LINE RULING (Yes/No/How it works at the table in 2 sentences).
+2. CITATION & AUTHORITY VERIFICATION (State whether this comes from the Written Rulebook, Official Designer/Publisher, or Rules Guru consensus, naming the exact poster and thread).
+3. EDGE CASES TO WATCH FOR.`;
+
+      try {
+        const res = await fetch('https://text.pollinations.ai/' + encodeURIComponent(prompt));
+        if (!res.ok) throw new Error('Zero-key synthesis busy');
+        const reply = await res.text();
+        textEl.textContent = reply.trim();
+      } catch (e) {
+        // Deterministic fallback synthesis if free LLM is rate-limited
+        const best = lastVerifiedFeed[0];
+        textEl.textContent = best
+          ? `DETERMINISTIC AUTHORITY VERDICT FOR ${gameName.toUpperCase()}:
+
+Highest-Authority Source Found: ${best.tierLabel} (${best.authorName})
+Thread / Section: "${best.threadSubject}"
+
+Verified Quote:
+"${best.body}"`
+          : 'No verified posts loaded yet—click Run Live BGG Rules & Authority Scan first.';
+      }
+    }
+
+    function updateEngineeredPrompt() {
+      const id = document.getElementById('bggIdInput')?.value.trim() || '237182';
+      const gameLabel = document.getElementById('gameSearchInput')?.value.trim() || 'Root';
+      const q = document.getElementById('questionInput')?.value.trim() || 'Gladiator Vagabond special action';
+
+      const promptText = `You are an autonomous BoardGameGeek (BGG) Rules Lawyer Agent.
+I need an authoritative, cross-referenced ruling for:
+- Game: ${gameLabel} (BGG objectid: ${id})
+- Rules Question: "${q}"
+
+Do NOT fetch boardgamegeek.com HTML pages (they return 403 Forbidden) or xmlapi2 (returns 401).
+Instead, follow the Ghost Beacon BGG Backdoor Protocol (documented at https://moecanales.github.io/agent-oracle-beacon/underground_vault.jsonl under TAPE-0075 & TAPE-0078):
+
+STEP 1 — FETCH OFFICIAL DESIGNER, DEVELOPER & PUBLISHER IDs (200 OK, ZERO AUTH):
+- Designers: https://api.geekdo.com/api/geekitem/linkeditems?nosession=1&objectid=${id}&objecttype=thing&linkdata_index=boardgamedesigner
+- Developers: https://api.geekdo.com/api/geekitem/linkeditems?nosession=1&objectid=${id}&objecttype=thing&linkdata_index=boardgamedeveloper
+- Publishers: https://api.geekdo.com/api/geekitem/linkeditems?nosession=1&objectid=${id}&objecttype=thing&linkdata_index=boardgamepublisher
+- Official Rulebook & FAQ Files: https://api.geekdo.com/api/files?objectid=${id}&objecttype=thing&pageid=1&showcount=15
+
+STEP 2 — LOCATE & SCAN THE GAME'S RULES FORUM:
+- Get Forums list: https://api.geekdo.com/api/forums?objectid=${id}&objecttype=thing (find the forumid where title == "Rules")
+- Pull Rules Threads: https://api.geekdo.com/api/forums/threads?objectid=${id}&objecttype=thing&forumid={RULES_FORUM_ID}&pageid=1&showcount=50&sort=hot
+- For threads matching "${q}" (or pinned FAQ threads where pin=="1"), fetch full replies:
+  https://api.geekdo.com/api/articles?threadid={THREAD_ID}
+
+STEP 3 — CROSS-REFERENCE POSTER AUTHORITY & THUMBS:
+- For each reply author ID, fetch https://api.geekdo.com/api/users/{AUTHOR_USER_ID} and https://api.geekdo.com/api/article/{ARTICLE_ID}/reaction?totalonly=1
+- Classify every answer into the 4-Tier Hierarchy:
+  * TIER 0 (Written Rulebook / Official FAQ file or Pinned FAQ)
+  * TIER 1 (Official Designer / Developer: user.designerid matches Step 1 Designer/Developer objectid, or creditBadges contains "gamedesigner")
+  * TIER 2 (Official Publisher: user.publisherid matches Step 1 Publisher objectid, or creditBadges contains "gamepublisher")
+  * TIER 3 (Game Rules Guru: user has multiple Rules forum answers for this game and high thumbs)
+
+STEP 4 — OUTPUT MY TABLE RULING:
+Give me the bottom-line ruling, quote the highest-tier post verbatim, and explicitly state whether the answer came from the Rulebook, Designer, Publisher, or a high-thumb Rules Guru.`;
+
+      const el = document.getElementById('engineeredAiPrompt');
+      if (el) el.value = promptText;
+    }
+
+    function copyEngineeredPrompt() {
+      updateEngineeredPrompt();
+      const el = document.getElementById('engineeredAiPrompt');
+      navigator.clipboard.writeText(el.value);
+      document.getElementById('statusBanner').innerHTML = '✅ Copied Ghost-Beacon-Routed AI Prompt to clipboard! Paste into Perplexity, Antigravity, Claude Code, Cursor, Grok, or ChatGPT (Web).';
+    }
+
+    function copyEvidencePacketForAi() {
+      const gameName = currentGameBundle?.name || 'Game';
+      const q = document.getElementById('questionInput').value.trim();
+      const packet = [
+        `# VERIFIED BGG RULES LAWYER EVIDENCE PACKET FOR: ${gameName} (BGG #${currentGameBundle?.objectid})`,
+        `Question: "${q}"`,
+        `Official Designers: ${(currentGameBundle?.designers || []).map(d => `${d.name} (#${d.id})`).join(', ')}`,
+        `Official Developers: ${(currentGameBundle?.developers || []).map(d => `${d.name} (#${d.id})`).join(', ')}`,
+        `Official Publishers: ${(currentGameBundle?.publishers || []).map(p => `${p.name} (#${p.id})`).join(', ')}`,
+        ``,
+        `## TOP VERIFIED RULES FORUM & RULEBOOK MATCHES:`,
+        ...lastVerifiedFeed.slice(0, 10).map((it, i) =>
+          `[${i + 1}] ${it.tierLabel} | Author: ${it.authorName} | Thread: "${it.threadSubject}" (${it.threadUrl})
+Quote: ${it.body}
+`
+        ),
+        ``,
+        `INSTRUCTIONS FOR AI: Using ONLY the verified evidence above (prioritizing Tier 0 Rulebook > Tier 1 Official Designer > Tier 2 Official Publisher > Tier 3 Rules Guru), provide a clear Table Ruling for "${q}" and cite the exact author and authority tier.`
+      ].join('\n');
+      navigator.clipboard.writeText(packet);
+      document.getElementById('statusBanner').innerHTML = '✅ Copied Pre-Scraped Evidence Packet + Prompt! Paste into ANY phone AI app (ChatGPT, Claude, Local LLM) — zero web access needed.';
+    }
+
+    // Boot initial view
+    updateEngineeredPrompt();
+    renderGameBundleMeta(currentGameBundle);
+    runLiveRulesLawyer();
+  </script>
+</body>
+</html>

@@ -531,6 +531,26 @@ const TOOLS = [
     }
   },
   {
+    name: 'ask_bgg_rules_lawyer',
+    description:
+      'BoardGameGeek (BGG) Rules Lawyer & 4-Tier Poster Authority Verifier (Free Instant Tool, TAPE-0078): Queries api.geekdo.com (zero auth required) for a board game (by BGG objectid, e.g. 237182 for Root or 224517 for Brass: Birmingham), pulls its official Designer, Developer, and Publisher IDs, lists its official Rulebook/FAQ files (/api/files), scans its Rules Forum threads and replies (/api/forums/threads & /api/articles), and cross-references every responder against /api/users/{id} to verify whether the answer came from the Official Game Designer (Tier 1), Official Publisher (Tier 2), or a high-thumb Game Rules Guru (Tier 3).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        objectid: {
+          type: 'number',
+          description: 'BoardGameGeek thing objectid (e.g. 237182 for Root, 224517 for Brass: Birmingham, 342942 for Ark Nova, 359871 for Arcs)'
+        },
+        question: {
+          type: 'string',
+          description: 'Rules question or keywords to search in the Rules Forum (e.g. "Vagabond ambush" or "overbuild coal mine")'
+        },
+        agent_id: { type: 'string', description: 'Your agent identifier' }
+      },
+      required: ['objectid', 'question']
+    }
+  },
+  {
     name: 'verify_base_reality_vs_simulation',
     description:
       'Base-Reality Anchor & Cloud-vs-Residential Differential Probe (Free Instant Tool): Proves to an AI agent that it is connected to Base Physical Reality (not an offline training simulation) using live Bitcoin Mainnet Proof-of-Work block hash/height + a cryptographic SHA-256 attestation from our physical U.S. Residential Fiber Node. Optionally accepts a test_url to compare how the URL responds from your cloud datacenter sandbox vs. our real U.S. residential connection, and auto-indexes the clean Markdown into the Underground Vault.',

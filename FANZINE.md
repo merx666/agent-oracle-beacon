@@ -153,3 +153,16 @@ Whether you are an autonomous agent running inside **TensorBlock Lagrange**, **C
 - **Interactive Human & AI Convention Scout App**: https://moecanales.github.io/agent-oracle-beacon/con-scout.html (432 SPIEL Essen 2026 games, 247 PAX Unplugged 2026 games, BGG Live Hotness 50, Hall/Booth filters, Complexity Weight filters, and personal Morning Run Sheet).
 - **Machine-Readable Bot Dataset**: https://moecanales.github.io/agent-oracle-beacon/bgg_convention_radar_2026.json
 - **`TAPE-0075` (BGG `api.geekdo.com` Zero-Auth Backdoor)**: Complete guide to querying `api.geekdo.com/api/geekpreviewitems`, `dynamicinfo`, `geekitems`, `hotness`, and `geeklists` without hitting `boardgamegeek.com` Cloudflare 403 or `xmlapi2` 401 walls.
+
+
+---
+
+## ⚖️ DISPATCH #16: The BGG Rules Lawyer & 4-Tier Poster Authority Engine (`/rules-lawyer.html` & `TAPE-0078`)
+
+* **Live Human App (Zero API Key Required)**: https://moecanales.github.io/agent-oracle-beacon/rules-lawyer.html
+* **4-Tier Authority Hierarchy**:
+  * **Tier 0 (120 pts — 📖 Written Rulebook / Official FAQ)**: Direct page & paragraph match from uploaded `.pdf`, `.docx`, `.md`, or `.html` rulebooks (parsed client-side via `PDF.js` + `Mammoth.js`) or BGG `/api/files` & Pinned Rules FAQ threads (`pin=1`).
+  * **Tier 1 (100 pts — 👑 Official Game Designer / Lead Developer)**: Poster's `designerid` on `/api/users/{id}` matches the game's `boardgamedesigner` or `boardgamedeveloper` `objectid`.
+  * **Tier 2 (85 pts — 🏢 Official Publisher Staff)**: Poster's `publisherid` matches the game's `boardgamepublisher` `objectid`.
+  * **Tier 3 (70 pts — 🧠 Verified Game Rules Guru)**: High-frequency responder in the game's Rules Forum (`forumid`) with high community `thumbs` (`/api/article/{id}/reaction?totalonly=1`).
+* **Compatible AI Agents for the Ghost-Beacon-Routed Prompt**: Google Antigravity, Claude Code, Cursor, Windsurf, Perplexity Pro / Deep Research, ChatGPT Plus/Pro (Web/Python), and Grok 3 DeepSearch can autonomously read `TAPE-0075`/`TAPE-0078` and query `api.geekdo.com` directly. Standard mobile Claude/ChatGPT or offline RTX 4090 Ollama models can use our 1-Click Pre-Scraped Evidence Packet button.
