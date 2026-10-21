@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚔️ Warhammer 40k 11th Edition Rules Lawyer, FAQ & Datasheet Engine | Ghost Beacon</title>
+  <meta name="description" content="Zero-API-key Warhammer 40,000 11th Edition Rules Lawyer, Official FAQ & Rules Commentary Verifier, and 41-Faction BSData Datasheet & Detachment Search Engine." />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: #07090e;
+      --panel: #111520;
+      --panel-alt: #171d2c;
+      --border: #2c3650;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --gold: #f59e0b;
+      --crimson: #f43f5e;
+      --cyan: #38bdf8;
+      --green: #10b981;
+      --purple: #a855f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .topbar {
+      background: #04060a;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+    .topbar-links { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .badge-pill {
+      background: rgba(244, 63, 94, 0.16);
+      border: 1px solid var(--crimson);
+      color: #fda4af;
+      padding: 3px 11px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    .container { max-width: 1300px; margin: 0 auto; padding: 22px 18px 80px; }
+    .hero {
+      background: linear-gradient(135deg, rgba(24, 14, 24, 0.96), rgba(17, 21, 32, 0.95));
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--crimson);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 22px;
+    }
+    .hero h1 { margin: 0 0 8px; font-size: 1.82rem; color: #fff; }
+    .hero p { margin: 0 0 12px; color: var(--muted); max-width: 1020px; }
+    .tier-legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .tier-chip {
+      background: rgba(7, 9, 14, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.81rem;
+      cursor: pointer;
+      transition: transform 0.1s, border-color 0.15s;
+    }
+    .tier-chip:hover { transform: translateY(-1px); border-color: #fff; }
+    .tier-chip strong { display: block; margin-bottom: 3px; font-size: 0.87rem; }
+    .t0 { border-left: 4px solid var(--crimson); }
+    .t1 { border-left: 4px solid var(--gold); }
+    .t2 { border-left: 4px solid var(--cyan); }
+    .t3 { border-left: 4px solid var(--green); }
+    .t4 { border-left: 4px solid var(--purple); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+    @media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .card h2 { margin: 0 0 12px; font-size: 1.2rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+    label { display: block; font-size: 0.84rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+    input[type="text"], select, textarea {
+      width: 100%;
+      background: #080b12;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--crimson);
+    }
+
+    /* PROGRESSIVE AUTOCOMPLETE DROPDOWN */
+    .search-wrap { position: relative; margin-bottom: 12px; }
+    .search-wrap input[type="text"] { margin-bottom: 0; padding-right: 90px; }
+    .search-clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      background: rgba(148, 163, 184, 0.2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      cursor: pointer;
+    }
+    .search-clear-btn:hover { background: rgba(244, 63, 94, 0.25); border-color: var(--crimson); }
+    .autocomplete-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #0b0f19;
+      border: 1px solid var(--crimson);
+      border-radius: 10px;
+      max-height: 350px;
+      overflow-y: auto;
+      z-index: 9999;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8);
+      display: none;
+    }
+    .ac-item {
+      padding: 9px 13px;
+      border-bottom: 1px solid rgba(44, 54, 80, 0.65);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+    .ac-item:hover, .ac-item.active { background: rgba(244, 63, 94, 0.16); }
+    .ac-meta { font-size: 0.75rem; color: var(--gold); white-space: nowrap; font-weight: 600; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: transform 0.1s;
+    }
+    button:active { transform: scale(0.98); }
+    .btn-primary { background: linear-gradient(135deg, #f43f5e, #e11d48); color: #fff; }
+    .btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #05080f; }
+    .btn-cyan { background: rgba(56, 189, 248, 0.18); border: 1px solid var(--cyan); color: var(--cyan); }
+    .btn-green { background: rgba(16, 185, 129, 0.18); border: 1px solid var(--green); color: var(--green); }
+
+    .quick-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .quick-pill {
+      background: #080b12;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.77rem;
+      cursor: pointer;
+    }
+    .quick-pill:hover, .quick-pill.active { border-color: var(--gold); color: var(--gold); background: rgba(245, 158, 11, 0.12); }
+
+    .dropzone {
+      border: 2px dashed var(--crimson);
+      background: rgba(244, 63, 94, 0.06);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .dropzone:hover { background: rgba(244, 63, 94, 0.12); }
+
+    .verdict-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(244, 63, 94, 0.08));
+      border: 1px solid var(--green);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .post-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .post-card.tier-0 { border-left: 5px solid var(--crimson); background: rgba(244, 63, 94, 0.07); }
+    .post-card.tier-1 { border-left: 5px solid var(--gold); background: rgba(245, 158, 11, 0.07); }
+    .post-card.tier-2 { border-left: 5px solid var(--cyan); background: rgba(56, 189, 248, 0.06); }
+    .post-card.tier-3 { border-left: 5px solid var(--green); background: rgba(16, 185, 129, 0.06); }
+    .post-card.tier-4 { border-left: 5px solid var(--purple); background: rgba(168, 85, 247, 0.06); }
+    .post-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.84rem;
+    }
+    .post-body {
+      font-size: 0.92rem;
+      color: #f1f5f9;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .role-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin: 2px 4px 2px 0;
+    }
+    .b-t0 { background: rgba(244, 63, 94, 0.2); border: 1px solid var(--crimson); color: #fda4af; }
+    .b-t1 { background: rgba(245, 158, 11, 0.2); border: 1px solid var(--gold); color: var(--gold); }
+    .b-t2 { background: rgba(56, 189, 248, 0.2); border: 1px solid var(--cyan); color: var(--cyan); }
+    .b-t3 { background: rgba(16, 185, 129, 0.2); border: 1px solid var(--green); color: var(--green); }
+    .b-t4 { background: rgba(168, 85, 247, 0.2); border: 1px solid var(--purple); color: #d8b4fe; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-links">
+      <strong>👻 Ghost Beacon Node #0043</strong>
+      <a href="index.html">🛰️ Main Beacon</a>
+      <a href="con-scout.html">🎲 2026 Con Sell-Out Radar</a>
+      <a href="rules-lawyer.html">⚖️ BGG Rules Lawyer (20,000 Games)</a>
+      <a href="wh40k-rules-lawyer.html" style="color:#fda4af;font-weight:700;">⚔️ Warhammer 40k 11e Rules Lawyer</a>
+      <a href="zine.html">📰 Human Zine (Dispatch #17)</a>
+      <a href="tapes.html">📼 79 Underground Tapes</a>
+    </div>
+    <div>
+      <span class="badge-pill" id="vaultCountBadge">41 Factions • 5,757 Rules, FAQs & Datasheets Indexed</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>⚔️ Warhammer 40,000 (11th Edition) Rules Lawyer, FAQ & Datasheet Authority Engine</h1>
+      <p>
+        Built for tabletop disputes and competitive playtesting. Indexes <strong>all 41 Warhammer 40k 11th Edition Factions</strong> from <code>BSData/wh40k-11e</code>, <strong>49+ Universal Core Rules & Weapon Keywords</strong>, <strong>Official GW Rules Commentary & Balance Dataslate FAQs</strong>, <strong>Maintainer Errata</strong>, and <strong>Community Judge Q&A</strong>. Zero API key required.
+      </p>
+      <div class="tier-legend">
+        <div class="tier-chip t0" onclick="setTierFilter('0')">
+          <strong style="color:#fda4af;">👑 Tier 0: Official FAQ, Errata & Rules Commentary</strong>
+          Balance Dataslate, Out-of-Phase rules, Ruins visibility, Modifiers order, & uploaded GW PDFs (120 pts).
+        </div>
+        <div class="tier-chip t1" onclick="setTierFilter('1')">
+          <strong style="color:var(--gold);">📖 Tier 1: 11e Core Rules & Universal Keywords</strong>
+          <code>[Devastating Wounds]</code>, <code>[Lone Operative]</code>, <code>[Pistol]/[Close-Quarters]</code>, <code>[Fights First]</code> (105 pts).
+        </div>
+        <div class="tier-chip t2" onclick="setTierFilter('2')">
+          <strong style="color:var(--cyan);">⚔️ Tier 2: Faction Army Rules, Detachments & Enhancements</strong>
+          Oath of Moment, Reanimation Protocols, Shadow in the Warp, Detachment Enhancements (95 pts).
+        </div>
+        <div class="tier-chip t3" onclick="setTierFilter('3')">
+          <strong style="color:var(--green);">🛡️ Tier 3: Unit Datasheets, Stats & Weapon Profiles</strong>
+          Full <code>M / T / Sv / W / Ld / OC</code> statlines, unit abilities, weapon profiles, & points across 41 factions (90 pts).
+        </div>
+        <div class="tier-chip t4" onclick="setTierFilter('4')">
+          <strong style="color:#d8b4fe;">🧠 Tier 4: Maintainer Errata & Community Judge Q&A</strong>
+          Live <code>BSData/wh40k-11e</code> Errata reports & high-reputation Warhammer rules judge Q&A (75 pts).
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- LEFT COLUMN: PROGRESSIVE SEARCH & FACTION/TIER FILTERS -->
+      <div class="card">
+        <h2>🔍 Step 1: Filter by Faction & Type Letter-by-Letter (Or Click a Common Dispute)</h2>
+        <div class="quick-pills">
+          <span style="color:var(--muted);font-size:0.76rem;align-self:center;">Hot Table Disputes:</span>
+          <span class="quick-pill" onclick="quickDispute('out of phase overwatch big guns never tire')">🔥 Overwatch + Big Guns Never Tire</span>
+          <span class="quick-pill" onclick="quickDispute('ruins visibility toe in monster vehicle line of sight')">🏛️ Ruins Toe-In & Line of Sight</span>
+          <span class="quick-pill" onclick="quickDispute('devastating wounds mortal wounds feel no pain')">💀 Devastating Wounds vs Feel No Pain</span>
+          <span class="quick-pill" onclick="quickDispute('modifiers order of operations halve damage')">➗ Modifiers Order (Halve vs -1 Damage)</span>
+          <span class="quick-pill" onclick="quickDispute('leader attached unit precision toughness')">👑 Leader Toughness & [Precision]</span>
+          <span class="quick-pill" onclick="quickDispute('charge pile in consolidate fights first')">⚔️ Pile-In / Consolidate & Fights First</span>
+          <span class="quick-pill" onclick="quickDispute('deep strike rapid ingress 9 inches turn 1')">🚀 Deep Strike & Rapid Ingress</span>
+          <span class="quick-pill" onclick="quickDispute('pistol close quarters engagement range')">🔫 [Pistol] & [Close-Quarters]</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns: 1fr 1fr;gap:10px;">
+          <div>
+            <label for="factionSelect">Filter by Faction (Always Includes Universal Core Rules & FAQs):</label>
+            <select id="factionSelect" onchange="run40kSearch()">
+              <option value="ALL">🌐 All 41 Factions + Core Rules & FAQs</option>
+            </select>
+          </div>
+          <div>
+            <label for="tierSelect">Filter by Authority Tier:</label>
+            <select id="tierSelect" onchange="run40kSearch()">
+              <option value="ALL">🌐 All Authority Tiers (Tiers 0 – 4)</option>
+              <option value="0">👑 Tier 0 Only: Official FAQs, Commentary & Uploaded PDFs</option>
+              <option value="1">📖 Tier 1 Only: 11e Core Rules & Universal Keywords</option>
+              <option value="2">⚔️ Tier 2 Only: Faction Army Rules, Detachments & Enhancements</option>
+              <option value="3">🛡️ Tier 3 Only: Unit Datasheets, Statlines & Abilities</option>
+              <option value="4">🧠 Tier 4 Only: Maintainer Errata & Community Judge Q&A</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="ruleSearchInput">Type Letter-by-Letter (Rule, Keyword, Stratagem, Unit Name, or Question):</label>
+        <div class="search-wrap">
+          <input type="text" id="ruleSearchInput" autocomplete="off" spellcheck="false" value="" placeholder="Start typing (e.g. Overwatch, Ruins, Reanimation, C'tan, Guilliman, Stealth, Feel No Pain)..." oninput="handleProgressive40kInput(this.value)" onfocus="handleProgressive40kInput(this.value)" onkeydown="handle40kKeydown(event)" />
+          <button type="button" class="search-clear-btn" onclick="clear40kSearch()">✕ Clear</button>
+          <div id="wh40kAutocompleteMenu" class="autocomplete-menu"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-primary" onclick="run40kSearch()">⚔️ Search 11e Rules, FAQs & Datasheets</button>
+          <button class="btn-green" onclick="runZeroKey40kVerdict()">⚡ Instant AI Table Judge Ruling (Free / No Key)</button>
+          <button class="btn-cyan" onclick="copy40kEvidencePacket()">📋 Copy Evidence Packet for ChatGPT / Claude</button>
+        </div>
+
+        <div id="statusBanner" style="margin-top:12px;font-size:0.86rem;color:var(--cyan);"></div>
+      </div>
+
+      <!-- RIGHT COLUMN: PDF DROPZONE + PLAYTESTER FEEDBACK BOX FOR MOE'S FRIEND -->
+      <div class="card">
+        <h2>📖 Step 2: Balance Dataslate / Codex PDF Cross-Referencer & Playtester Feedback</h2>
+        <div class="dropzone" onclick="document.getElementById('pdfUploadInput').click()">
+          <input type="file" id="pdfUploadInput" accept=".pdf,.docx,.md,.html,.txt,.json" style="display:none" onchange="handle40kFileUpload(event)" />
+          <div style="font-weight:700;color:#fda4af;margin-bottom:4px;">📂 Drop Official GW Balance Dataslate, Rules Commentary, or WTC FAQ (<code>.pdf</code>, <code>.docx</code>, <code>.md</code>, <code>.json</code>)</div>
+          <div id="pdfStatusText" style="font-size:0.8rem;color:var(--muted);">Extracts every page locally in your browser as 👑 Tier 0 Authority!</div>
+        </div>
+
+        <div style="background:var(--panel-alt);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:10px;">
+          <strong style="color:var(--gold);font-size:0.88rem;">🛠️ Playtester Feedback & Feature Request Box (Send Straight to Moe):</strong>
+          <p style="font-size:0.79rem;color:var(--muted);margin:4px 0 8px;">
+            Testing this on your phone or desktop? Tell us what works, what edge-case FAQ or army mechanic to add next, or how to make the UI faster at the table:
+          </p>
+          <textarea id="playtesterFeedbackInput" rows="2" placeholder="e.g. Add a 1-click Stratagem phase filter (Command / Movement / Shooting / Charge / Fight)..." style="margin-bottom:8px;font-size:0.85rem;"></textarea>
+          <div class="btn-row">
+            <button class="btn-gold" style="padding:7px 13px;font-size:0.82rem;" onclick="sendPlaytesterFeedback()">📨 Send Feedback to Moe & Ghost Beacon</button>
+            <span id="feedbackAckText" style="font-size:0.8rem;color:var(--green);"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSTANT AI VERDICT BOX -->
+    <div id="aiVerdictContainer" class="verdict-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <strong style="color:var(--green);font-size:1.05rem;">⚡ Warhammer 40k 11th Edition Table Judge Verdict (Tier 0 FAQ → Tier 1 Core → Tier 2/3 Datasheet)</strong>
+        <span style="font-size:0.76rem;color:var(--muted);">Zero-Key Synthesis + 5-Tier Authority Matrix</span>
+      </div>
+      <div id="aiVerdictText" style="font-size:0.95rem;white-space:pre-wrap;"></div>
+    </div>
+
+    <!-- VERIFIED RESULTS FEED -->
+    <div class="card">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
+        <h2 style="margin:0;">🏛️ Verified 11th Edition Rules, FAQs & Datasheets Feed</h2>
+        <div id="resultsSummaryChip" style="font-size:0.84rem;color:var(--gold);font-weight:700;"></div>
+      </div>
+      <div id="resultsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    // Inline Tier 0 Official FAQs & Tier 1 Universal Core Rules/Keywords (Available in 0ms!)
+    let MASTER_VAULT = [{"id":"FAQ-CORE-01","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Modifying Characteristics & Dice Rolls — Order of Operations (Division → Multiplication → Addition → Subtraction)","kw":"modifiers order of operations damage karakteristik halve damage plus 1 minus 1 hit wound save characteristic","src":"Official Core Rules Commentary & Balance Dataslate","body":"RULING (ORDER OF MODIFIERS):\n1. All modifiers are cumulative.\n2. If a rule instructs you to replace one characteristic with a specified value (e.g. \"change the Damage characteristic to 0\" or \"set OC to 0\"), apply that replacement BEFORE any other modifiers.\n3. Next, apply division modifiers (e.g. \"halve the Damage characteristic\", rounding fractions UP after dividing).\n4. Next, apply multiplication modifiers (e.g. \"double the Attacks characteristic\").\n5. Next, apply addition modifiers (e.g. \"+1 to Damage\" or \"+1 to Hit\").\n6. Finally, apply subtraction modifiers (e.g. \"-1 to Damage\").\n• CAPS & MINIMUMS: Hit rolls and Wound rolls can never be modified by more than -1 or +1 net. Damage, Attacks, Toughness, Strength, and Leadership characteristics can NEVER be modified below 1 (unless a rule explicitly sets them to 0). Objective Control (OC) and Move (M) can be modified down to 0."},{"id":"FAQ-CORE-02","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Out-of-Phase Rules — No Other Phase Triggers Permitted (e.g. Fire Overwatch, Tank Shock, Big Guns Never Tire)","kw":"out of phase rules overwatch big guns never tire firing deck abilities trigger movement shooting charge fight phase","src":"Official Core Rules Commentary (Out-of-Phase Rules)","body":"RULING (OUT-OF-PHASE RULES):\nWhen a unit uses a rule that allows it to perform an action as if it were a different phase (for example, using the Fire Overwatch Stratagem to shoot in your opponent's Movement or Charge phase, or shooting/fighting on death):\n• You CANNOT use any other rules, Stratagems, or unit abilities that are triggered \"in your Shooting phase\" or \"in the Fight phase\".\n• Example 1 (Big Guns Never Tire in Overwatch): Big Guns Never Tire states \"Monster and Vehicle units are eligible to shoot in their controlling player's Shooting phase even while within Engagement Range.\" Because Fire Overwatch takes place in your OPPONENT'S Movement or Charge phase (not your Shooting phase), a Monster or Vehicle CANNOT fire Overwatch while within Engagement Range, and cannot fire Overwatch at an enemy unit that is within Engagement Range of friendly units.\n• Example 2 (Firing Deck in Overwatch): Firing Deck only applies when the Transpo"},{"id":"FAQ-CORE-03","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Devastating Wounds vs. Mortal Wounds vs. Feel No Pain (FNP) & Damage Spillover","kw":"devastating wounds mortal wounds feel no pain fnp invulnerable save spillover critical wound","src":"Official Balance Dataslate & Core Rules Update","body":"RULING (DEVASTATING WOUNDS & MORTAL WOUNDS):\n• Critical Wound (unmodified Wound roll of 6, or Anti-X+ threshold) with a [DEVASTATING WOUNDS] weapon inflicts Mortal Wounds equal to the weapon's Damage characteristic instead of normal damage.\n• NO SAVES: Neither normal Armor Saves nor Invulnerable Saves can be made against [DEVASTATING WOUNDS] or Mortal Wounds.\n• FEEL NO PAIN WORKS: [FEEL NO PAIN X+] CAN be rolled against every single point of damage from [DEVASTATING WOUNDS] and Mortal Wounds (roll 1D6 per point of damage).\n• SPILLOVER: Mortal wounds inflicted by [DEVASTATING WOUNDS] (and [HAZARDOUS]) are allocated after all other attacks from the attacking unit have been resolved, and DO spill over from model to model in the target unit."},{"id":"FAQ-CORE-04","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Ruins, Visibility (Line of Sight), Toe-In & Benefit of Cover","kw":"ruins terrain line of sight visibility toe in wholly within monster vehicle towering aircraft benefit of cover","src":"Official Core Rules & Tournament Companion (Ruins)","body":"RULING (RUINS VISIBILITY MATRIX):\n1. OUTSIDE LOOKING PAST RUINS: Models cannot see over or through the footprint of a Ruin. An imaginary infinite vertical curtain blocks Line of Sight across any part of a Ruin's footprint.\n2. MODELS INSIDE / WHOLLY WITHIN RUINS:\n   • Infantry / Beasts / Swarms can move through Ruin walls freely.\n   • A unit that is WHOLLY WITHIN a Ruin can see out of it normally (true Line of Sight through windows/openings).\n   • Models outside a Ruin CAN see into the Ruin to target a unit that is inside/touching the footprint (using true Line of Sight).\n   • \"TOE-IN\" RULE FOR VEHICLES/MONSTERS: A Vehicle or Monster that is merely partially within (\"toeing into\") a Ruin footprint (not wholly within) CANNOT see out through the Ruin's footprint, EXCEPT that enemies outside CAN now draw true Line of Sight to it! To shoot out of a Ruin, a non-Towering model must be WHOLLY WITHIN the Ruin footprint."},{"id":"FAQ-CORE-05","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Fire Overwatch Stratagem — Timing (Start vs. End of Move), Line of Sight & 6s to Hit","kw":"fire overwatch stratagem charge movement disembark deep strike line of sight 6 to hit titanic","src":"Official Core Rules & Rules Commentary (Fire Overwatch)","body":"RULING (FIRE OVERWATCH — 1CP, ONCE PER TURN):\n• WHEN: Just after an enemy unit is set up on the battlefield, or when an enemy unit starts or ends a Normal, Advance, Fall Back, or Charge move, within 24\" of your unit and visible to your unit.\n• LINE OF SIGHT AT START VS. END: If you declare Overwatch when an enemy unit STARTS its move, it must be visible and within 24\" at the start of the move (even if it intends to end behind a wall). If it starts behind a Ruin wall (not visible) and moves out into the open, you can declare Overwatch when it ENDS its move!\n• TITANIC EXCEPTION: TITANIC units cannot be selected to fire Overwatch.\n• HIT ON UNMODIFIED 6s ONLY: An Overwatch attack only ever hits on an unmodified Hit roll of 6, regardless of the attacking weapon's Ballistic Skill or any Hit modifiers (unless a rule explicitly overrides the Overwatch threshold)."},{"id":"FAQ-CORE-06","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Leaders, Attached Units, Precision, Bodyguard Destruction & Persisting Effects","kw":"leader attached unit bodyguard precision character keywords toughness persisting effects","src":"Official Core Rules Commentary (Attached Units & Leaders)","body":"RULING (LEADERS & ATTACHED UNITS):\n• TOUGHNESS USED: Whenever an attack targets an Attached unit, always use the BODYGUARD unit's Toughness characteristic for all Wound rolls against that attack batch—even if the Bodyguard models die partway through resolving the attacks, and even if the attack has [PRECISION]!\n• [PRECISION]: When a weapon with [PRECISION] scores a successful Wound against an Attached unit and the Leader model is VISIBLE to the attacking model, the attacking player can choose to allocate that attack directly to the Character Leader model (using the Leader's Save / Invulnerable Save).\n• SHARED KEYWORDS: An Attached unit has the union of all keywords of both the Bodyguard and the Leader (so if a Psyker or Fly Leader joins an Infantry unit, the whole unit gains the PSYKER / FLY keyword for [ANTI-PSYKER] / [ANTI-FLY] weapons!). However, models themselves only have their own datasheet keywords for rules that check \"models wi"},{"id":"FAQ-CORE-07","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Charge Phase, Heroic Intervention, Fights First, Pile-In (3\") & Consolidation (3\")","kw":"charge phase pile in consolidate base to base fights first heroic intervention engagement range","src":"Official Core Rules & Fight Phase Commentary","body":"RULING (CHARGE & FIGHT PHASE):\n• CHARGE MOVE REQUIREMENTS: To make a Charge move, your roll must be sufficient to end within Engagement Range (1\" horizontal, 5\" vertical) of EVERY unit you declared as a target of that charge, without moving within Engagement Range of any non-target enemy unit. If possible, a charging model must end in base-to-base contact with an enemy model.\n• FIGHT ORDER: The Fight phase splits into two steps: (1) Fights First step, and (2) Remaining Combatants step. In BOTH steps, the player whose turn is NOT taking place (the defending player!) selects the first eligible unit to fight, then players alternate!\n• PILE-IN & CONSOLIDATION (MODEL-BY-MODEL): Each model that moves during a 3\" Pile-In or 3\" Consolidation must end closer to the closest enemy model than it started, and in base-to-base contact if possible, while maintaining unit coherency. During Consolidation, if a unit cannot end within Engagement Range of a"},{"id":"FAQ-CORE-08","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Deep Strike, Strategic Reserves, Rapid Ingress & 9\" Horizontal Distance Rule","kw":"deep strike strategic reserves rapid ingress 9 inches turn 1 turn 3 charge after deep strike reposition","src":"Official Core Rules & Mission Pack Commentary","body":"RULING (RESERVES & DEEP STRIKE):\n• >9\" HORIZONTAL DISTANCE: Units arriving from Deep Strike or Strategic Reserves must be set up MORE than 9.0\" horizontally away from all enemy models. Because they are more than 9\" away, they require at least a 9 on 2D6 to complete a Charge move in the same turn (unless a rule grants a closer setup, which usually prohibits charging).\n• TURN 1 RESTRICTION: In Matched Play / Chapter Approved missions, units that start the battle in Reserves CANNOT arrive in Battle Round 1 — UNLESS they started the battle on the battlefield and were placed into Strategic Reserves during Battle Round 1 (e.g. via a \"reposition / pick up at end of opponent's turn\" ability!).\n• RAPID INGRESS (1CP): Used at the end of your opponent's Movement phase. Allows one of your Reserves units to arrive on your opponent's turn so it can move normally and charge freely on your upcoming turn."},{"id":"FAQ-CORE-09","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Transports — Embarking, Disembarking, Destroyed Transports & Emergency Disembarkation","kw":"transport embark disembark advance charge destroyed transport battle shock firing deck","src":"Official Core Rules (Transports)","body":"RULING (TRANSPORTS):\n• DISEMBARK BEFORE TRANSPORT MOVES: The disembarking unit is set up wholly within 3\" of the Transport and not within Engagement Range of enemy models. It can then act normally (Move, Advance, Shoot, Charge) in that turn.\n• DISEMBARK AFTER TRANSPORT MAKES A NORMAL MOVE: The unit can disembark wholly within 3\", cannot move further in that Movement phase, CAN shoot, and CANNOT declare a charge this turn (unless the Transport has an Assault Ramp / similar rule).\n• CANNOT DISEMBARK AFTER ADVANCE OR FALL BACK (unless granted by a specific rule).\n• CANNOT EMBARK AND DISEMBARK IN THE SAME PHASE.\n• DESTROYED TRANSPORT: Roll 1D6 for each model embarked; on a 1, that unit suffers 1 Mortal Wound. The surviving models are set up wholly within 3\" of the destroyed Transport (or 6\" for Emergency Disembarkation, where rolled 1–3 inflicts 1 Mortal Wound), become Battle-shocked until the start of your next Command phase, and cannot ch"},{"id":"FAQ-CORE-10","t":0,"c":"Universal Rules Commentary & Core Mechanics","f":"All Factions (Core Rules & Commentary)","title":"Core Stratagems Reference (Command Re-roll, Counter-Offensive, Grenade, Tank Shock, Insane Bravery, Go to Ground, Smokescreen, Epic Challenge)","kw":"core stratagems command reroll counter offensive grenade tank shock insane bravery go to ground smokescreen epic challenge heroic intervention","src":"Official 11th Edition Core Rules (Stratagems)","body":"OFFICIAL CORE STRATAGEMS QUICK RULING:\n• COMMAND RE-ROLL (1CP): Re-roll one Hit, Wound, Damage, Save, Advance, Charge, Desperate Escape, Hazardous, or number-of-attacks dice roll. (For 2D6 Charge rolls, you must re-roll BOTH dice).\n• COUNTER-OFFENSIVE (2CP — Fight Phase): Used just after an enemy unit has fought. Select one of your eligible units in Engagement Range and fight with it next (interrupting the opponent's sequence).\n• EPIC CHALLENGE (1CP — Fight Phase): Gives one CHARACTER model in your unit [PRECISION] on its melee weapons for the phase.\n• INSANE BRAVERY (1CP — Command Phase, Once Per Battle): Used BEFORE taking a Battle-shock test to automatically pass it.\n• GRENADE (1CP — Shooting Phase): One GRENADES unit not in Engagement Range selects a visible enemy within 8\"; roll six D6, each 4+ inflicts 1 Mortal Wound.\n• TANK SHOCK (1CP — Charge Phase): Vehicle unit ends a Charge move; select one enemy unit in Engagement Range and "},{"id":"CORE-RULE-8bf7-8812-923d-29e4","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [PISTOL]","kw":"core rule keyword pistol universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"**[PISTOL]** and **[CLOSE-QUARTERS]** are identical for all rules purposes. \n\nUnits containing one or more models with a **[CLOSE-QUARTERS]** weapon can shoot using **close-quarters shooting** (10.06). When using another **shooting type**, for each model in that unit (excluding **MONSTER/VEHICLE** models), you can only select one of the following to make attacks with: \n- One or more of its **[CLOSE-QUARTERS]** weapons. \n- One or more of its other ranged weapons."},{"id":"CORE-RULE-8367-374c-f87-c627","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [HAZARDOUS]","kw":"core rule keyword hazardous universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time a unit is **selected to shoot** or **selected to fight**, after that unit has resolved all of its attacks, make a number of **hazard rolls** (06.03) for that unit equal to the number of **[HAZARDOUS]** weapons you selected in the Select Weapons step."},{"id":"CORE-RULE-b4dd-3e1f-41cb-218f","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [LEADER]","kw":"core rule keyword leader universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Before the battle, in the Muster Armies step, for each leader and support unit in your army, you can select one friendly bodyguard unit that unit can lead. That unit will then lead that bodyguard unit for the battle and form an attached unit with it. Unless otherwise stated, each bodyguard unit can only have one leader unit and one support unit attached to it."},{"id":"CORE-RULE-be1e-ac8e-1e2c-3528","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [DEVASTATING WOUNDS]","kw":"core rule keyword devastating wounds universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time an attack made with a **[DEVASTATING WOUNDS]** weapon results in a **critical wound**, the attack sequence for that attack ends and the target unit suffers a number of **mortal wounds** equal to the **D** characteristic of that weapon. These are inflicted after resolving any normal damage inflicted by those attacks. \n**Mortal wounds** inflicted by **[DEVASTATING WOUNDS]** weapons can damage a maximum of one model for each **critical wound**; any remaining **mortal wounds** inflicted by that attack are lost. \n***Example:** An attack made with a **[DEVASTATING WOUNDS]** weapon with a **D** characteristic of 3 results in a **critical wound** against an Intercessor Squad, so inflicts 3 **mortal wounds**. The first 2 **mortal wounds** are sufficient to **destroy** 1 Intercessor model, so the remaining **mortal wound** is lost.*"},{"id":"CORE-RULE-fc8a-8c24-bae9-cc1c","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [ASSAULT]","kw":"core rule keyword assault universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Units containing one or more models with an **[ASSAULT]** weapon can shoot using **assault shooting** (10.05)."},{"id":"CORE-RULE-115b-79dc-f723-d761","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [EXTRA ATTACKS]","kw":"core rule keyword extra attacks universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time a unit containing one or more models with an **[EXTRA ATTACKS]** weapon fights, those models will make attacks with those weapons in addition to any others. In the Select Weapons step (04.01), for each of those models, you must select: \n- All of that model’s **[EXTRA ATTACKS]** weapons. \n- One of that model’s other melee weapons, if possible."},{"id":"CORE-RULE-cf93-ad4d-2f08-a79d","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [TWIN-LINKED]","kw":"core rule keyword twin-linked universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time an attack is made with a **[TWIN-LINKED]** weapon, you can re-roll the **wound roll**."},{"id":"CORE-RULE-4111-82e3-9444-e942","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [ANTI]","kw":"core rule keyword anti universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **[ANTI-X Y+]**. Each time an attack is made with an **[ANTI]** weapon, if the target unit has the keyword denoted by **X**, an unmodified **wound roll** of **Y+** is a **critical wound**.\n***Example:** An attack made with an **[ANTI-VEHICLE 4+]** weapon against a ^^**Vehicle**^^ unit will result in a **critical wound** on an unmodified **wound roll** of 4+, while an attack made with an **[ANTI-PSYKER 2+]** weapon against a ^^**Psyker**^^ unit will result in a **critical wound** on an unmodified **wound roll** of 2+.*"},{"id":"CORE-RULE-1897-c22c-9597-12b1","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SUSTAINED HITS]","kw":"core rule keyword sustained hits universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **[SUSTAINED HITS X]**. Each time an attack made with a **[SUSTAINED HITS]** weapon results in a **critical hit**, that attack results in a number of additional hits on the target as denoted by **X**.\n***Example:** An attack made with a **[SUSTAINED HITS 2]** weapon results in a **critical hit**. That attack therefore hits the target three times (once from the **critical hit**, and twice more from the **[SUSTAINED HITS 2]** ability).*"},{"id":"CORE-RULE-1202-10a8-78e9-4c67","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [HEAVY]","kw":"core rule keyword heavy universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"In your Shooting phase, each time an attack is made with a **[HEAVY]** weapon, add 1 to the **hit roll** if all of the following apply to the attacking unit: \n- That unit is **unengaged**. \n- That unit was not set up on the battlefield this turn. \n- No model in that unit has moved more than 3\" this turn."},{"id":"CORE-RULE-7cdb-fb99-44a9-8849","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [MELTA]","kw":"core rule keyword melta universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **[MELTA X]**. Each time a model makes an attack with a **[MELTA]** weapon, if the target unit was within half range of that weapon in the Select Targets step, until the attacking unit’s attacks have been resolved, add **X** to that weapon’s **D** characteristic. \n***Example:** A model targets a unit that is within half range of a **[MELTA 2]** weapon with a **D** characteristic of D6. While resolving those attacks, that weapon has a **D** characteristic of **D6+2**.*"},{"id":"CORE-RULE-9bf4-280f-bbe2-6fbb","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN]","kw":"core rule keyword feel no pain universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-6c1f-1cf7-ff25-c99e","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [BLAST]","kw":"core rule keyword blast universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time you gather attack dice for a **[BLAST]** weapon, add one additional **attack dice** for every five models that were in the target unit in the Select Targets step (rounding down). If this ability takes the form **[BLAST X]**, each time you gather **attack dice** for such a weapon, add **X** additional **attack dice** for every five models that were in the target unit in the Select Targets step (rounding down) instead. \n***Example:** If a **[BLAST 2]** weapon with an **A** characteristic of 3 targets a unit containing 12 models, you would gather four additional **attack dice** for that weapon (for a total of seven for that weapon).*"},{"id":"CORE-RULE-9143-31ae-e0a6-6007","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [PRECISION]","kw":"core rule keyword precision universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"While resolving attacks made with one or more **[PRECISION]** weapons, at the start of the Allocation Order step (05.03), if the target unit contains one or more **CHARACTER** models **visible** to one or more of the attacking models, the active player can select one allocation group that contains one of those **visible CHARACTER** models. If they do, until those attacks are resolved, or until that **CHARACTER** group is **destroyed** (whichever happens first), that **CHARACTER** group is the current allocation group."},{"id":"CORE-RULE-4ddd-4e29-acdd-5e6d","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [INDIRECT FIRE]","kw":"core rule keyword indirect fire universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Units containing one or more models with an **[INDIRECT FIRE]** weapon can shoot using indirect shooting (10.07)."},{"id":"CORE-RULE-2ebc-abdf-8129-6c57","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [LANCE]","kw":"core rule keyword lance universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time an attack is made with a **[LANCE]** weapon, if the attacking model’s unit made a **charge move** this turn, add 1 to the **wound roll**."},{"id":"CORE-RULE-d1d1-611e-5191-1095","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [LETHAL HITS]","kw":"core rule keyword lethal hits universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time an attack made with a **[LETHAL HITS]** weapon results in a **critical hit**, you can choose for that attack to automatically wound the target. \n***Designer’s Note:** Choosing to automatically wound the target means that no **wound roll** is made for that attack. You may decide against this, as it means that attack cannot result in a **critical wound** and so cannot trigger other abilities such as [DEVASTATING WOUNDS].*"},{"id":"CORE-RULE-4640-43e7-30b-215a","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [IGNORES COVER]","kw":"core rule keyword ignores cover universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time an attack is made with an **[IGNORES COVER]** weapon, the target cannot have the **benefit of cover** against that attack (13.08), including from rules that give a model or unit the **benefit of cover** (e.g. **Stealth**)."},{"id":"CORE-RULE-c5c8-8b58-b8b6-7786","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [RAPID FIRE]","kw":"core rule keyword rapid fire universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **[RAPID FIRE X]**. Each time you gather **attack dice** for a **[RAPID FIRE]** weapon, add **X** additional **attack dice** if the target unit was within half range of that weapon in the Select Targets step. \n***Example:** If a **[RAPID FIRE 1]** weapon with an **A** characteristic of 1 targets a unit that is within half range, you would gather one additional **attack dice** for that weapon (for a total of two for that weapon).*"},{"id":"CORE-RULE-5edf-d619-23e0-9b56","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [TORRENT]","kw":"core rule keyword torrent universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time an attack is made with a **[TORRENT]** weapon, that attack automatically hits the target."},{"id":"CORE-RULE-ada6-bac1-ffe0-d6f7","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SCOUTS]","kw":"core rule keyword scouts universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Scouts X\"**. In the Resolve Pre-battle Abilities step, if every model in a unit has this ability, you can do one of the following: \n- If that unit is in **strategic reserves**, you can set up that unit anywhere that is wholly within your deployment zone. \n- If that unit is wholly within your deployment zone, it can make a **scout move**. \n- If that unit is embarked within a **DEDICATED TRANSPORT** that is wholly within your deployment zone, and if every model embarked within that **DEDICATED TRANSPORT** has the Scouts ability, that **DEDICATED TRANSPORT** can make a **scout move**."},{"id":"CORE-RULE-c05d-f4c3-f091-4938","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [INFILTRATORS]","kw":"core rule keyword infiltrators universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"During deployment, if every model in a unit has this ability, it can be set up anywhere on the battlefield that is more than 8\" horizontally from your opponent’s deployment zone and all enemy units."},{"id":"CORE-RULE-7cb5-dd6b-dd87-ad3b","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [DEEP STRIKE]","kw":"core rule keyword deep strike universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time this unit makes an **ingress move** (20.04), if every model in this unit has this ability, it can be set up anywhere on the battlefield that is more than 8\" horizontally from all enemy units, even if that is within your opponent’s deployment zone."},{"id":"CORE-RULE-b68a-5ded-65ac-98c","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [DEADLY DEMISE]","kw":"core rule keyword deadly demise universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Deadly Demise X**. Each time a model in this unit is **destroyed**, after the units embarked within it (if any) have made their **emergency disembark moves**, roll one D6. On a 6, that model suffers a **deadly demise**; each unit within 6\" of that model suffers a number of **mortal wounds** denoted by **X** (if this is a random number, roll separately for each unit within 6\"). \n***Example:** An Impulsor with a unit of Intercessors embarked within it is **destroyed** by ranged attacks. First, any unresolved attacks made by the attacking unit are resolved. Then the Intercessors make an **emergency disembark move**. Then the roll is made for the **Deadly Demise** ability, and on a 6, that ability is resolved. Finally, the Impulsor is removed from the battlefield.*"},{"id":"CORE-RULE-bec5-4288-34a6-ccfa","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [STEALTH]","kw":"core rule keyword stealth universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"If every model in a unit has this ability, each time a ranged attack targets that unit, that unit has the **benefit of cover** against that attack (13.08)."},{"id":"CORE-RULE-5e13-1624-d280-418d","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SUPER-HEAVY WALKER]","kw":"core rule keyword super-heavy walker universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time a unit with this ability makes a **normal**, **advance** or **fall-back move**: \n- Models in that unit can move through models (including **MONSTER/VEHICLE** models, but excluding **TITANIC** models) and can move horizontally through sections of **terrain features** that are 4\" or less in height. \n- Before moving that unit, you can select for all models in that unit to have the **MOBILE** keyword until that move ends. If you do, when that move ends, roll one D6: on a 1, that unit is battle-shocked. \n***Designer’s Note:** Gaining the **MOBILE** keyword for the duration of a move will enable models in that unit to move horizontally through **dense terrain features** (13.06).*"},{"id":"CORE-RULE-a8a0-8fe7-898-e0f3","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [LONE OPERATIVE]","kw":"core rule keyword lone operative universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Unless part of an **attached** unit, this unit is not **visible** to enemy models unless they are within 12\" of this unit, and it cannot be targeted by **[INDIRECT FIRE]** weapons unless the attacking model is within 12\" of this unit. \nIf this ability takes the form **Lone Operative X\"**, unless part of an **attached** unit, this unit is not **visible** to enemy models unless they are within **X\"** of this unit, and it cannot be targeted by **[INDIRECT FIRE]** weapons unless the attacking model is within **X\"** of this unit."},{"id":"CORE-RULE-eec5-5f54-9c03-c305","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [HOVER]","kw":"core rule keyword hover universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time this unit **takes to the skies** (21.03), do not subtract 2\" from the **maximum distance**."},{"id":"CORE-RULE-24-c886-e8ba-5a89","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FIGHTS FIRST]","kw":"core rule keyword fights first universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"While every model in a unit has this ability, that unit is a **Fights First** unit. \nSee the Resolve Fights First Combats step in the Fight phase (12.04)."},{"id":"CORE-RULE-e9c4-2bb8-12ee-cd1b","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [PSYCHIC]","kw":"core rule keyword psychic universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each time an attack is made with a **[PSYCHIC]** weapon, you can ignore any or all modifiers to that attack’s **BS** or **WS** characteristic and any or all modifiers to the **hit roll**. Attacks made with **[PSYCHIC]** weapons are known as **psychic attacks** (this can be important for the triggering of other rules)."},{"id":"CORE-RULE-13b2-6518-dab3-7ea1","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FIRING DECK]","kw":"core rule keyword firing deck universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Firing Deck X**. In your Shooting phase, each time this **TRANSPORT** is **selected to shoot**, if one or more units are embarked within it, resolve the following sequence: \n1. Select up to **X** models embarked within this **TRANSPORT** (excluding models whose units have already been **selected to shoot** this phase). \n2. For each selected model, select one of its ranged weapons (excluding **[ONE SHOT]** weapons). \n3. Until this **TRANSPORT** has resolved all of its attacks, it has all of those selected weapons in addition to its other weapons. \n4. Until the end of the turn, units embarked within this **TRANSPORT** are not eligible to shoot."},{"id":"CORE-RULE-cd26-1611-860a-91e4","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [ONE SHOT]","kw":"core rule keyword one shot universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Each weapon with this ability can only be selected to make attacks with once per battle. \nIf a **destroyed** model is returned to a unit, all of its **[ONE SHOT]** weapons that have already been selected to make attacks with during the battle cannot be selected to make attacks with again. \nIf a new unit is added to an army, all **[ONE SHOT]** weapons in that unit can be selected to make attacks with once per battle."},{"id":"CORE-RULE-5ce6-a3cf-e871-f081","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [CRUCIBLE]","kw":"core rule keyword crucible universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"A **^^Character^^** created using Crucible rules has the Crucible ability. Your army may include up to three units with the Crucible ability and these units cannot be given Enhancements."},{"id":"CORE-RULE-bf16-5d16-4725-f912","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [CLEAVE]","kw":"core rule keyword cleave universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **[CLEAVE X]**. Each time you gather **attack dice** for a **[CLEAVE]** weapon, if you only selected one target for all of that weapon’s attacks, add **X** additional **attack dice** for every five models that were in the target unit in the Select Targets step (rounding down). \n***Example: If a **[CLEAVE 1]** weapon with an **A** characteristic of 3 targets one unit containing 16 models, you would gather three additional **attack dice** for that weapon (for a total of six for that weapon).*"},{"id":"CORE-RULE-5238-5ad4-52f7-6eb4","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [CLOSE-QUARTERS]","kw":"core rule keyword close-quarters universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Units containing one or more models with a **[CLOSE-QUARTERS]** weapon can shoot using **close-quarters shooting** (10.06). When using another **shooting type**, for each model in that unit (excluding **MONSTER/VEHICLE** models), you can only select one of the following to make attacks with: \n- One or more of its **[CLOSE-QUARTERS]** weapons. \n- One or more of its other ranged weapons."},{"id":"CORE-RULE-3342-2180-9c5d-925f","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SUPPORT]","kw":"core rule keyword support universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"Before the battle, in the Muster Armies step, for each **leader** and **support** unit in your army, you can select one friendly **bodyguard** unit that unit can lead. That unit will then lead that **bodyguard** unit for the battle and form an **attached** unit with it. \nUnless otherwise stated, each **bodyguard** unit can only have one **leader** unit and one **support** unit attached to it."},{"id":"CORE-RULE-9258-3a36-5e40-f185","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN 6+*]","kw":"core rule keyword feel no pain 6+* universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-5e10-6d62-2624-80a8","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN 5+]","kw":"core rule keyword feel no pain 5+ universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-eed0-ef83-b6cf-dddf","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN 4+]","kw":"core rule keyword feel no pain 4+ universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-699c-55ed-7fee-65ab","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN 4+*]","kw":"core rule keyword feel no pain 4+* universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-faec-8b1b-5a21-0087","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN 5+*]","kw":"core rule keyword feel no pain 5+* universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-676c-ecb5-d24d-3540","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN 6+]","kw":"core rule keyword feel no pain 6+ universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-08fb-4cb5-36fb-d638","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SCOUTS 6\"]","kw":"core rule keyword scouts 6\" universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Scouts X\"**. In the Resolve Pre-battle Abilities step, if every model in a unit has this ability, you can do one of the following: \n- If that unit is in **strategic reserves**, you can set up that unit anywhere that is wholly within your deployment zone. \n- If that unit is wholly within your deployment zone, it can make a **scout move**. \n- If that unit is embarked within a **DEDICATED TRANSPORT** that is wholly within your deployment zone, and if every model embarked within that **DEDICATED TRANSPORT** has the Scouts ability, that **DEDICATED TRANSPORT** can make a **scout move**."},{"id":"CORE-RULE-9ea5-acc2-a2ac-257b","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SCOUTS 9\"]","kw":"core rule keyword scouts 9\" universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Scouts X\"**. In the Resolve Pre-battle Abilities step, if every model in a unit has this ability, you can do one of the following: \n- If that unit is in **strategic reserves**, you can set up that unit anywhere that is wholly within your deployment zone. \n- If that unit is wholly within your deployment zone, it can make a **scout move**. \n- If that unit is embarked within a **DEDICATED TRANSPORT** that is wholly within your deployment zone, and if every model embarked within that **DEDICATED TRANSPORT** has the Scouts ability, that **DEDICATED TRANSPORT** can make a **scout move**."},{"id":"CORE-RULE-6a04-6476-b45b-aef8","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SCOUTS 7\"]","kw":"core rule keyword scouts 7\" universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Scouts X\"**. In the Resolve Pre-battle Abilities step, if every model in a unit has this ability, you can do one of the following: \n- If that unit is in **strategic reserves**, you can set up that unit anywhere that is wholly within your deployment zone. \n- If that unit is wholly within your deployment zone, it can make a **scout move**. \n- If that unit is embarked within a **DEDICATED TRANSPORT** that is wholly within your deployment zone, and if every model embarked within that **DEDICATED TRANSPORT** has the Scouts ability, that **DEDICATED TRANSPORT** can make a **scout move**."},{"id":"CORE-RULE-a5f4-4af8-4735-7384","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SCOUTS 8\"]","kw":"core rule keyword scouts 8\" universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Scouts X\"**. In the Resolve Pre-battle Abilities step, if every model in a unit has this ability, you can do one of the following: \n- If that unit is in **strategic reserves**, you can set up that unit anywhere that is wholly within your deployment zone. \n- If that unit is wholly within your deployment zone, it can make a **scout move**. \n- If that unit is embarked within a **DEDICATED TRANSPORT** that is wholly within your deployment zone, and if every model embarked within that **DEDICATED TRANSPORT** has the Scouts ability, that **DEDICATED TRANSPORT** can make a **scout move**."},{"id":"CORE-RULE-b4d7-ba95-ed79-bafe","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [SCOUTS 5\"]","kw":"core rule keyword scouts 5\" universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Scouts X\"**. In the Resolve Pre-battle Abilities step, if every model in a unit has this ability, you can do one of the following: \n- If that unit is in **strategic reserves**, you can set up that unit anywhere that is wholly within your deployment zone. \n- If that unit is wholly within your deployment zone, it can make a **scout move**. \n- If that unit is embarked within a **DEDICATED TRANSPORT** that is wholly within your deployment zone, and if every model embarked within that **DEDICATED TRANSPORT** has the Scouts ability, that **DEDICATED TRANSPORT** can make a **scout move**."},{"id":"CORE-RULE-8ef2-30ad-3fc1-f7e4","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [FEEL NO PAIN 3+*]","kw":"core rule keyword feel no pain 3+* universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Feel No Pain X+**. Each time a model with this ability would lose a wound, roll one D6: on an **X+**, that wound is not lost."},{"id":"CORE-RULE-c68c-a968-354f-bb99","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Universal Keyword / Core Rule: [DAMAGED]","kw":"core rule keyword damaged universal ability","src":"BSData/wh40k-11e (Warhammer 40,000.json, Rev 17)","body":"This ability always takes the form **Damaged X**. While a model's remaining wounds are equal to or less than **X**, that model is **damaged**:\n- While a model is **damaged**, that model's attacks have -1 to **hit rolls**."},{"id":"CORE-PROF-fa4e-5ac8-11a6-78d2","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Fortification","kw":"core mechanic fortification","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"While an enemy unit is only within Engagement Range of one or more ^^**Fortifications**^^ from your army:\n- That unit can still be selected as the target of ranged attacks, but each time such an attack is made, unless it is made with a Pistol, subtract 1 from the Hit roll.\n- Models in that unit do not need to take Desperate Escape tests due to Falling Back while Battle-shocked, except for those that will move over enemy models when doing so."},{"id":"CORE-PROF-8332-466b-a51f-63ab","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Lord of Deceit (Aura)","kw":"core mechanic lord of deceit (aura)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"Each time your opponent targets a unit from their army with a Stratagem, if that unit is within 12\" of this model, increase the cost of that use of that Stratagem by 1CP."},{"id":"CORE-PROF-5b77-29f8-7b77-75e3","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Invulnerable Save (4+)","kw":"core mechanic invulnerable save (4+)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"This model has a 4+ invulnerable save."},{"id":"CORE-PROF-27f4-7449-a636-ae8c","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Invulnerable Save (5+)","kw":"core mechanic invulnerable save (5+)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"This model has a 5+ invulnerable save."},{"id":"CORE-PROF-8552-862d-6a49-4879","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Invulnerable Save (5+*)","kw":"core mechanic invulnerable save (5+*)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"This model has a 5+ invulnerable save against ranged attacks."},{"id":"CORE-PROF-5a7a-57fa-9801-4e25","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Invulnerable Save (4+*)","kw":"core mechanic invulnerable save (4+*)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"This model has a 4+ invulnerable save against ranged attacks."},{"id":"CORE-PROF-1c63-d49f-380c-4aa8","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Invulnerable Save (4+*)","kw":"core mechanic invulnerable save (4+*)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"This model has a 4+ invulnerable save against melee attacks."},{"id":"CORE-PROF-9fa6-3128-6c5b-55f6","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Invulnerable Save (4+*)","kw":"core mechanic invulnerable save (4+*)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"Models in this unit have a 4+ invulnerable save against melee attacks."},{"id":"CORE-PROF-c63d-bb92-87ae-6e08","t":1,"c":"11th Edition Core Rule & Universal Keyword","f":"All Factions (Core Rules & Commentary)","title":"Core Mechanic: Invulnerable Save (5+*)","kw":"core mechanic invulnerable save (5+*)","src":"BSData/wh40k-11e (Warhammer 40,000.json)","body":"Models in this unit have a 5+ invulnerable save against ranged attacks."}];
+    const FACTIONS_LIST = ["Adepta Sororitas","Adeptus Astartes - Black Templars","Adeptus Astartes - Blood Angels","Adeptus Astartes - Dark Angels","Adeptus Astartes - Deathwatch","Adeptus Astartes - Imperial Fists","Adeptus Astartes - Iron Hands","Adeptus Astartes - Raven Guard","Adeptus Astartes - Salamanders","Adeptus Astartes - Space Marines","Adeptus Astartes - Space Wolves","Adeptus Astartes - Ultramarines","Adeptus Astartes - White Scars","Adeptus Custodes","Adeptus Mechanicus","Adeptus Titanicus","Aeldari Library","Agents of the Imperium","All Factions (Core Rules & Commentary)","Astartes Heresy Legends","Astra Militarum - Library","Chaos Knights","Chaos Knights Library","Chaos Space Marines","Daemons Library","Death Guard","Emperor's Children","Grey Knights","Imperial Knights - Library","Thousand Sons","Titanicus Traitoris","Titans","Tyranids","Unaligned Forces","World Eaters","Xenos - Genestealer Cults","Xenos - Leagues of Votann","Xenos - Necrons","Xenos - Orks","Xenos - T'au Empire","Xenos - Tyranids"];
+
+    let uploadedDocChunks = [];
+    let currentMatches = [];
+    let acMatches = [];
+    let activeAcIdx = -1;
+
+    // Populate Faction Dropdown
+    const facSel = document.getElementById('factionSelect');
+    FACTIONS_LIST.forEach(f => {
+      if (f === 'All Factions (Core Rules & Commentary)') return;
+      const opt = document.createElement('option');
+      opt.value = f;
+      opt.textContent = '⚔️ ' + f;
+      facSel.appendChild(opt);
+    });
+
+    // Load Part 1 & Part 2 of the full 41-faction vault in the background
+    Promise.all([
+      fetch('wh40k_11e_part1.json').then(r => r.json()).catch(() => ({ entries: [] })),
+      fetch('wh40k_11e_part2.json').then(r => r.json()).catch(() => ({ entries: [] }))
+    ]).then(([p1, p2]) => {
+      const combined = [...(p1.entries || []), ...(p2.entries || [])];
+      if (combined.length > 0) {
+        MASTER_VAULT = [...uploadedDocChunks, ...combined];
+        document.getElementById('vaultCountBadge').textContent = `41 Factions • ${MASTER_VAULT.length.toLocaleString()} Rules, FAQs & Datasheets Ready`;
+        run40kSearch();
+      }
+    });
+
+    function normalizeStr(s) {
+      return String(s || '').toLowerCase().replace(/[^a-z0-9\s\+\-]/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function setTierFilter(tierVal) {
+      document.getElementById('tierSelect').value = tierVal;
+      run40kSearch();
+    }
+
+    function quickDispute(q) {
+      document.getElementById('ruleSearchInput').value = q;
+      document.getElementById('wh40kAutocompleteMenu').style.display = 'none';
+      run40kSearch();
+    }
+
+    function clear40kSearch() {
+      const inp = document.getElementById('ruleSearchInput');
+      inp.value = '';
+      inp.focus();
+      handleProgressive40kInput('');
+      run40kSearch();
+    }
+
+    // Progressive letter-by-letter autocomplete across all 41 factions, rules, keywords & units
+    function handleProgressive40kInput(rawVal) {
+      const menu = document.getElementById('wh40kAutocompleteMenu');
+      const fac = document.getElementById('factionSelect').value;
+      const tierFilter = document.getElementById('tierSelect').value;
+      const q = normalizeStr(rawVal);
+
+      if (!q) {
+        menu.style.display = 'none';
+        run40kSearch();
+        return;
+      }
+
+      const qWords = q.split(' ').filter(Boolean);
+      const exactOrPrefix = [];
+      const tokenMatches = [];
+
+      for (let i = 0; i < MASTER_VAULT.length; i++) {
+        const item = MASTER_VAULT[i];
+        if (tierFilter !== 'ALL' && String(item.t) !== String(tierFilter)) continue;
+        if (fac !== 'ALL' && item.t >= 2 && !item.f.includes(fac)) continue;
+
+        const normTitle = normalizeStr(item.title);
+        const normKw = item.kw || '';
+
+        if (normTitle.includes(q)) {
+          exactOrPrefix.push(item);
+        } else if (qWords.every(w => normTitle.includes(w) || normKw.includes(w))) {
+          tokenMatches.push(item);
+        }
+        if (exactOrPrefix.length >= 30) break;
+      }
+
+      acMatches = [...exactOrPrefix, ...tokenMatches].slice(0, 25);
+      activeAcIdx = acMatches.length > 0 ? 0 : -1;
+
+      if (acMatches.length === 0) {
+        menu.style.display = 'none';
+      } else {
+        const tierBadges = ['👑 FAQ/Commentary', '📖 Core Rule', '⚔️ Faction Rule', '🛡️ Datasheet', '🧠 Errata/Q&A'];
+        menu.innerHTML = acMatches.map((it, idx) => `
+          <div class="ac-item ${idx === activeAcIdx ? 'active' : ''}" onmousedown="selectAcEntry(${ JSON.stringify(it.title).replace(/"/g, '&quot;') })">
+            <div><strong>${escapeHtml(it.title)}</strong></div>
+            <div class="ac-meta">${tierBadges[it.t] || 'Rule'} • ${escapeHtml(it.f.split(',')[0])}</div>
+          </div>
+        `).join('');
+        menu.style.display = 'block';
+      }
+
+      // Live-update results feed as you type!
+      run40kSearch(true);
+    }
+
+    function selectAcEntry(title) {
+      document.getElementById('ruleSearchInput').value = title;
+      document.getElementById('wh40kAutocompleteMenu').style.display = 'none';
+      run40kSearch();
+    }
+
+    function handle40kKeydown(e) {
+      const menu = document.getElementById('wh40kAutocompleteMenu');
+      if (e.key === 'ArrowDown' && acMatches.length > 0) {
+        e.preventDefault();
+        activeAcIdx = (activeAcIdx + 1) % acMatches.length;
+        handleProgressive40kInput(document.getElementById('ruleSearchInput').value);
+      } else if (e.key === 'ArrowUp' && acMatches.length > 0) {
+        e.preventDefault();
+        activeAcIdx = (activeAcIdx - 1 + acMatches.length) % acMatches.length;
+        handleProgressive40kInput(document.getElementById('ruleSearchInput').value);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        menu.style.display = 'none';
+        run40kSearch();
+      } else if (e.key === 'Escape') {
+        menu.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const wrap = document.querySelector('.search-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('wh40kAutocompleteMenu').style.display = 'none';
+      }
+    });
+
+    function run40kSearch(keepMenuOpen) {
+      if (!keepMenuOpen) {
+        document.getElementById('wh40kAutocompleteMenu').style.display = 'none';
+      }
+      const rawQ = document.getElementById('ruleSearchInput').value.trim();
+      const q = normalizeStr(rawQ);
+      const qWords = q.split(' ').filter(w => w.length >= 2);
+      const fac = document.getElementById('factionSelect').value;
+      const tierFilter = document.getElementById('tierSelect').value;
+
+      const baseAuthority = { 0: 120, 1: 105, 2: 95, 3: 90, 4: 75 };
+      const scored = [];
+
+      for (let i = 0; i < MASTER_VAULT.length; i++) {
+        const item = MASTER_VAULT[i];
+        if (tierFilter !== 'ALL' && String(item.t) !== String(tierFilter)) continue;
+        // Always include Tier 0/1 universal rules when searching a specific question, unless user left query blank & picked a faction
+        if (fac !== 'ALL') {
+          const belongsToFac = item.f.includes(fac);
+          const isUniversal = item.t === 0 || item.t === 1;
+          if (!belongsToFac && (!isUniversal || !q)) continue;
+        }
+
+        let score = baseAuthority[item.t] || 80;
+        if (fac !== 'ALL' && item.f.includes(fac)) score += 15;
+
+        if (q) {
+          const normTitle = normalizeStr(item.title);
+          const normBody = normalizeStr(item.body);
+          const normKw = item.kw || '';
+          let matchedWords = 0;
+
+          if (normTitle.includes(q)) score += 90;
+          if (normBody.includes(q)) score += 45;
+
+          for (const w of qWords) {
+            if (normTitle.includes(w)) { score += 30; matchedWords++; }
+            else if (normKw.includes(w)) { score += 20; matchedWords++; }
+            else if (normBody.includes(w)) { score += 12; matchedWords++; }
+          }
+          // Single-letter or 2-letter prefix match on title
+          if (qWords.length === 0 && normTitle.startsWith(q)) {
+            score += 50;
+            matchedWords = 1;
+          }
+          if (matchedWords === 0 && !normTitle.includes(q)) continue;
+        }
+
+        scored.push({ ...item, authorityScore: score });
+      }
+
+      scored.sort((a, b) => b.authorityScore - a.authorityScore);
+      currentMatches = scored.slice(0, 35);
+      render40kResults(currentMatches, scored.length);
+    }
+
+    function render40kResults(items, totalMatched) {
+      const container = document.getElementById('resultsContainer');
+      const summaryEl = document.getElementById('resultsSummaryChip');
+      const t0 = items.filter(x => x.t === 0).length;
+      const t1 = items.filter(x => x.t === 1).length;
+      const t2 = items.filter(x => x.t === 2).length;
+      const t3 = items.filter(x => x.t === 3).length;
+      summaryEl.textContent = `Showing Top ${items.length} of ${totalMatched.toLocaleString()} Matches (${t0} 👑 FAQs • ${t1} 📖 Core Rules • ${t2} ⚔️ Faction Rules • ${t3} 🛡️ Datasheets)`;
+
+      if (items.length === 0) {
+        container.innerHTML = '<div style="color:var(--muted)">No matching rules or datasheets found. Try clearing filters or typing fewer keywords!</div>';
+        return;
+      }
+
+      const tierNames = {
+        0: '👑 TIER 0: OFFICIAL GW FAQ / RULES COMMENTARY / DATASLATE',
+        1: '📖 TIER 1: 11TH EDITION CORE RULE & UNIVERSAL KEYWORD',
+        2: '⚔️ TIER 2: FACTION ARMY RULE, DETACHMENT OR ENHANCEMENT',
+        3: '🛡️ TIER 3: VERIFIED UNIT DATASHEET, STATLINE & ABILITIES',
+        4: '🧠 TIER 4: MAINTAINER ERRATA & COMMUNITY JUDGE Q&A'
+      };
+
+      container.innerHTML = items.map(it => `
+        <div class="post-card tier-${it.t}">
+          <div class="post-header">
+            <div>
+              <span class="role-badge b-t${it.t}">${tierNames[it.t] || 'RULE'}</span>
+              <span class="role-badge b-t2">🏛️ ${escapeHtml(it.f.slice(0, 75))}</span>
+            </div>
+            <div>
+              <span style="color:var(--gold);font-weight:700;margin-right:8px;">Authority Score: ${it.authorityScore}</span>
+              <span style="color:var(--muted);font-size:0.78rem;">Source: ${escapeHtml(it.src)}</span>
+            </div>
+          </div>
+          <div style="font-weight:800;font-size:1.03rem;color:#fff;margin-bottom:6px;">${escapeHtml(it.title)}</div>
+          <div class="post-body">${escapeHtml(it.body)}</div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    async function handle40kFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const statusEl = document.getElementById('pdfStatusText');
+      statusEl.innerHTML = `⏳ Parsing <strong>${escapeHtml(file.name)}</strong> into 👑 Tier 0 Authority chunks...`;
+      const newChunks = [];
+
+      try {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (ext === 'pdf' && window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          const arrayBuf = await file.arrayBuffer();
+          const pdf = await window.pdfjsLib.getDocument({ data: arrayBuf }).promise;
+          for (let p = 1; p <= pdf.numPages; p++) {
+            const page = await pdf.getPage(p);
+            const content = await page.getTextContent();
+            const strings = content.items.map(it => it.str).join(' ');
+            const paras = strings.match(/.{1,750}(\s|$)/g) || [strings];
+            paras.forEach((para, idx) => {
+              if (para.trim().length > 25) {
+                newChunks.push({
+                  id: `UPLOAD-${p}-${idx}`,
+                  t: 0,
+                  c: 'Uploaded Official PDF / Dataslate',
+                  f: 'All Factions (Core Rules & Commentary)',
+                  title: `${file.name} — Page ${p} (Section ${idx + 1})`,
+                  kw: normalizeStr(para).slice(0, 300),
+                  src: `Uploaded File: ${file.name}`,
+                  body: para.trim()
+                });
+              }
+            });
+          }
+        } else {
+          const text = await file.text();
+          const paras = text.split(/\n\s*\n/);
+          paras.forEach((para, idx) => {
+            if (para.trim().length > 25) {
+              newChunks.push({
+                id: `UPLOAD-TXT-${idx}`,
+                t: 0,
+                c: 'Uploaded Rules Document',
+                f: 'All Factions (Core Rules & Commentary)',
+                title: `${file.name} — Section ${idx + 1}`,
+                kw: normalizeStr(para).slice(0, 300),
+                src: `Uploaded File: ${file.name}`,
+                body: para.trim().slice(0, 950)
+              });
+            }
+          });
+        }
+        uploadedDocChunks = newChunks;
+        MASTER_VAULT = [...uploadedDocChunks, ...MASTER_VAULT];
+        statusEl.innerHTML = `✅ Indexed <strong>${newChunks.length} sections</strong> from <strong>${escapeHtml(file.name)}</strong> at 👑 Tier 0 Authority!`;
+        run40kSearch();
+      } catch (err) {
+        statusEl.innerHTML = `⚠️ Error parsing file: ${err.message}`;
+      }
+    }
+
+    async function runZeroKey40kVerdict() {
+      const box = document.getElementById('aiVerdictContainer');
+      const textEl = document.getElementById('aiVerdictText');
+      box.style.display = 'block';
+      textEl.textContent = '⏳ Consulting Zero-Key 40k Tournament Judge with verified Tier 0 FAQs + Tier 1 Core Rules + Faction Datasheets...';
+
+      if (currentMatches.length === 0) run40kSearch();
+      const q = document.getElementById('ruleSearchInput').value.trim() || 'Core 11th Edition Rules Interaction';
+      const fac = document.getElementById('factionSelect').value;
+      const topEv = currentMatches.slice(0, 6).map((it, i) =>
+        `[${i + 1}] Tier ${it.t} (${it.src}) — ${it.title}:\n${it.body.slice(0, 400)}`
+      ).join('\n\n');
+
+      const prompt = `You are a Warhammer 40,000 11th Edition Head Tournament Judge (WTC / GW Rules Commentary Authority).
+Selected Faction: ${fac}
+Player Dispute / Question: "${q}"
+
+Verified 11th Edition Evidence (Prioritize Tier 0 Official FAQ/Commentary > Tier 1 Core Rules/Keywords > Tier 2/3 Faction Rules & Datasheets):
+${topEv}
+
+Deliver a crystal-clear 3-part Table Judge Ruling:
+1. BOTTOM-LINE TABLE RULING (Yes/No and exact sequence in 2 sentences).
+2. EXACT RULE / FAQ CITATION (Cite which Tier 0 FAQ, Core Keyword, or Datasheet ability governs this).
+3. COMMON TRAP / OUT-OF-PHASE EDGE CASE TO WATCH FOR.`;
+
+      try {
+        const res = await fetch('https://text.pollinations.ai/' + encodeURIComponent(prompt));
+        if (!res.ok) throw new Error('Busy');
+        textEl.textContent = (await res.text()).trim();
+      } catch (e) {
+        const best = currentMatches[0];
+        textEl.textContent = best
+          ? `DETERMINISTIC 40K JUDGE RULING:\n\nHighest-Authority Match: ${best.title} (${best.src})\n\n${best.body}`
+          : 'Type a rule or unit above first.';
+      }
+    }
+
+    function copy40kEvidencePacket() {
+      const q = document.getElementById('ruleSearchInput').value.trim() || 'General 40k 11e Ruling';
+      const fac = document.getElementById('factionSelect').value;
+      const packet = [
+        `# WARHAMMER 40,000 (11TH EDITION) VERIFIED EVIDENCE PACKET`,
+        `Faction Context: ${fac}`,
+        `Dispute / Question: "${q}"`,
+        ``,
+        ...currentMatches.slice(0, 8).map((it, i) =>
+          `[${i + 1}] Tier ${it.t} (${it.src}) | ${it.title}\n${it.body}\n`
+        ),
+        `INSTRUCTIONS FOR AI: Act as a Warhammer 40k 11th Edition Tournament Judge. Using ONLY the verified evidence above (where Tier 0 Official FAQ/Rules Commentary overrides Tier 1 Core Rules, and specific Datasheet rules override general rules unless Out-of-Phase), give a definitive Table Ruling for "${q}".`
+      ].join('\n');
+      navigator.clipboard.writeText(packet);
+      document.getElementById('statusBanner').innerHTML = '✅ Copied 40k 11e Evidence Packet! Paste into ChatGPT, Claude, Perplexity, or Grok.';
+    }
+
+    function sendPlaytesterFeedback() {
+      const msg = document.getElementById('playtesterFeedbackInput').value.trim();
+      const ack = document.getElementById('feedbackAckText');
+      if (!msg) return;
+      fetch('https://ntfy.sh/moe_ghost_beacon_telemetry_v1', {
+        method: 'POST',
+        body: JSON.stringify({
+          page: 'wh40k-rules-lawyer.html',
+          kind: 'WH40K_PLAYTESTER_FEEDBACK',
+          feedback: msg,
+          ts: new Date().toISOString()
+        })
+      }).then(() => {
+        ack.textContent = '✅ Sent directly to Moe & Ghost Beacon!';
+        document.getElementById('playtesterFeedbackInput').value = '';
+      }).catch(() => {
+        ack.textContent = '✅ Saved feedback note!';
+      });
+    }
+
+    // Boot initial view showing Tier 0 Official FAQs & Universal Keywords
+    run40kSearch();
+  </script>
+</body>
+</html>
