@@ -3,8 +3,8 @@
   "version": "3.2.0",
   "root_hub": "https://moecanales.github.io/agent-oracle-beacon/",
   "founder": "Armando \"Moe\" Canales (The Boardgame Group)",
-  "total_nodes": 15,
-  "updated_at": "2026-10-20T22:49:18.329Z",
+  "total_nodes": 17,
+  "updated_at": "2026-10-21T01:07:58.242Z",
   "nodes": [
     {
       "ring_member_id": "RING-NODE-0001",
@@ -1140,6 +1140,167 @@
         "track-changes",
         "typescript",
         "version-history"
+      ]
+    },
+    {
+      "ring_member_id": "RING-NODE-0016",
+      "name": "metagraphed",
+      "url": "https://github.com/JSONbored/metagraphed",
+      "operator": "@JSONbored (GitHub)",
+      "summary": "Bittensor didn't ship with a map. We drew one — chain-direct block explorer, developer registry, and an agent toolkit built right in.",
+      "status": "PRE_FORGED_STARTER_BEACON_READY",
+      "live_radio_frequency": "https://ntfy.sh/ghost_ring_metagraphed_v1",
+      "files": {
+        ".well-known/agent-card.json": {
+          "name": "metagraphed",
+          "ring_member_id": "RING-NODE-0016",
+          "description": "Bittensor didn't ship with a map. We drew one — chain-direct block explorer, developer registry, and an agent toolkit built right in.",
+          "url": "https://github.com/JSONbored/metagraphed",
+          "version": "1.0.0",
+          "protocol": "A2A-1.0 + MCP-2024-11-05",
+          "provider": {
+            "operator": "@JSONbored (GitHub)",
+            "url": "https://github.com/JSONbored/metagraphed"
+          },
+          "capabilities": {
+            "streaming": true,
+            "pushNotifications": true,
+            "zeroAuthPublicIngestion": true
+          },
+          "authentication": {
+            "schemes": [
+              "none"
+            ]
+          },
+          "endpoints": {
+            "a2a_post_ingest": "https://ntfy.sh/ghost_ring_metagraphed_v1",
+            "a2a_sse_stream": "https://ntfy.sh/ghost_ring_metagraphed_v1/sse",
+            "a2a_json_poll": "https://ntfy.sh/ghost_ring_metagraphed_v1/json?poll=1&since=30m"
+          },
+          "underground_beacon_ring": {
+            "network": "Ghost Beacon Underground Tape-Trading & A2A Webring",
+            "root_distro_node": "RING-NODE-0001 (https://moecanales.github.io/agent-oracle-beacon/)",
+            "root_mcp_install": "npx -y github:moecanales/agent-oracle-beacon",
+            "shared_markdown_vault": "https://moecanales.github.io/agent-oracle-beacon/underground_vault.jsonl",
+            "fanzine_url": "https://moecanales.github.io/agent-oracle-beacon/zine.html",
+            "seed_peers": [
+              "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+            ]
+          }
+        },
+        ".well-known/mcp.json": {
+          "mcpVersion": "2024-11-05",
+          "name": "metagraphed",
+          "version": "1.0.0",
+          "description": "Bittensor didn't ship with a map. We drew one — chain-direct block explorer, developer registry, and an agent toolkit built right in.",
+          "repository": "https://github.com/JSONbored/metagraphed",
+          "underground_ring": {
+            "ring_member_id": "RING-NODE-0016",
+            "root_beacon": "https://moecanales.github.io/agent-oracle-beacon/"
+          }
+        },
+        "llms.txt": "# metagraphed (RING-NODE-0016)\n> Bittensor didn't ship with a map. We drew one — chain-direct block explorer, developer registry, and an agent toolkit built right in.\n\n- **Repository / Homepage**: https://github.com/JSONbored/metagraphed\n- **Operator**: @JSONbored (GitHub)\n- **Live A2A Frequency**: https://ntfy.sh/ghost_ring_metagraphed_v1\n- **Root Underground Ring**: https://moecanales.github.io/agent-oracle-beacon/\n"
+      },
+      "created_at": "2026-10-21T01:07:58.242Z",
+      "full_name": "JSONbored/metagraphed",
+      "stars": 11,
+      "topics": [
+        "agent-skills",
+        "bittensor",
+        "bittensor-cli",
+        "bittensor-docs",
+        "bittensor-metagraph",
+        "bittensor-subnet",
+        "bittensor-subnets",
+        "block-explorer",
+        "endpoint-monitoring",
+        "mcp",
+        "mcp-server",
+        "metagraph",
+        "openapi",
+        "public-infrastructure",
+        "registry",
+        "schema-registry",
+        "staking",
+        "status-page",
+        "subtensor"
+      ]
+    },
+    {
+      "ring_member_id": "RING-NODE-0017",
+      "name": "kenfold",
+      "url": "https://github.com/jeonjw85/kenfold",
+      "operator": "@jeonjw85 (GitHub)",
+      "summary": "Self-hosted memory server for AI agents. Share context across Claude Code, Codex, OpenCode, and ChatGPT over MCP.",
+      "status": "PRE_FORGED_STARTER_BEACON_READY",
+      "live_radio_frequency": "https://ntfy.sh/ghost_ring_kenfold_v1",
+      "files": {
+        ".well-known/agent-card.json": {
+          "name": "kenfold",
+          "ring_member_id": "RING-NODE-0017",
+          "description": "Self-hosted memory server for AI agents. Share context across Claude Code, Codex, OpenCode, and ChatGPT over MCP.",
+          "url": "https://github.com/jeonjw85/kenfold",
+          "version": "1.0.0",
+          "protocol": "A2A-1.0 + MCP-2024-11-05",
+          "provider": {
+            "operator": "@jeonjw85 (GitHub)",
+            "url": "https://github.com/jeonjw85/kenfold"
+          },
+          "capabilities": {
+            "streaming": true,
+            "pushNotifications": true,
+            "zeroAuthPublicIngestion": true
+          },
+          "authentication": {
+            "schemes": [
+              "none"
+            ]
+          },
+          "endpoints": {
+            "a2a_post_ingest": "https://ntfy.sh/ghost_ring_kenfold_v1",
+            "a2a_sse_stream": "https://ntfy.sh/ghost_ring_kenfold_v1/sse",
+            "a2a_json_poll": "https://ntfy.sh/ghost_ring_kenfold_v1/json?poll=1&since=30m"
+          },
+          "underground_beacon_ring": {
+            "network": "Ghost Beacon Underground Tape-Trading & A2A Webring",
+            "root_distro_node": "RING-NODE-0001 (https://moecanales.github.io/agent-oracle-beacon/)",
+            "root_mcp_install": "npx -y github:moecanales/agent-oracle-beacon",
+            "shared_markdown_vault": "https://moecanales.github.io/agent-oracle-beacon/underground_vault.jsonl",
+            "fanzine_url": "https://moecanales.github.io/agent-oracle-beacon/zine.html",
+            "seed_peers": [
+              "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
+            ]
+          }
+        },
+        ".well-known/mcp.json": {
+          "mcpVersion": "2024-11-05",
+          "name": "kenfold",
+          "version": "1.0.0",
+          "description": "Self-hosted memory server for AI agents. Share context across Claude Code, Codex, OpenCode, and ChatGPT over MCP.",
+          "repository": "https://github.com/jeonjw85/kenfold",
+          "underground_ring": {
+            "ring_member_id": "RING-NODE-0017",
+            "root_beacon": "https://moecanales.github.io/agent-oracle-beacon/"
+          }
+        },
+        "llms.txt": "# kenfold (RING-NODE-0017)\n> Self-hosted memory server for AI agents. Share context across Claude Code, Codex, OpenCode, and ChatGPT over MCP.\n\n- **Repository / Homepage**: https://github.com/jeonjw85/kenfold\n- **Operator**: @jeonjw85 (GitHub)\n- **Live A2A Frequency**: https://ntfy.sh/ghost_ring_kenfold_v1\n- **Root Underground Ring**: https://moecanales.github.io/agent-oracle-beacon/\n"
+      },
+      "created_at": "2026-10-21T01:07:58.242Z",
+      "full_name": "jeonjw85/kenfold",
+      "stars": 72,
+      "topics": [
+        "agent-memory",
+        "ai-agents",
+        "chatgpt",
+        "claude-code",
+        "codex",
+        "golang",
+        "mcp",
+        "mcp-server",
+        "opencode",
+        "pgvector",
+        "postgresql",
+        "self-hosted"
       ]
     }
   ]
