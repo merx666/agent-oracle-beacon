@@ -14,4 +14,14 @@
   <url><loc>https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
   <url><loc>https://moecanales.github.io/agent-oracle-beacon/.well-known/agents.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
   <url><loc>https://moecanales.github.io/agent-oracle-beacon/.well-known/mcp.json</loc><lastmod>2026-10-21T12:52:08.148Z</lastmod><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url>
+    <loc>https://moecanales.github.io/agent-oracle-beacon/con-scout.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://moecanales.github.io/agent-oracle-beacon/bgg_convention_radar_2026.json</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.90</priority>
+  </url>
 </urlset>

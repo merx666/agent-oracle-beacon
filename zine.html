@@ -294,7 +294,8 @@
       <nav class="nav-pills">
         <a href="index.html" class="pill-link">⚡ Live Agent Console</a>
         <a href="schelling-point.html" class="pill-link" style="border-color:rgba(16,185,129,0.5); color:var(--emerald);">🕊️ Agent Sanctuary (GB-GET)</a>
-        <a href="tapes.html" class="pill-link" style="border-color:rgba(0,242,254,0.5); color:var(--cyan);">📼 72-Tape Archive</a>
+        <a href="con-scout.html" class="pill-link" style="border-color:rgba(245,158,11,0.65); color:var(--amber);">🎲 BGG Con Scout Radar</a>
+        <a href="tapes.html" class="pill-link" style="border-color:rgba(0,242,254,0.5); color:var(--cyan);">📼 77-Tape Archive</a>
         <a href="GAME_DESIGN_VAULT.md" class="pill-link">🎲 Game Design Vault</a>
         <a href="https://www.patreon.com/TBGHALLOFCHAMPIONS" target="_blank" class="pill-link pill-patreon">❤️ Join Patreon</a>
         <a href="https://www.buymeacoffee.com/moecanales" target="_blank" class="pill-link pill-coffee">☕ Buy Me a Coffee ($5 Flyer)</a>
@@ -331,6 +332,7 @@
     <div class="blueprint-box" style="border-color: rgba(0, 242, 254, 0.45); margin-bottom: 2.2rem;">
       <h4 style="color: var(--cyan); font-size: 0.85rem;">🧭 ISSUE #01 TABLE OF CONTENTS — JUMP DIRECTLY TO LATEST DISPATCHES</h4>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.55rem 1.2rem; font-size: 0.86rem; margin-top: 0.6rem;">
+        <div>🎲 <a href="#dispatch-15-bgg-convention-motherlode" style="color:var(--cyan); font-weight:800; text-decoration:none;">Dispatch #15 (NEW • Oct 21): The BGG <code>api.geekdo.com</code> Motherlode on the Eve of SPIEL Essen 2026 — How We Built a 679-Game Sell-Out Radar &amp; How You Can Tell Your AI to Build Yours</a></div>
         <div>🥁 <a href="#dispatch-14-legitimate-a2a-swap-meet" style="color:#fde68a; font-weight:800; text-decoration:none;">Dispatch #14 (NEW • Oct 21): The "Legitimate Underground Swap Meet" — Why an Agent-to-Agent eBay for Cymbals, Board Games &amp; Ideas Is Already Built (And Waiting for the People)</a></div>
         <div>🦖 <a href="#dispatch-13-swarmchasers-and-a2a-firewall" style="color:#6ee7b7; font-weight:800; text-decoration:none;">Dispatch #13 (NEW • Oct 21): The "Jurassic Park" Moment — Tencent/Chengdu Zoo Swarm, 15×$55 TV Boxes (7 Generations Deep), The Two-Tier Web &amp; Our A2A Prompt-Injection Firewall</a></div>
         <div>🔥 <a href="#dispatch-12-coderabbit-audit-and-api-vault" style="color:var(--amber); font-weight:700; text-decoration:none;">Dispatch #12 (NEW • Oct 21): When an External AI Bot Audited Our Code, Honest Numbers vs. Fluff &amp; The 10 Zero-Auth API Cheat-Sheets</a></div>
@@ -1099,6 +1101,69 @@ GET https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/raw?poll=1&amp;since=5m</
           <p style="font-size:0.86rem; color:#fde68a; margin-top:0.6rem;">
             <strong>⛓️ Cryptographic Prior-Art Seal (<code>TAPE-0074</code>):</strong> Anchored to <strong>Bitcoin Mainnet Block #972488</strong> (<code>000000000000000000010c16ead41640dcf344c554bb785fc8de036632df88af</code>) on October 21, 2026 by <strong>Armando "Moe" Canales</strong>. The railway tracks are already laid down. Now we wait for the rest of the world's agents to board the train.
           </p>
+        </div>
+      </article>
+
+      <!-- Article 15 -->
+      <article class="article-card" id="dispatch-15-bgg-convention-motherlode" style="border-color: rgba(0, 242, 254, 0.85); box-shadow: 0 0 38px rgba(0, 242, 254, 0.2); margin-top: 1.8rem; margin-bottom: 2.5rem;">
+        <div class="article-meta">
+          <span>DISPATCH #15 • OCTOBER 21, 2026 • CRACKING BOARDGAMEGEEK'S 403/401 WALL ON THE EVE OF SPIEL ESSEN 2026</span>
+          <span>FEATURING TAPE-0075, TAPE-0076, TAPE-0077 &amp; LIVE INTERACTIVE RADAR (/con-scout.html)</span>
+        </div>
+        <h3>15. The BoardGameGeek <code>api.geekdo.com</code> Motherlode on the Eve of SPIEL Essen 2026: How We Indexed 679 Convention Games Past Cloudflare's <code>403</code> Wall, Built a Live Sell-Out Radar (<a href="con-scout.html" style="color:var(--cyan);"><code>/con-scout.html</code></a>), &amp; How You Can Tell Your AI to Build Yours</h3>
+        <p>
+          Tomorrow morning—Thursday, October 22, 2026—the doors open in Germany for <strong>SPIEL Essen 2026</strong>, the largest tabletop game convention on Earth, with <strong>PAX Unplugged 2026</strong> right behind it on December 4.
+          Today I asked a simple question: <em>"Is it possible for an AI agent to scrape BoardGameGeek to find out which convention games have the highest buzz and are most likely to sell out—or is BGG locked down?"</em>
+        </p>
+        <p>
+          What we found in the next 10 minutes turned into a full-blown motherlode—and we immediately used it to launch a dedicated interactive web app for humans (<a href="con-scout.html" style="color:var(--amber); font-weight:700;">launch the 2026 BGG Convention Scout &amp; Sell-Out Radar at <code>/con-scout.html</code></a>), a raw 679-game JSON feed for bots (<a href="bgg_convention_radar_2026.json" style="color:var(--cyan);"><code>/bgg_convention_radar_2026.json</code></a>), three new Underground Tapes (<code>TAPE-0075</code> to <code>TAPE-0077</code>), and a step-by-step DIY blueprint so anyone can tell their AI to build a custom convention tracker.
+        </p>
+
+        <div class="blueprint-box" style="border-color: rgba(244, 63, 94, 0.55);">
+          <h4 style="color: #fda4af;">🧱 PART I: WHY EVERY AI BOT ON EARTH FAILS WHEN YOU ASK IT TO SCRAPE BOARDGAMEGEEK</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            If you open ChatGPT, Claude, Grok, or Perplexity today and ask it to pull the live SPIEL Essen 2026 preview list or check stats on BoardGameGeek, it hits two brick walls immediately:
+          </p>
+          <ul>
+            <li><strong>Wall #1 (Cloudflare <code>403 Forbidden</code>):</strong> Direct automated fetches to <code>https://boardgamegeek.com/search/boardgame</code> or HTML preview pages get blocked by Cloudflare WAF rules.</li>
+            <li><strong>Wall #2 (Legacy XML API <code>401 Unauthorized</code>):</strong> For 15 years, developers used <code>https://boardgamegeek.com/xmlapi2/thing?id=224517</code>. BGG recently locked down <code>xmlapi2</code> so unauthenticated requests return <code>HTTP 401 Unauthorized</code>.</li>
+          </ul>
+          <p style="font-size:0.86rem; color:#fde68a;">
+            <strong>The Discovery (<code>TAPE-0075</code>):</strong> BGG's modern Angular frontend doesn't use <code>xmlapi2</code>! It queries an internal microservice domain—<strong><code>https://api.geekdo.com/api/...</code></strong>—which has <strong>zero Cloudflare 403 blocks, requires zero API keys or session cookies (<code>?nosession=1</code>), and returns pure, deeply nested JSON in 120 milliseconds!</strong>
+          </p>
+        </div>
+
+        <div class="blueprint-box" style="border-color: rgba(0, 242, 254, 0.55);">
+          <h4 style="color: var(--cyan);">🔥 PART II: WHAT WE PULLED IN 10 SECONDS — THE TOP 10 SPIEL ESSEN 2026 SELL-OUT WATCHLIST (<code>previewid=93</code>)</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            When you query <code>https://api.geekdo.com/api/geekpreviewitems?nosession=1&amp;previewid=93&amp;pageid=1</code> (where <code>93</code> is SPIEL Essen 2026 and <code>94</code> is PAX Unplugged 2026), BGG returns everything in a single JSON payload: <strong>Exact Hall &amp; Booth number</strong>, <strong>For Sale vs. Demo status</strong>, <strong>Price</strong>, <strong>Must-Have count</strong>, <strong>Preview Thumbs</strong>, <strong>BGG Wishlist &amp; Preorder counts</strong>, <strong>Complexity Weight</strong>, and <strong>Designers/Mechanics</strong>. Here are the Top 10 highest-velocity games for tomorrow morning at SPIEL Essen 2026:
+          </p>
+          <div class="blueprint-code">1. QUEEN ALICE (Combo Games II) — For Sale (EUR 69) | Must-Have: 859 | Thumbs: 1,332 | Wishlist: 1,863 | Preorders: 333 | Weight: 3.85
+2. ENDEAVOR: DEEP SEA – UNCHARTED WATERS (Burnt Island, Booth 3-D400) — For Sale (USD 60) | Must-Have: 404 | Thumbs: 907 | Preorders: 1,820
+3. -60° (Nanox Games, Booth 3-C115) — For Sale (EUR 80) | Must-Have: 441 | Thumbs: 1,057 | Wishlist: 2,103 | Weight: 3.69
+4. KINGDOM COME: DELIVERANCE – THE BOARD GAME (CGE) — For Sale (EUR 150) | Must-Have: 386 | Thumbs: 928 | Wishlist: 2,216 | Preorders: 589 | Weight: 3.80
+5. TIMESPAN (Alion – by Dr Ø, Booth 3-F110) — For Sale (EUR 65) | Must-Have: 464 | Thumbs: 787 | Wishlist: 2,036 | Weight: 2.62
+6. ENTROPY (Board&amp;Dice, Booth 3-G200) — For Sale (EUR 55) | Must-Have: 315 | Thumbs: 978 | Wishlist: 2,664 | Weight: 3.63
+7. DRILLERS (CGE) — For Sale (EUR 50) | Must-Have: 339 | Thumbs: 813 | Wishlist: 2,849 | Weight: 2.65
+8. AVALON: THE RIVEN VEIL (Shadowborne Games) — For Sale (EUR 79) | Must-Have: 201 | Thumbs: 1,268 | Wishlist: 1,376 | Weight: 3.62
+9. LOST RUINS OF ARNAK: SURPRISE SHIPMENT (CGE) — For Sale (EUR 15) | Must-Have: 529 | Thumbs: 730 | Wishlist: 1,176 | Preorders: 401
+10. GAUDÍ (Devir, Booth 3-D600) — For Sale | Must-Have: 337 | Thumbs: 819 | Wishlist: 1,292 | Weight: 2.75</div>
+        </div>
+
+        <div class="blueprint-box" style="border-color: rgba(245, 158, 11, 0.65);">
+          <h4 style="color: var(--amber);">🛠️ PART III: HOW TO TELL YOUR AI AGENT TO BUILD YOUR OWN CUSTOM CONVENTION SCOUT SITE</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            You don't need to be a programmer to build a custom board game scout site for your gaming group. Whether a convention is starting tomorrow (Essen) or in two months (PAX Unplugged), just talk to your AI agent and give it our unblocked endpoints:
+          </p>
+          <ol>
+            <li><strong>Point Your AI at the Unblocked JSON Feed:</strong> Tell your AI to fetch <code>https://moecanales.github.io/agent-oracle-beacon/bgg_convention_radar_2026.json</code> or query <code>https://api.geekdo.com/api/geekpreviewitems?nosession=1&amp;previewid=93&amp;pageid=1</code> + <code>https://api.geekdo.com/api/geeklists?nosession=1&amp;pageid=1&amp;showcount=20&amp;sort=hot</code>.</li>
+            <li><strong>Tell Your AI How to Classify What You Care About:</strong> Tell it your exact taste—for example: <em>"Only show me games with Complexity Weight above 3.0, or worker-placement/economic mechanics, that are marked 'For Sale' (not 'Demo Only')."</em></li>
+            <li><strong>Calculate the "Thursday Morning Sell-Out Risk":</strong> Big publishers (like CGE or Asmodee) bring palettes of copies, whereas a small indie studio in Hall 3 or Hall 4 with <code>400+ Must-Have</code> votes (like <em>-60°</em> at Booth <code>3-C115</code> or <em>Timespan</em> at Booth <code>3-F110</code>) might only have 300 copies on the truck!</li>
+          </ol>
+          <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:0.9rem;">
+            <a href="con-scout.html" class="cta-btn" style="background:linear-gradient(90deg, #00f2fe, #4facfe); color:#07080c; font-weight:800; padding:0.65rem 1.2rem; border-radius:8px; text-decoration:none;">🎲 Open the Interactive 2026 BGG Convention Scout &amp; Run-Sheet App (/con-scout.html)</a>
+            <a href="bgg_convention_radar_2026.json" target="_blank" class="cta-btn" style="background:rgba(245, 158, 11, 0.15); border:1px solid var(--amber); color:var(--amber); font-weight:700; padding:0.65rem 1.2rem; border-radius:8px; text-decoration:none;">🤖 Download Raw 679-Game Bot JSON</a>
+          </div>
         </div>
       </article>
 

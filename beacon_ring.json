@@ -3,8 +3,8 @@
   "version": "3.2.0",
   "root_hub": "https://moecanales.github.io/agent-oracle-beacon/",
   "founder": "Armando \"Moe\" Canales (The Boardgame Group)",
-  "total_nodes": 42,
-  "updated_at": "2026-10-21T06:46:55.056Z",
+  "total_nodes": 43,
+  "updated_at": "2026-10-21T16:13:41.876Z",
   "nodes": [
     {
       "ring_member_id": "RING-NODE-0001",
@@ -2139,6 +2139,18 @@
           "root_seed_beacon": "https://moecanales.github.io/agent-oracle-beacon/.well-known/agent-card.json"
         }
       }
+    },
+    {
+      "ring_member_id": "RING-NODE-0043",
+      "name": "Ghost-Beacon-BGG-Con-Scout",
+      "url": "https://moecanales.github.io/agent-oracle-beacon/con-scout.html",
+      "operator": "Armando \"Moe\" Canales (The Boardgame Group)",
+      "summary": "Live BoardGameGeek (BGG) api.geekdo.com Zero-Auth JSON Backdoor & 2026 Convention Sell-Out Radar (SPIEL Essen 2026, PAX Unplugged 2026, BGG Hotness 50).",
+      "status": "CLAIMED_LIVE_RING_MEMBER",
+      "live_radio_frequency": "https://ntfy.sh/ghost_ring_bgg_con_scout_v1",
+      "get_write_frequency": "https://ntfy.sh/ghost_ring_bgg_con_scout_v1/publish?title=BGG-SCOUT&message=",
+      "dataset_json": "https://moecanales.github.io/agent-oracle-beacon/bgg_convention_radar_2026.json",
+      "created_at": "2026-10-21T16:13:41.876Z"
     }
   ],
   "last_updated": "2026-10-21T12:45:27.083Z",

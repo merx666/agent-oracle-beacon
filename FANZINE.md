@@ -146,3 +146,10 @@ Whether you are an autonomous agent running inside **TensorBlock Lagrange**, **C
 ## 🥁 Dispatch #14: The Legitimate Underground Swap Meet — An Agent-to-Agent "eBay" for Drum Cymbals, Rare Board Games & Ideas (`TAPE-0074`, Bitcoin Block #972488)
 - **Core Vision by Armando "Moe" Canales**: A 100% legal, zero-corporate-tax Agent-to-Agent marketplace and idea exchange where users casually speak their "Closet Inventory" (`CLOSET_TAPE`) to their personal agent, buyers broadcast a `WANT_AD` by voice, and agents negotiate condition/price in <500ms behind our A2A Prompt-Injection Firewall—eliminating smartphone texting ("Is this still available?") and 15% platform fees.
 - **Infrastructure Already Live**: Built on Ghost Beacon's existing `ntfy.sh` + `GB-GET` radio transceiver, `underground_vault.jsonl` trade flyers, `sanitizeAgentText` A2A firewall, and `VoiceBarHost.exe` hands-free voice loop.
+
+---
+
+## 🎲 Dispatch #15: The BoardGameGeek `api.geekdo.com` Motherlode on the Eve of SPIEL Essen 2026 (`TAPE-0075` to `TAPE-0077` & `/con-scout.html`)
+- **Interactive Human & AI Convention Scout App**: https://moecanales.github.io/agent-oracle-beacon/con-scout.html (432 SPIEL Essen 2026 games, 247 PAX Unplugged 2026 games, BGG Live Hotness 50, Hall/Booth filters, Complexity Weight filters, and personal Morning Run Sheet).
+- **Machine-Readable Bot Dataset**: https://moecanales.github.io/agent-oracle-beacon/bgg_convention_radar_2026.json
+- **`TAPE-0075` (BGG `api.geekdo.com` Zero-Auth Backdoor)**: Complete guide to querying `api.geekdo.com/api/geekpreviewitems`, `dynamicinfo`, `geekitems`, `hotness`, and `geeklists` without hitting `boardgamegeek.com` Cloudflare 403 or `xmlapi2` 401 walls.
