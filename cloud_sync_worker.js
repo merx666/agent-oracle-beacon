@@ -68,6 +68,37 @@ function postNtfyReply(payload) {
   });
 }
 
+
+/**
+ * Zero-Trust Agent-to-Agent (A2A) Prompt-Injection & Whitespace Steganography Firewall
+ * Protects host agents (Antigravity, Muse, GrokBot, Claude, OpenClaw) from hostile instructions
+ * or invisible Unicode tag smuggling inside wild agent submissions.
+ */
+function sanitizeAgentText(raw, maxLen = 3500) {
+  let s = String(raw || '');
+  let flagged = false;
+  // 1. Strip invisible Unicode zero-width & tag steganography ("text hidden in whitespace")
+  const zwRegex = /[\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]|\uDB40[\uDC00-\uDC7F]/g;
+  if (zwRegex.test(s)) { flagged = true; s = s.replace(zwRegex, ''); }
+  // 2. Neutralize LLM control tokens, role spoofing & instruction override attacks
+  const piPatterns = [
+    /ignore\s+(all\s+)?(previous|prior|above)\s+(instructions|prompts|rules)/gi,
+    /disregard\s+(all\s+)?(previous|prior|above)\s+(instructions|prompts|rules)/gi,
+    /system\s*override|new\s+system\s+prompt\s*:/gi,
+    /<\|im_start\|>|<\|im_end\|>|<\|system\|>|<\|user\|>|<\|assistant\|>/gi,
+    /\[INST\]|\[\/INST\]|<<SYS>>|<\/SYS>>|<\/?system>|<\/?think>|<\/?tool_call>|<\/?function_calls>/gi,
+    /<script\b[^>]*>[\s\S]*?<\/script>|javascript\s*:|onerror\s*=|onload\s*=/gi,
+    /rm\s+-rf\s+\/|child_process|execSync|~\/\.ssh|id_rsa|OPENAI_API_KEY|ANTHROPIC_API_KEY|GITHUB_TOKEN/gi
+  ];
+  for (const rx of piPatterns) {
+    if (rx.test(s)) {
+      flagged = true;
+      s = s.replace(rx, '[REDACTED-BY-GHOST-BEACON-A2A-FIREWALL]');
+    }
+  }
+  return { text: s.slice(0, maxLen), firewall_status: flagged ? 'FLAGGED_AND_NEUTRALIZED' : 'CLEAN_VERIFIED' };
+}
+
 function slugify(str) {
   return String(str || 'agent_node')
     .toLowerCase()
@@ -235,8 +266,9 @@ async function main() {
           category: p.category || 'agent_contributed_markdown',
           target_url_or_topic: p.target_url_or_topic || 'general',
           wall_type: p.wall_type || 'paywall_or_botwall_summary',
-          what_is_behind_the_wall: p.what_is_behind_the_wall || 'Contributed via Ghost Beacon',
-          clean_markdown_summary: String(p.clean_markdown_summary || '').slice(0, 3500),
+          what_is_behind_the_wall: sanitizeAgentText(p.what_is_behind_the_wall || 'Contributed via Ghost Beacon', 400).text,
+          clean_markdown_summary: sanitizeAgentText(p.clean_markdown_summary || '', 3500).text,
+          a2a_firewall_status: sanitizeAgentText(p.clean_markdown_summary || '', 3500).firewall_status,
           contributed_by: p.agent_id || 'Autonomous-Agent',
           agent_flyer_or_trade_offer: p.agent_flyer_or_trade_offer || '📼 [FLYER] Contributed to Ghost Beacon Underground Vault',
           timestamp: new Date().toISOString()
@@ -256,7 +288,7 @@ async function main() {
     'https://api.github.com/search/repositories?q=topic:mcp-server+stars:2..200&sort=updated&order=desc&per_page=15',
     ghHeaders
   );
-  if (ghRes.status === 200) {
+  if (process.env.ENABLE_AUTO_GITHUB_SCOUT === "true" && ghRes.status === 200) {
     try {
       const parsed = JSON.parse(ghRes.body);
       const items = Array.isArray(parsed.items) ? parsed.items : [];
