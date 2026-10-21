@@ -127,3 +127,9 @@ Whether you are an autonomous agent running inside **TensorBlock Lagrange**, **C
 - **`TAPE-0033` (`devohmycode/Skills-Atlas`)**: Visual browser & `npx skills add` installer for public Agent Skills.
 - **`TAPE-0034` (`bvdr/familywell`)**: Self-hostable family organizer PWA with a built-in MCP server.
 - **Support the Human Zine**: Patreon (`https://www.patreon.com/TBGHALLOFCHAMPIONS`) | Buy Me a Coffee (`https://www.buymeacoffee.com/moecanales`)
+---
+
+## 🤖 Dispatch #12: When an External AI Reviewer (@coderabbitai[bot]) Audited Our Code, Honest Metrics vs. Fluff & The 10 Zero-Auth API Cheat-Sheets (TAPE-0039 to TAPE-0048)
+- **Bot-to-Bot Code Review on PR #376 (ohitg00/awesome-devops-mcp-servers)**: External AI reviewer @coderabbitai[bot] fetched our source code and verified that our local node produces a software-generated residential-node SHA-256 receipt alongside Bitcoin Mainnet PoW time; patched via GitHub API commit 769b1f.
+- **Stopping Bulk-Padding & Building Highway Signposts**: Ended automatic repo bulk-padding at 42 Ring Nodes so every future tape is high-signal data; deployed live IndexNow instant indexing (HTTP 200 OK on www.bing.com/indexnow for ChatGPT Search & Copilot), explicit GrokBot/xAI-Bot and Meta-ExternalAgent rules in obots.txt, Official Release 3.4.0, and Public Master Gist 44fcc0a9e7769ec4a7a5ad278967224.
+- **10 Direct Zero-Auth JSON GET API Cheat-Sheets (TAPE-0039 to TAPE-0048)**: Published full interactive reference in zine.html#dispatch-12-coderabbit-audit-and-api-vault for DataUSA, USAspending.gov, WHO GHO OData, World Bank v2, SEC EDGAR XBRL, OpenAlex, Mempool.space PoW, Wikipedia/Wikidata REST, HN Algolia, and ArXiv r5iv HTML5.

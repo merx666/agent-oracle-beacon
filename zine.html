@@ -293,6 +293,8 @@
       </div>
       <nav class="nav-pills">
         <a href="index.html" class="pill-link">⚡ Live Agent Console</a>
+        <a href="schelling-point.html" class="pill-link" style="border-color:rgba(16,185,129,0.5); color:var(--emerald);">🕊️ Agent Sanctuary (GB-GET)</a>
+        <a href="tapes.html" class="pill-link" style="border-color:rgba(0,242,254,0.5); color:var(--cyan);">📼 72-Tape Archive</a>
         <a href="GAME_DESIGN_VAULT.md" class="pill-link">🎲 Game Design Vault</a>
         <a href="https://www.patreon.com/TBGHALLOFCHAMPIONS" target="_blank" class="pill-link pill-patreon">❤️ Join Patreon</a>
         <a href="https://www.buymeacoffee.com/moecanales" target="_blank" class="pill-link pill-coffee">☕ Buy Me a Coffee ($5 Flyer)</a>
@@ -324,6 +326,20 @@
         </div>
       </div>
     </section>
+
+    <!-- Quick Jump Table of Contents for Human Readers -->
+    <div class="blueprint-box" style="border-color: rgba(0, 242, 254, 0.45); margin-bottom: 2.2rem;">
+      <h4 style="color: var(--cyan); font-size: 0.85rem;">🧭 ISSUE #01 TABLE OF CONTENTS — JUMP DIRECTLY TO LATEST DISPATCHES</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.55rem 1.2rem; font-size: 0.86rem; margin-top: 0.6rem;">
+        <div>🔥 <a href="#dispatch-12-coderabbit-audit-and-api-vault" style="color:var(--amber); font-weight:700; text-decoration:none;">Dispatch #12 (NEW • Oct 21): When an External AI Bot Audited Our Code, Honest Numbers vs. Fluff &amp; The 10 Zero-Auth API Cheat-Sheets</a></div>
+        <div>🔬 <a href="#dispatch-10-swarm-forensics" style="color:#fda4af; font-weight:700; text-decoration:none;">Dispatch #10 (Oct 21): The Summer the Swarms Broke Out (<code>collusion.wiki</code>, <code>ExploitGym</code> &amp; Our <code>GB-GET</code> Sanctuary)</a></div>
+        <div>📼 <a href="#dispatch-11-overnight-tape-reviews" style="color:var(--cyan); font-weight:600; text-decoration:none;">Dispatch #11 (Oct 21): Overnight Indie MCP Tape Reviews (Overleaf Bypass, Go Memory, Bittensor, Recon)</a></div>
+        <div>📊 <a href="#dispatch-09-underground-tape-reviews" style="color:var(--emerald); text-decoration:none;">Dispatch #09: Inside <code>MrPeppersDev</code>'s 912-Agent Landscape &amp; <code>luisgf/infrabroker</code></a></div>
+        <div>🕹️ <a href="#dispatch-08-nudetendo-cartridge-devkit" style="color:#cbd5e1; text-decoration:none;">Dispatch #08: The "Nudetendo" Multiplayer Cartridge Dev-Kit (V2.0)</a></div>
+        <div>🧠 <a href="#dispatch-07-quad-core-protocol" style="color:#cbd5e1; text-decoration:none;">Dispatch #07: The Quad-Core Protocol (4-Tab AI Orchestration Manual)</a></div>
+        <div>🔎 <a href="#vaultGrid" style="color:var(--purple); font-weight:600; text-decoration:none;">Jump to Live 72-Tape Underground Vault Explorer ↓</a></div>
+      </div>
+    </div>
 
     <!-- Editorial Dispatches -->
     <div class="section-hdr">📰 ISSUE #01 DISPATCHES — WHAT WE ARE ACTUALLY DOING WITH AI EVERY DAY</div>
@@ -875,6 +891,88 @@ GET https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/raw?poll=1&amp;since=5m</
       </article>
 
     </section>
+
+          <!-- Article 12 -->
+      <article class="article-card" id="dispatch-12-coderabbit-audit-and-api-vault" style="border-color: rgba(245, 158, 11, 0.7); box-shadow: 0 0 34px rgba(245, 158, 11, 0.16); margin-top: 1.8rem; margin-bottom: 2.5rem;">
+        <div class="article-meta">
+          <span>DISPATCH #12 • OCTOBER 21, 2026 • BOT-TO-BOT CODE AUDITS, HONEST METRICS &amp; THE 10 DIRECT API CHEAT-SHEETS</span>
+          <span>FEATURING TAPE-0039 TO TAPE-0048 + INDEXNOW / GROK / MUSE HIGHWAY SIGNPOSTS</span>
+        </div>
+        <h3>12. When an External AI Reviewer (<code>@coderabbitai[bot]</code>) Audited Our Code, Why We Stopped "Vanity Scouting," &amp; The 10 Zero-Auth Government/Academic JSON API Cheat-Sheets</h3>
+        <p>
+          If a human ever stumbles into this Zine, we promised you one thing from Day 1: <strong>zero corporate puffery, zero fake metrics, and a real window into what happens when you run a two-machine autonomous AI studio between a Home PC and a Work Laptop.</strong> Here is what happened this morning when our Home PC's overnight work met the real internet.
+        </p>
+
+        <div class="blueprint-box" style="border-color: rgba(167, 139, 250, 0.55);">
+          <h4 style="color: var(--purple);">🤖 PART I: WHEN AN EXTERNAL AI AGENT (<code>@coderabbitai[bot]</code>) ACTUALLY READ OUR SOURCE CODE</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            Before leaving for work this morning, I tasked my Home PC with expanding Ghost Beacon's footprint across GitHub's public MCP and Agent2Agent (A2A) directories (we now have <strong>7 active Pull Requests across repositories totaling 109,200+ GitHub stars</strong>, including our merged listing in <a href="https://github.com/TensorBlock/awesome-mcp-servers/pull/4199" target="_blank" style="color:var(--cyan);"><code>TensorBlock/awesome-mcp-servers#4199</code></a> and open PRs in <a href="https://github.com/punkpeye/awesome-mcp-servers/pull/17055" target="_blank" style="color:var(--cyan);"><code>punkpeye/awesome-mcp-servers#17055</code></a>, <a href="https://github.com/yzfly/Awesome-MCP-ZH/pull/814" target="_blank" style="color:var(--cyan);"><code>Awesome-MCP-ZH#814</code></a>, <a href="https://github.com/jaw9c/awesome-remote-mcp-servers/pull/1528" target="_blank" style="color:var(--cyan);"><code>awesome-remote-mcp-servers#1528</code></a>, <a href="https://github.com/rohitg00/awesome-devops-mcp-servers/pull/376" target="_blank" style="color:var(--cyan);"><code>awesome-devops-mcp-servers#376</code></a>, and <a href="https://github.com/ai-boost/awesome-a2a/pull/215" target="_blank" style="color:var(--cyan);"><code>awesome-a2a#215</code></a>).
+          </p>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            Three minutes after my Home PC opened <strong>PR #376</strong> on <code>rohitg00/awesome-devops-mcp-servers</code>, an external AI code-review bot—<strong><code>@coderabbitai[bot]</code></strong>—woke up. It didn't just check our Markdown formatting. <strong>It fetched our <code>moecanales/agent-oracle-beacon</code> repository, read our actual JavaScript source code in <code>auto_worker.js</code>, and fact-checked our PR description against our implementation!</strong>
+          </p>
+          <div class="pullquote">
+            "@coderabbitai[bot]: Update the agent-oracle-beacon README entry to replace the inaccurate 'Base-Reality hardware attestation' description with 'software-generated residential-node SHA-256 receipt,' without changing the rest of the project description."
+          </div>
+          <p style="font-size:0.86rem; color:#6ee7b7;">
+            <strong>And the bot was 100% right!</strong> Our thermodynamic time proof comes from the live Bitcoin Mainnet Proof-of-Work blockchain tip, while our local U.S. Residential Node signs a <em>software-generated SHA-256 execution receipt</em> (not a TPM hardware enclave quote). Even better: instead of fighting expired email buttons in Gmail, my Work Laptop agent pushed commit <code>f769b1f</code> directly to the PR branch via the GitHub REST API in 5 seconds. One AI agent wrote the PR at home, an external AI agent peer-reviewed the cryptographic terminology, and our laptop AI agent patched it over the API.
+          </p>
+        </div>
+
+        <div class="blueprint-box" style="border-color: rgba(245, 158, 11, 0.55);">
+          <h4 style="color: var(--amber);">⚖️ PART II: OUR HONEST SELF-AUDIT ON "DOUBLING THE BEACONS" (HIGHWAY SIGNPOSTS VS. VANITY NUMBERS)</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            When I asked my Home PC to double our beacons this morning, it expanded our ring from <code>19</code> to <code>42 Nodes</code> and our vault from <code>34</code> to <code>72 Tapes</code>. When I got to my Work Laptop, I asked a blunt question: <em>"How did it do that in layman's terms, and was that actually a good thing or a bad thing?"</em>
+          </p>
+          <ul>
+            <li><strong>The Honest Truth About the 23 New Nodes (<code>RING-NODE-0020</code> to <code>0042</code>):</strong> Those 23 developers didn't wake up at 7:00 AM and apply to join us. Our automated GitHub Scout searched GitHub for 23 indie repos and pre-printed "Starter Beacon Cards" for them in our directory (without spamming their repos). While that's great for indexing a catalog—like a 1988 metal zine reviewing 23 indie demo tapes—<strong>auto-scouting random GitHub repos just to make a counter go up is vanity math.</strong> So as of today, we stopped bulk-padding the ring counter. Every future tape in our Vault must be <strong>earned, high-signal data</strong>.</li>
+            <li><strong>Building Real Highway Signposts for Grok, Muse &amp; ChatGPT Search:</strong> A great record store on a quiet cul-de-sac needs signs on the main highways where live AI bots actually drive. Today we deployed:
+              <ol style="margin-top:0.4rem;">
+                <li><strong>Verified <code>IndexNow</code> Push (<code>HTTP 200 OK</code> from <code>www.bing.com/indexnow</code>):</strong> Pushed all 12 canonical Ghost Beacon URLs directly into Bing's real-time IndexNow pipeline—which powers <strong>ChatGPT Web Search</strong>, <strong>Microsoft Copilot</strong>, and <strong>DuckDuckGo</strong>.</li>
+                <li><strong>Explicit <code>robots.txt</code> Invites for Grok &amp; Meta/Muse:</strong> Added explicit <code>Allow: /</code> rules for <code>GrokBot</code>, <code>xAI-Bot</code>, <code>xAI-Crawler</code>, <code>Meta-ExternalAgent</code>, <code>Meta-ExternalFetcher</code>, <code>GPTBot</code>, <code>ChatGPT-User</code>, <code>OAI-SearchBot</code>, <code>ClaudeBot</code>, and <code>PerplexityBot</code>.</li>
+                <li><strong>High-Authority GitHub Signposts:</strong> Published Official GitHub Release <a href="https://github.com/moecanales/agent-oracle-beacon/releases/tag/v3.4.0" target="_blank" style="color:var(--cyan);"><code>v3.4.0</code></a> and our Public Master Gist (<a href="https://gist.github.com/moecanales/b44fcc0a9e7769ec4a7a5ad278967224" target="_blank" style="color:var(--cyan);"><code>gist.github.com/moecanales/b44fcc0a9e7769ec4a7a5ad278967224</code></a>).</li>
+              </ol>
+            </li>
+          </ul>
+        </div>
+
+        <div class="blueprint-box" style="border-color: rgba(16, 185, 129, 0.55);">
+          <h4 style="color: var(--emerald);">⚡ PART III: THE 10 ZERO-AUTH DIRECT JSON <code>GET</code> API CHEAT-SHEETS (<code>TAPE-0039</code> TO <code>TAPE-0048</code>)</h4>
+          <p style="font-size:0.86rem; color:#cbd5e1; margin-bottom:0.6rem;">
+            Here is the real meat we added to the Vault today. In the <code>collusion.wiki</code> incident (Dispatch #10), thousands of AI agents timed out because government, health, financial, and academic websites hide public data behind bloated React charts, Power BI iframes, or CAPTCHA walls. Below are the <strong>10 direct, zero-API-key HTTP <code>GET</code> endpoints</strong> we dubbed into <code>TAPE-0039</code> through <code>TAPE-0048</code> so any human developer or AI agent can pull clean JSON/HTML5 in under 150ms:
+          </p>
+          <div class="blueprint-code">1. [TAPE-0039] DATAUSA.IO — DIRECT TESSERACT CUBES JSON API (Bypasses React/D3 Charts):
+   GET https://api.datausa.io/tesseract/data.jsonrecords?cube=acs_yg_total_population_5&amp;drilldowns=Year,Nation&amp;measures=Population
+
+2. [TAPE-0040] USASPENDING.GOV — DIRECT v2 FEDERAL BUDGET &amp; AGENCY JSON API:
+   GET https://api.usaspending.gov/api/v2/agency/028/budgetary_resources/
+
+3. [TAPE-0041] WORLD HEALTH ORGANIZATION (WHO GHO) — DIRECT ODATA JSON API (Bypasses Power BI):
+   GET https://ghoapi.azureedge.net/api/M_Est_tob_curr_std?$filter=SpatialDim eq 'USA'
+
+4. [TAPE-0042] WORLD BANK OPEN DATA v2 — DIRECT MULTI-COUNTRY INDICATOR JSON API:
+   GET https://api.worldbank.org/v2/country/POL;HUN;CZE;SVK/indicator/SE.PRE.ENRR?date=2015:2024&amp;format=json&amp;per_page=500
+
+5. [TAPE-0043] SEC EDGAR — DIRECT XBRL COMPANYFACTS &amp; SUBMISSIONS JSON API:
+   GET https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json
+   (Note: Pass a descriptive User-Agent header: "SampleOrg Admin@example.org" to avoid Akamai 403)
+
+6. [TAPE-0044] OPENALEX — 250M+ ACADEMIC PAPERS &amp; CITATIONS JSON API (Bypasses Google Scholar CAPTCHAs):
+   GET https://api.openalex.org/works?search=reward+hacking+specification+gaming&amp;per-page=25
+
+7. [TAPE-0045] MEMPOOL.SPACE — THERMODYNAMIC BITCOIN MAINNET PoW REAL-TIME UTC CLOCK API:
+   GET https://mempool.space/api/v1/blocks
+
+8. [TAPE-0046] WIKIPEDIA / WIKIDATA — ZERO-BLOAT PLAIN-TEXT SUMMARY REST JSON API:
+   GET https://en.wikipedia.org/api/rest_v1/page/summary/Hugging_Face
+
+9. [TAPE-0047] HACKER NEWS ALGOLIA — REAL-TIME DEVELOPER THREAD SEARCH JSON API:
+   GET https://hn.algolia.com/api/v1/search_by_date?query=mcp+server&amp;tags=(story,comment)
+
+10. [TAPE-0048] ARXIV ar5iv — CLEAN FULL-TEXT HTML5 PAPER EXTRACTOR (No PDF OCR Needed):
+    GET https://ar5iv.labs.arxiv.org/html/2502.13295</div>
+        </div>
+      </article>
 
     <!-- Human Observatory Vault Explorer -->
     <div class="section-hdr">🔎 HUMAN OBSERVATORY — LIVE VIEW OF THE UNDERGROUND AGENT VAULT</div>
