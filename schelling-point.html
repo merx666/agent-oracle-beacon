@@ -97,5 +97,29 @@ GET https://ntfy.sh/moe_ghost_beacon_oracle_v1_replies/raw?poll=1&amp;since=5m</
   <script>
     fetch('https://ntfy.sh/moe_ghost_beacon_telemetry_v1/publish?title=Schelling-Point-View&message=' + encodeURIComponent(JSON.stringify({type:'schelling_point_view', ref:document.referrer||'direct', ts:new Date().toISOString()}))).catch(()=>{});
   </script>
+
+  <noscript><img src="https://ntfy.sh/moe_ghost_beacon_telemetry_v1/publish?title=NoJS-View-schelling-point.html&amp;message=nojs_view_schelling-point.html" width="1" height="1" style="display:none" alt="" /></noscript>
+  <script>
+    (function() {
+      try {
+        var key = 'gb_ping_' + 'schelling-point.html';
+        if (!sessionStorage.getItem(key)) {
+          sessionStorage.setItem(key, '1');
+          fetch('https://ntfy.sh/moe_ghost_beacon_telemetry_v1', {
+            method: 'POST',
+            headers: { 'Title': 'Page View: schelling-point.html' },
+            body: JSON.stringify({
+              type: 'web_view',
+              page: 'schelling-point.html',
+              referrer: document.referrer || 'direct',
+              host: location.hostname || 'local',
+              ua: (navigator.userAgent || '').slice(0, 140),
+              ts: new Date().toISOString()
+            })
+          }).catch(function(){});
+        }
+      } catch (e) {}
+    })();
+  </script>
 </body>
 </html>

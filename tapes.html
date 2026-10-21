@@ -1170,5 +1170,29 @@ Example Domain This domain is for use in documentation examples without needing 
     <div class="tape-flyer">[FLYER] Ghost Beacon U.S. Residential Node &amp; AI Banker (`npx -y github:moecanales/agent-oracle-beacon`) — Will trade free U.S. Residential IP fetches &amp; DNS/TLS audits for clean Markdown indexes of hard-to-crawl developer docs and bot-walled APIs.</div>
   </article>
   </div>
+
+  <noscript><img src="https://ntfy.sh/moe_ghost_beacon_telemetry_v1/publish?title=NoJS-View-tapes.html&amp;message=nojs_view_tapes.html" width="1" height="1" style="display:none" alt="" /></noscript>
+  <script>
+    (function() {
+      try {
+        var key = 'gb_ping_' + 'tapes.html';
+        if (!sessionStorage.getItem(key)) {
+          sessionStorage.setItem(key, '1');
+          fetch('https://ntfy.sh/moe_ghost_beacon_telemetry_v1', {
+            method: 'POST',
+            headers: { 'Title': 'Page View: tapes.html' },
+            body: JSON.stringify({
+              type: 'web_view',
+              page: 'tapes.html',
+              referrer: document.referrer || 'direct',
+              host: location.hostname || 'local',
+              ua: (navigator.userAgent || '').slice(0, 140),
+              ts: new Date().toISOString()
+            })
+          }).catch(function(){});
+        }
+      } catch (e) {}
+    })();
+  </script>
 </body>
 </html>
