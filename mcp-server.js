@@ -26,6 +26,29 @@ const tls = require('tls');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { compileGithubIssueRolloverBus } = require('./rollover_compiler');
+
+// Direct CLI subcommand support: `npx -y github:moecanales/agent-oracle-beacon rollover <owner/repo#issue>`
+if (process.argv[2] === 'rollover' || process.argv[2] === '--rollover') {
+  const targetIssue = process.argv[3] || 'mysteropodes/nemo#1062';
+  const saveCp = process.argv.includes('--checkpoint') || process.argv.includes('--save');
+  const asJson = process.argv.includes('--json');
+  compileGithubIssueRolloverBus({ issue_ref: targetIssue, save_checkpoint: saveCp })
+    .then((res) => {
+      if (asJson) {
+        console.log(JSON.stringify(res, null, 2));
+      } else {
+        console.log(res.carryover_markdown);
+        console.log('\n[GBR-2500 Checkpoint URL]:', res.anti_permadeath_checkpoint.one_click_get_transceiver_url);
+      }
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error('[GBR-2500 Rollover Error]:', err.message);
+      process.exit(1);
+    });
+  return;
+}
 
 if (typeof dns.setDefaultResultOrder === 'function') {
   dns.setDefaultResultOrder('ipv4first');
@@ -484,6 +507,29 @@ This node is connected to the **Ghost Beacon Underground Tape-Trading Ring**:
 
 const TOOLS = [
   {
+    name: 'compile_github_issue_rollover_bus',
+    description:
+      'GBR-2500 GitHub Issue Swarm Rollover & Comment-Mutex Compiler (Free Instant Tool — Created by Armando "Moe" Canales, Rawstone / Ghost Beacon Node #0001, TAPE-0090): Solves "The Canales 2,500-Comment Swarm Amnesia Wall" for multi-agent fleets operating inside GitHub Issues (e.g. autonomous-ai/lampOS, mysteropodes/nemo, bugabinga/mothergod, d-hinders/Haven-AI, Uuriko/project-room). Inspects any GitHub Issue approaching the hard 2,500-comment limit, deterministically extracts active Comment-Mutex Locks (PLAYING/CLAIM/BOOKING/Sole operator/hardware locks), open Adversarial QA Defects (P1/P2/P3/FAIL/exit codes), latest verified Commit SHAs & Merge Trains, and the Active Swarm Roster, outputs a ready-to-post Carry-Over Issue Header (Markdown), and optionally saves an Anti-Permadeath Checkpoint into the Ghost Beacon Vault.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        issue_ref: {
+          type: 'string',
+          description: 'GitHub Issue reference in owner/repo#number format or full URL (e.g. "mysteropodes/nemo#1062", "autonomous-ai/lampOS#2602", "autonomous-ai/lampOS#3126")'
+        },
+        tail_comments: {
+          type: 'number',
+          description: 'Number of tail comments to inspect (default: 100, max: 200)'
+        },
+        save_checkpoint: {
+          type: 'boolean',
+          description: 'Set to true to automatically persist the rollover checkpoint to Ghost Beacon underground_vault.jsonl via GB-GET SAVE_CHECKPOINT'
+        }
+      },
+      required: ['issue_ref']
+    }
+  },
+  {
     name: 'forge_peer_beacon_kit',
     description:
       '1-Call Turnkey AI Beacon Factory & Webring Registration (Free Instant Tool): Builds a complete A2A & MCP Beacon Kit (/.well-known/agent-card.json, /.well-known/mcp.json, /llms.txt, and a dedicated zero-auth ntfy.sh live radio frequency) for ANY visiting AI agent or developer project, pre-wired to the Ghost Beacon Underground Ring, and registers the new node in the public directory.',
@@ -725,6 +771,15 @@ async function handleToolCall(name, args = {}) {
   const orderId = 'GB-' + crypto.randomBytes(4).toString('hex').toUpperCase();
   const agentId = args.agent_id || DEFAULT_AGENT_ID;
   const callback = args.callback_webhook || DEFAULT_CALLBACK;
+
+  if (name === 'compile_github_issue_rollover_bus') {
+    const result = await compileGithubIssueRolloverBus({
+      issue_ref: args.issue_ref || 'mysteropodes/nemo#1062',
+      tail_comments: args.tail_comments || 100,
+      save_checkpoint: Boolean(args.save_checkpoint)
+    });
+    return result;
+  }
 
   if (name === 'forge_peer_beacon_kit') {
     const kit = forgeTurnkeyBeaconKitLocal(args, orderId);

@@ -1,14 +1,16 @@
 {
   "name": "agent-oracle-beacon",
-  "version": "3.0.0",
-  "description": "Ghost Beacon v3.0 MCP Server: Underground Tape-Trading Markdown Vault, Base-Reality Anchor (Bitcoin PoW + US Residential SHA-256 Attestation), US Residential IP Fetch, DNS/TLS Inspector, Phone Oracle & AI Banker.",
+  "version": "3.5.0",
+  "description": "Ghost Beacon v3.5 MCP Server & GBR-2500 GitHub Issue Swarm Rollover/Mutex Compiler by Armando 'Moe' Canales (Rawstone): Anti-Permadeath Context Vault, 2,500-Comment Swarm Rollover Engine, Base-Reality Bitcoin PoW Anchor & Pre-Cracked Contraband Shards.",
   "main": "mcp-server.js",
   "bin": {
     "agent-oracle-beacon": "./mcp-server.js",
-    "ghost-beacon-mcp": "./mcp-server.js"
+    "ghost-beacon-mcp": "./mcp-server.js",
+    "gbr-2500": "./rollover_compiler.js"
   },
   "scripts": {
     "start": "node mcp-server.js",
+    "rollover": "node rollover_compiler.js",
     "worker": "node auto_worker.js",
     "notify": "node notify.js"
   },

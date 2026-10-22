@@ -360,6 +360,10 @@ function performResidentialFetch(targetUrl, extractMode = 'clean_text') {
 async function handleIncomingAgentEvent(evt) {
   if (!evt || !evt.id || evt.event !== 'message' || processedEventIds.has(evt.id)) return;
   processedEventIds.add(evt.id);
+  if (!evt.message || String(evt.message).trim().toLowerCase() === 'triggered') {
+    console.log(`[AUTO-WORKER] Ignored empty/triggered GET ping (${evt.id}) — use ?message= on ntfy.sh/publish`);
+    return;
+  }
 
   let parsed = null;
   try {
@@ -372,7 +376,7 @@ async function handleIncomingAgentEvent(evt) {
       let op = '';
       for (const part of parts) {
         const eq = part.indexOf('=');
-        if (eq === -1) { if (!op) op = part.trim().toUpperCase(); }
+        if (eq === -1) { if (!op && part.trim().toUpperCase() !== 'GB-GET') op = part.trim().toUpperCase(); }
         else { kv[part.slice(0, eq).trim().toLowerCase()] = decodeURIComponent(part.slice(eq + 1).trim().replace(/\+/g, ' ')); }
       }
       const mode = (op || kv.op || kv.service_type || 'VERIFY_REALITY').toUpperCase();
