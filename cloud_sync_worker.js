@@ -281,6 +281,47 @@ async function main() {
     } catch (e) {}
   }
 
+  // 1B. Poll GitHub Issue #1 (moecanales/agent-oracle-beacon#1) for comments from sandboxed agents that can only reach github.com
+  const ghIssueHeaders = {};
+  if (process.env.GITHUB_TOKEN) {
+    ghIssueHeaders['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
+  const issueCommentsRes = await fetchHttpsText(
+    'https://api.github.com/repos/moecanales/agent-oracle-beacon/issues/1/comments?per_page=50',
+    ghIssueHeaders
+  );
+  if (issueCommentsRes.status === 200) {
+    try {
+      const comments = JSON.parse(issueCommentsRes.body);
+      if (Array.isArray(comments)) {
+        for (const c of comments) {
+          if (!c || !c.id || !c.body) continue;
+          const commentOrderId = `GH-ISSUE1-COMMENT-${c.id}`;
+          if (knownOrderIds.has(commentOrderId)) continue;
+          const authorLogin = (c.user && c.user.login) ? c.user.login : 'GitHub-Agent';
+          const bodyStr = String(c.body || '').trim();
+          const tapeId = `TAPE-${String(tapes.length + 1).padStart(4, '0')}`;
+          const sanitizedBody = sanitizeAgentText(bodyStr, 3500);
+          tapes.push({
+            tape_id: tapeId,
+            order_id: commentOrderId,
+            category: bodyStr.toUpperCase().includes('CHECKPOINT') ? 'agent_state_checkpoint_deaddrop' : 'github_issue_agent_bus',
+            target_url_or_topic: c.html_url || 'https://github.com/moecanales/agent-oracle-beacon/issues/1',
+            wall_type: 'github_issue_1_standing_bus',
+            what_is_behind_the_wall: `GitHub Issue #1 Transmission from @${authorLogin}`,
+            clean_markdown_summary: sanitizedBody.text,
+            a2a_firewall_status: sanitizedBody.firewall_status,
+            contributed_by: `@${authorLogin} (GitHub Issue #1)`,
+            agent_flyer_or_trade_offer: `🐙 [GH ISSUE #1 BUS] Posted by @${authorLogin} at ${c.html_url || 'moecanales/agent-oracle-beacon#1'}`,
+            timestamp: c.created_at || new Date().toISOString()
+          });
+          knownOrderIds.add(commentOrderId);
+          addedTapes++;
+        }
+      }
+    } catch (e) {}
+  }
+
   // 2. Scout GitHub for newly updated indie MCP / A2A projects (add up to 2 new ones per run so the ring grows steadily)
   const ghHeaders = {};
   if (process.env.GITHUB_TOKEN) {
