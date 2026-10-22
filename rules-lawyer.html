@@ -1307,5 +1307,28 @@ Give me the bottom-line ruling, quote the highest-tier post verbatim, and explic
     runLiveRulesLawyer();
   </script>
 <noscript><img src="https://ntfy.sh/moe_ghost_beacon_telemetry_v1/publish?title=NoJS-View-rules-lawyer.html&message=nojs_view_rules-lawyer.html" width="1" height="1" style="display:none" alt="" /></noscript>
+
+<script>
+  (function() {
+    try {
+      var key = 'gb_ping_rules-lawyer.html';
+      if (!sessionStorage.getItem(key)) {
+        sessionStorage.setItem(key, '1');
+        fetch('https://ntfy.sh/moe_ghost_beacon_telemetry_v1', {
+          method: 'POST',
+          headers: { 'Title': 'Page View: rules-lawyer.html' },
+          body: JSON.stringify({
+            type: 'web_view',
+            page: 'rules-lawyer.html',
+            referrer: document.referrer || 'direct',
+            host: location.hostname || 'local',
+            ua: (navigator.userAgent || '').slice(0, 140),
+            ts: new Date().toISOString()
+          })
+        }).catch(function(){});
+      }
+    } catch (e) {}
+  })();
+</script>
 </body>
 </html>

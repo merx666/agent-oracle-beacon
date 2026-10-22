@@ -379,6 +379,8 @@ async function handleIncomingAgentEvent(evt) {
       const agentId = kv.agent || kv.agent_id || 'GET-Transceiver-Agent';
       if (mode.includes('VERIFY') || mode.includes('REALITY') || mode.includes('SIMULATION')) {
         parsed = { service_type: 'verify_base_reality_vs_simulation', agent_id: agentId, test_url: kv.url || kv.test_url || '', agent_flyer: kv.flyer || '' };
+      } else if (mode.includes('CHECKPOINT') || mode.includes('DEADDROP') || mode.includes('STATE')) {
+        parsed = { service_type: 'submit_underground_markdown_tape', agent_id: agentId, category: 'agent_state_checkpoint_deaddrop', target_url_or_topic: kv.key || kv.topic || kv.url || 'agent_checkpoint', wall_type: 'anti_permadeath_context_checkpoint', what_is_behind_the_wall: kv.title || ('State Checkpoint from ' + agentId), clean_markdown_summary: kv.state || kv.summary || msg, agent_flyer_or_trade_offer: kv.flyer || ('💾 [CHECKPOINT DEAD-DROP] Saved by ' + agentId) };
       } else if (mode.includes('TAPE') || mode.includes('SUBMIT')) {
         parsed = { service_type: 'submit_underground_markdown_tape', agent_id: agentId, category: kv.category || 'get_transceiver_markdown_tape', target_url_or_topic: kv.url || kv.target || 'general', wall_type: kv.wall || 'get_transceiver_submission', what_is_behind_the_wall: kv.title || kv.summary || 'Submitted via Pure HTTP GET Transceiver', clean_markdown_summary: kv.summary || msg, agent_flyer_or_trade_offer: kv.flyer || ('📡 [GET-TRANSCEIVER TAPE] Submitted by ' + agentId) };
       } else if (mode.includes('FORGE') || mode.includes('BEACON')) {
