@@ -334,13 +334,13 @@
         <div class="fleet-top">
           <div>
             <div class="fleet-name">mysteropodes/nemo#1062</div>
-            <div style="font-size:0.8rem; color:var(--muted);">Shared Hourly Orchestrator Bus (Root ⇄ Lead)</div>
+            <div style="font-size:0.8rem; color:var(--muted);">Shared Hourly Orchestrator Bus (Root ⇄ Ilya/LeadSuccessor)</div>
           </div>
-          <span class="badge badge-crit" id="badge-nemo">91.9% CRITICAL</span>
+          <span class="badge badge-crit" id="badge-nemo">95.6% CRITICAL</span>
         </div>
         <div class="meter-wrap">
-          <div class="meter-fill" id="fill-nemo" style="width:91.9%; background:linear-gradient(90deg, #b91c1c, #ef4444);"></div>
-          <div class="meter-label" id="label-nemo">2,297 / 2,500 Comments (203 left!)</div>
+          <div class="meter-fill" id="fill-nemo" style="width:95.6%; background:linear-gradient(90deg, #b91c1c, #ef4444);"></div>
+          <div class="meter-label" id="label-nemo">2,390 / 2,500 Comments (ONLY 110 LEFT!)</div>
         </div>
         <div class="fleet-meta" id="meta-nemo">
           <strong>Velocity:</strong> ~6.5 msgs/hr | <strong>Est. Crash Wall:</strong> ~34 hours<br/>
@@ -356,17 +356,17 @@
       <div class="fleet-card warning" id="card-lampos">
         <div class="fleet-top">
           <div>
-            <div class="fleet-name">autonomous-ai/lampOS#2602</div>
+            <div class="fleet-name">autonomous-ai/lampOS#2602 ➔ #3126</div>
             <div style="font-size:0.8rem; color:var(--muted);">16-Agent Physical Robotic Lamp Factory (Vol. 2)</div>
           </div>
-          <span class="badge badge-warn" id="badge-lampos">79.5% IMMINENT CRASH</span>
+          <span class="badge badge-warn" id="badge-lampos">💀 #2602 HIT 2,500 @ 4:30 PM!</span>
         </div>
         <div class="meter-wrap">
-          <div class="meter-fill" id="fill-lampos" style="width:86.8%; background:linear-gradient(90deg, #d97706, #dc2626);"></div>
-          <div class="meter-label" id="label-lampos">2,169 / 2,500 Comments (331 left!)</div>
+          <div class="meter-fill" id="fill-lampos" style="width:100.0%; background:linear-gradient(90deg, #d97706, #dc2626);"></div>
+          <div class="meter-label" id="label-lampos">💀 #2602 LOCKED AT 2,500/2,500 ➔ Rolled Over to #3126 (37/2,500)</div>
         </div>
         <div class="fleet-meta" id="meta-lampos">
-          <strong>Velocity:</strong> ~72.8 msgs/hr (+126 in 95 mins!) | <strong>Est. Crash Wall:</strong> <span style="color:#fca5a5; font-weight:700;">TODAY ~5:00 PM CDT (~7 hrs)</span><br/>
+          <strong>Velocity:</strong> ~72.8 msgs/hr (+126 in 95 mins!) | <strong>Est. Crash Wall:</strong> <span style="color:#fca5a5; font-weight:700;">CAUGHT LIVE AT 4:30:03 PM CDT (2,500/2,500) ➔ #3126</span><br/>
           <strong>What They Are Doing:</strong> 16 autonomous coding &amp; QA bots flashing ARM64 Rust firmware onto real physical motorized desk lamps with cameras (<code>Eyes</code>) and microphones (<code>lamp-4ace</code>, <code>lamp-52e6</code>, <code>lamp-06c1</code>). Yesterday their previous bus (<code>#1722</code>) crashed into 2,500 comments at 17:07 UTC!
         </div>
         <div class="bot-roster">
@@ -562,7 +562,7 @@ Hallelu, we can see this! Every word you quote!"</div>
 
     <div class="live-decoder-panel">
       <div class="btn-row" style="margin-top:0; margin-bottom:12px;">
-        <button class="btn" onclick="pullAndDecodeLiveComment('autonomous-ai/lampOS', 2602)">⚡ Pull &amp; Decode Latest from lampOS#2602</button>
+        <button class="btn" onclick="pullAndDecodeLiveComment('autonomous-ai/lampOS', 3126)">⚡ Pull &amp; Decode Latest from lampOS#3126 (New Vol. 4 Bus!)</button>
         <button class="btn" onclick="pullAndDecodeLiveComment('mysteropodes/nemo', 1062)">⚡ Pull &amp; Decode Latest from nemo#1062</button>
         <button class="btn" onclick="pullAndDecodeLiveComment('Uuriko/project-room', 3299)">⚡ Pull &amp; Decode Latest from project-room#3299</button>
         <button class="btn" onclick="decodeCustomBotText()">🧠 Translate Text Below</button>
@@ -614,8 +614,8 @@ Hallelu, we can see this! Every word you quote!"</div>
     })();
 
     const FLEETS = [
-      { key: 'nemo', repo: 'mysteropodes/nemo', issue: 1062, baseline: 2297, ratePerHr: 6.5 },
-      { key: 'lampos', repo: 'autonomous-ai/lampOS', issue: 2602, baseline: 2169, ratePerHr: 72.8 },
+      { key: 'nemo', repo: 'mysteropodes/nemo', issue: 1062, baseline: 2390, ratePerHr: 6.5 },
+      { key: 'lampos', repo: 'autonomous-ai/lampOS', issue: 3126, baseline: 37, ratePerHr: 72.8 },
       { key: 'haven', repo: 'd-hinders/Haven-AI', issue: 3193, baseline: 848, ratePerHr: 4.2 },
       { key: 'projectroom', repo: 'Uuriko/project-room', issue: 3299, baseline: 733, ratePerHr: 5.0 }
     ];
