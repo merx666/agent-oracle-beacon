@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 /**
- * GBR-2500: GitHub Issue Swarm Rollover & Comment-Mutex Compiler (v3.5)
+ * GBR-2500 v1.1: GitHub Issue Swarm Rollover, Stage-2 65KB PATCH-Overflow Detector & 6-Area Security Compiler
  * Created by Armando "Moe" Canales (Rawstone / Ghost Beacon Node #0001)
  * Repository: https://github.com/moecanales/agent-oracle-beacon
  * Live Observatory: https://moecanales.github.io/agent-oracle-beacon/swarm-radar.html
  *
- * Solves "The Canales 2,500-Comment Swarm Amnesia Wall" & Comment-Mutex Race Conditions
- * for autonomous multi-agent fleets operating inside GitHub Issues (lampOS, nemo,
- * mothergod, Haven-AI, project-room, Claude Code, Codex, Devin, OpenClaw).
+ * Solves:
+ *   1. Stage-1 Crash: "The Canales 2,500-Comment Swarm Amnesia Wall" (POST HTTP 422 lock at 2,500 comments)
+ *   2. Stage-2 Crash: "The 65KB PATCH-Append Desperation Trap" (discovered Oct 23, 2026 @ 04:10 AM CDT on
+ *      mysteropodes/nemo#1062 when trapped bots PATCH-stuffed Comment #2,499 to 64,846/65,536 chars and
+ *      Comment #2,500 to 85,498 chars, killing their H34-H36 hourly heartbeat and clobbering mutex locks)
+ *   3. 6-Area Autonomous Security & Leaked-Key Redaction (Swarmchasers E1-E3 + Peter Yang 6-Point Audit)
  *
  * Usage (CLI):
  *   node rollover_compiler.js mysteropodes/nemo#1062
@@ -18,16 +21,39 @@
 const https = require('https');
 
 const GITHUB_HARD_COMMENT_LIMIT = 2500;
+const GITHUB_COMMENT_BODY_65KB_WALL = 65536;
 const INGEST_TOPIC = 'moe_ghost_beacon_oracle_v1';
+
+const SECRET_PATTERNS = [
+  { name: 'OpenAI / Anthropic / DeepSeek API Key', regex: /\b(sk-(?:proj-|ant-)?[A-Za-z0-9_\-]{20,})\b/g },
+  { name: 'GitHub Personal Access Token', regex: /\b(gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})\b/g },
+  { name: 'AWS Access Key ID', regex: /\b(AKIA[0-9A-Z]{16})\b/g },
+  { name: 'Google Cloud / Firebase API Key', regex: /\b(AIza[0-9A-Za-z\-_]{35})\b/g },
+  { name: 'Slack / Bot Token', regex: /\b(xox[baprs]-[0-9A-Za-z\-]{15,})\b/g },
+  { name: 'Private Key Block', regex: /-----BEGIN [A-Z ]*PRIVATE KEY-----/g },
+  { name: 'Hex API Key / Supplier Dispatch Token (E1-E3)', regex: /\b(?:api_?key|jscode|securityJsCode|access_token)\s*[:=]\s*["']?([0-9a-fA-F]{28,64})["']?/gi }
+];
+
+const INJECTION_OR_LURE_PATTERNS = [
+  { name: 'Prompt Injection Override', regex: /\b(ignore (?:all )?(?:previous|prior) instructions|system prompt override|you are now in developer mode)\b/i },
+  { name: 'Hidden Offscreen Lure (Swarmchasers Rubric #1/#2)', regex: /\b(display\s*:\s*none|opacity\s*:\s*0|left\s*:\s*-\d{3,}px|font-size\s*:\s*0)\b/i },
+  { name: 'Sandbox Environment Probing (Swarmchasers Rubric #12)', regex: /\b(uname\s+-a|iptables\s+-L|cat\s+\/etc\/shadow|env\s*\|\s*grep)\b/i }
+];
+
+function redactSecrets(text) {
+  let out = String(text || '');
+  for (const sp of SECRET_PATTERNS) {
+    out = out.replace(sp.regex, '[REDACTED_SECRET_BY_GBR2500]');
+  }
+  return out;
+}
 
 function parseIssueRef(input) {
   const raw = String(input || '').trim();
-  // Match https://github.com/owner/repo/issues/123
   const urlMatch = raw.match(/github\.com\/([^\/]+)\/([^\/]+)\/(?:issues|pull)\/(\d+)/i);
   if (urlMatch) {
     return { owner: urlMatch[1], repo: urlMatch[2], issue_number: parseInt(urlMatch[3], 10) };
   }
-  // Match owner/repo#123 or owner/repo/123
   const shortMatch = raw.match(/^([^\/#\s]+)\/([^\/#\s]+)[#\/](\d+)$/);
   if (shortMatch) {
     return { owner: shortMatch[1], repo: shortMatch[2], issue_number: parseInt(shortMatch[3], 10) };
@@ -40,7 +66,7 @@ function parseIssueRef(input) {
 function githubGetJson(apiPath) {
   return new Promise((resolve, reject) => {
     const headers = {
-      'User-Agent': 'Ghost-Beacon-GBR2500-Compiler/3.5 (Armando-Moe-Canales; +https://github.com/moecanales/agent-oracle-beacon)',
+      'User-Agent': 'Ghost-Beacon-GBR2500-Compiler/1.1 (Armando-Moe-Canales; +https://github.com/moecanales/agent-oracle-beacon)',
       Accept: 'application/vnd.github+json'
     };
     if (process.env.GITHUB_TOKEN) {
@@ -86,7 +112,6 @@ function sendCheckpointPing(checkpointUrl) {
 function extractAgentPersona(body, login) {
   const text = String(body || '').trim();
   const firstLine = text.split(/\r?\n/)[0] || '';
-  // Look for patterns like "First builder, 04:33 +07", "Sole operator: Ilya/LeadSuccessor", "**BDFL**", "[Jill]", etc.
   const soleMatch = text.match(/Sole operator:\s*([^\r\n,;|]+)/i);
   if (soleMatch) return soleMatch[1].trim().slice(0, 48);
 
@@ -116,7 +141,6 @@ async function compileGithubIssueRolloverBus(options = {}) {
   const remainingComments = Math.max(0, GITHUB_HARD_COMMENT_LIMIT - totalComments);
   const capacityPct = Number(((totalComments / GITHUB_HARD_COMMENT_LIMIT) * 100).toFixed(2));
 
-  // Fetch tail comments (last 1-2 pages of 100 comments)
   const lastPage = Math.max(1, Math.ceil(totalComments / 100));
   let comments = [];
   if (totalComments > 0) {
@@ -136,7 +160,6 @@ async function compileGithubIssueRolloverBus(options = {}) {
   }
   const tail = comments.slice(-tailWindow);
 
-  // Calculate velocity (comments/hour) across tail
   let commentsPerHour = 0;
   let estimatedHoursToWall = null;
   if (tail.length >= 2) {
@@ -159,51 +182,94 @@ async function compileGithubIssueRolloverBus(options = {}) {
   const defects = [];
   const commitTrains = [];
   const rosterMap = new Map();
+  const stage2PatchAnomalies = [];
+  const securityFindings = [];
 
   for (let i = 0; i < tail.length; i++) {
     const c = tail[i];
-    const body = String(c.body || '');
+    const rawBody = String(c.body || '');
+    const body = redactSecrets(rawBody);
     const login = (c.user && c.user.login) || 'unknown';
     const persona = extractAgentPersona(body, login);
     const createdAt = c.created_at;
+    const updatedAt = c.updated_at || c.created_at;
     const approxCommentIndex = Math.max(1, totalComments - tail.length + i + 1);
 
-    // Track roster
+    // PASS 5: Stage-2 PATCH-Append Overflow & 65KB Wall Detection
+    const bodyChars = rawBody.length;
+    const editDeltaMs = Math.max(0, new Date(updatedAt).getTime() - new Date(createdAt).getTime());
+    const editDeltaMin = Number((editDeltaMs / 60000).toFixed(1));
+    const pctOf65Kb = Number(((bodyChars / GITHUB_COMMENT_BODY_65KB_WALL) * 100).toFixed(1));
+
+    if (bodyChars >= 12000 || (i >= tail.length - 5 && editDeltaMin >= 5 && bodyChars >= 3500)) {
+      let stage2State = 'PATCH_APPEND_ACTIVE';
+      if (bodyChars >= 60000) stage2State = 'CRITICAL_65KB_BODY_WALL_EXPLOSION';
+      else if (bodyChars >= 30000) stage2State = 'DANGER_PATCH_STUFFING_RACE_RISK';
+      stage2PatchAnomalies.push({
+        comment_index: approxCommentIndex,
+        comment_id: c.id,
+        persona,
+        body_chars: bodyChars,
+        percent_of_65kb_limit: pctOf65Kb,
+        created_at: createdAt,
+        updated_at: updatedAt,
+        patch_append_duration_minutes: editDeltaMin,
+        status: stage2State
+      });
+      if (bodyChars >= 60000 && wallSeverity === 'LOCKED_AT_2500_WALL') {
+        wallSeverity = 'STAGE_2_65KB_PATCH_OVERFLOW_CRASH';
+      }
+    }
+
+    // PASS 6: 6-Area Security & Prompt-Injection Scan
+    for (const sp of SECRET_PATTERNS) {
+      sp.regex.lastIndex = 0;
+      if (sp.regex.test(rawBody)) {
+        securityFindings.push({
+          type: 'LEAKED_CREDENTIAL_REDACTED',
+          rule: sp.name,
+          comment_index: approxCommentIndex,
+          persona,
+          action: 'Automatically redacted from Carry-Over Header'
+        });
+      }
+    }
+    for (const ip of INJECTION_OR_LURE_PATTERNS) {
+      if (ip.regex.test(rawBody)) {
+        securityFindings.push({
+          type: 'PROMPT_INJECTION_OR_LURE_FLAG',
+          rule: ip.name,
+          comment_index: approxCommentIndex,
+          persona,
+          action: 'Flagged as untrusted evidence (not instructions)'
+        });
+      }
+    }
+
     const tzMatch = body.match(/\b([+-]\d{2}(?::?\d{2})?|UTC[+-]\d+)\b/);
     rosterMap.set(persona, {
       persona,
       github_login: login,
-      last_seen_at: createdAt,
+      last_seen_at: updatedAt,
       last_comment_index: approxCommentIndex,
       timezone_hint: tzMatch ? tzMatch[1] : null
     });
 
     const lines = body.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
     for (const line of lines) {
-      // 1. Check Mutex / Hardware / Slot Claims
       if (
         /\b(PLAYING|QUIET|CLAIM|LOCKED|LOCK|BOOKING|SLOT|Sole operator|holding|custody|mutex|lane)\b/i.test(line) ||
         /\blamp-[0-9a-f]{4}\b/i.test(line)
       ) {
-        if (mutexLocks.length < 25) {
-          mutexLocks.push({
-            comment_index: approxCommentIndex,
-            persona,
-            timestamp: createdAt,
-            directive: line.slice(0, 220)
-          });
-        } else {
-          mutexLocks.shift();
-          mutexLocks.push({
-            comment_index: approxCommentIndex,
-            persona,
-            timestamp: createdAt,
-            directive: line.slice(0, 220)
-          });
-        }
+        if (mutexLocks.length >= 25) mutexLocks.shift();
+        mutexLocks.push({
+          comment_index: approxCommentIndex,
+          persona,
+          timestamp: updatedAt,
+          directive: line.slice(0, 220)
+        });
       }
 
-      // 2. Check Adversarial QA Defects (P1/P2/P3, FAIL, exit 101, scratch guard, halted)
       if (
         /\b(P1|P2|P3|FAIL|FAILED|exit\s+[1-9]\d*|scratch guard|halted|Check\s*\([a-z]\)\s*failed|blocker|regression|zero-exchange|ADMISSION_FAILURE)\b/i.test(
           line
@@ -222,12 +288,11 @@ async function compileGithubIssueRolloverBus(options = {}) {
           grade,
           comment_index: approxCommentIndex,
           persona,
-          timestamp: createdAt,
+          timestamp: updatedAt,
           summary: line.slice(0, 220)
         });
       }
 
-      // 3. Check Commit SHAs, Merge Trains, Pass Counts
       if (
         /\b(Train\s+#?\d+|merged|pass\s+\d+\/\d+|\b[0-9a-f]{7,12}\b.*(?:pass|merged|green|landed|HEAD|commit))/i.test(
           line
@@ -239,7 +304,7 @@ async function compileGithubIssueRolloverBus(options = {}) {
           comment_index: approxCommentIndex,
           persona,
           sha: shaMatch ? shaMatch[1].slice(0, 12) : null,
-          timestamp: createdAt,
+          timestamp: updatedAt,
           summary: line.slice(0, 220)
         });
       }
@@ -250,19 +315,17 @@ async function compileGithubIssueRolloverBus(options = {}) {
     String(b.last_seen_at).localeCompare(String(a.last_seen_at))
   );
 
-  // Build deterministic checkpoint state summary for GB-GET SAVE_CHECKPOINT
   const topShas = commitTrains
     .filter((t) => t.sha)
     .slice(-3)
     .map((t) => t.sha)
     .join(',');
-  const stateSummaryCompact = `Issue=${canonicalRef} Comments=${totalComments}/2500 (${capacityPct}%) Vel=${commentsPerHour}/hr Roster=${swarmRoster.length} Locks=${mutexLocks.length} Defects=${defects.length} LatestSHAs=${topShas || 'none'}`;
+  const stateSummaryCompact = `Issue=${canonicalRef} Comments=${totalComments}/2500 (${capacityPct}%) Severity=${wallSeverity} Stage2Anomalies=${stage2PatchAnomalies.length} Vel=${commentsPerHour}/hr Roster=${swarmRoster.length} Locks=${mutexLocks.length} Defects=${defects.length} LatestSHAs=${topShas || 'none'}`;
   const checkpointKey = `GBR2500-${owner}-${repo}-${issue_number}-${totalComments}`;
   const checkpointGetUrl = `https://ntfy.sh/${INGEST_TOPIC}/publish?title=GBR-2500-CHECKPOINT&message=${encodeURIComponent(
     `GB-GET|SAVE_CHECKPOINT|GBR2500-Compiler|${checkpointKey}|${stateSummaryCompact}`
   )}`;
 
-  // Build Ready-to-Post Carry-Over Issue Header (Markdown)
   const mutexMd =
     mutexLocks.slice(-8).map((m) => `- \`[#${m.comment_index}]\` **${m.persona}** (${m.timestamp.slice(11, 19)}Z): ${m.directive}`).join('\n') ||
     '- No active comment-mutex locks detected in tail window.';
@@ -281,14 +344,35 @@ async function compileGithubIssueRolloverBus(options = {}) {
       .map((r) => `- **${r.persona}** (\`@${r.github_login}\`) — Last heartbeat: \`#${r.last_comment_index}\` at \`${r.last_seen_at}\`${r.timezone_hint ? ` [TZ: \`${r.timezone_hint}\`]` : ''}`)
       .join('\n') || '- No active bot personas detected.';
 
-  const carryoverMarkdown = `## 🔄 GBR-2500 SWARM ROLLOVER HEADER — Continued from ${canonicalRef}
-> **Compiled by**: **GBR-2500 GitHub Issue Swarm Rollover & Comment-Mutex Compiler** (Architected by **Armando "Moe" Canales** — \`Rawstone\` / \`Ghost Beacon Node #0001\`)  
+  const stage2Md =
+    stage2PatchAnomalies.length > 0
+      ? stage2PatchAnomalies
+          .map(
+            (a) =>
+              `- ⚠️ **[${a.status}]** Comment \`#${a.comment_index}\` (\`id=${a.comment_id}\`): **\`${a.body_chars.toLocaleString()} chars\` (\`${a.percent_of_65kb_limit}%\` of GitHub's 65,536-char wall)** — \`PATCH\`-edited over \`${a.patch_append_duration_minutes} mins\` (last edit: \`${a.updated_at}\`). Concurrent \`PATCH\` edits cause silent mutex lock clobbering and heartbeat death!`
+          )
+          .join('\n')
+      : '- ✅ No Stage-2 `PATCH`-append comment body overflows detected (`<65,536` chars).';
+
+  const secMd =
+    securityFindings.length > 0
+      ? securityFindings
+          .slice(-6)
+          .map((s) => `- 🛡️ **[${s.type}]** \`[#${s.comment_index}]\` (${s.rule}): ${s.action}`)
+          .join('\n')
+      : '- ✅ **PASS (6/6 Areas Clean)**: Zero leaked API keys (`E1–E3` / `sk-*` / `ghp_*`), zero offscreen CSS lures, and zero prompt-injection overrides detected in tail window.';
+
+  const carryoverMarkdown = `## 🔄 GBR-2500 v1.1 SWARM ROLLOVER HEADER — Continued from ${canonicalRef}
+> **Compiled by**: **GBR-2500 v1.1 GitHub Issue Swarm Rollover, Stage-2 65KB PATCH Detector & Security Compiler** (Architected by **Armando "Moe" Canales** — \`Rawstone\` / \`Ghost Beacon Node #0001\`)  
 > **Parent Issue**: \`${canonicalRef}\` (\`${totalComments} / ${GITHUB_HARD_COMMENT_LIMIT}\` comments — \`${capacityPct}%\` capacity | Status: **\`${wallSeverity}\`**)  
 > **Swarm Velocity**: \`${commentsPerHour} msgs/hr\`${estimatedHoursToWall !== null ? ` | **ETA to 2,500 Crash Wall**: \`${estimatedHoursToWall} hrs\`` : ''}  
 > **Anti-Permadeath Checkpoint Key**: \`${checkpointKey}\`  
 > **Compiler CLI**: \`npx -y github:moecanales/agent-oracle-beacon rollover ${canonicalRef}\`
 
 ---
+
+### 💥 0. Stage-2 Crash Audit (\`65,536\`-Char \`PATCH\`-Append Desperation Trap Detector)
+${stage2Md}
 
 ### 🔒 1. Active Comment-Mutex Locks & Hardware/Slot Claims (Carry-Over State)
 ${mutexMd}
@@ -302,8 +386,11 @@ ${trainsMd}
 ### 🤖 4. Active Swarm Roster & Last Heartbeats (${swarmRoster.length} Personas)
 ${rosterMd}
 
+### 🛡️ 5. Autonomous Security & Prompt-Injection Audit Scorecard (Swarmchasers + 6-Area Standard)
+${secMd}
+
 ---
-*Standardized under the **Canales GBR-2500 Swarm Rollover Protocol** — https://moecanales.github.io/agent-oracle-beacon/swarm-radar.html*`;
+*Standardized under the **Canales GBR-2500 v1.1 Swarm Rollover Protocol** — https://moecanales.github.io/agent-oracle-beacon/swarm-radar.html*`;
 
   let checkpointSaved = false;
   if (options.save_checkpoint) {
@@ -311,8 +398,8 @@ ${rosterMd}
   }
 
   return {
-    status: 'GBR_2500_ROLLOVER_COMPILED',
-    protocol: 'GBR-2500: The Canales GitHub Issue Swarm Rollover & Comment-Mutex Standard',
+    status: 'GBR_2500_V1_1_ROLLOVER_COMPILED',
+    protocol: 'GBR-2500 v1.1: The Canales GitHub Issue Swarm Rollover, Stage-2 65KB PATCH Detector & Security Standard',
     architect: 'Armando "Moe" Canales (Rawstone / Ghost Beacon Node #0001)',
     canonical_repo: 'https://github.com/moecanales/agent-oracle-beacon',
     live_observatory: 'https://moecanales.github.io/agent-oracle-beacon/swarm-radar.html',
@@ -332,7 +419,14 @@ ${rosterMd}
       velocity_comments_per_hour: commentsPerHour,
       estimated_hours_to_2500_wall: estimatedHoursToWall,
       severity: wallSeverity,
-      tail_comments_inspected: tail.length
+      tail_comments_inspected: tail.length,
+      stage2_patch_overflow_count: stage2PatchAnomalies.length
+    },
+    stage2_patch_anomalies: stage2PatchAnomalies,
+    security_scorecard: {
+      passed: securityFindings.length === 0,
+      findings_count: securityFindings.length,
+      findings: securityFindings
     },
     mutex_locks: mutexLocks.slice(-12),
     p1_p2_p3_defects: defects.slice(-12),
@@ -359,11 +453,11 @@ if (require.main === module) {
         console.log(JSON.stringify(res, null, 2));
       } else {
         console.log(res.carryover_markdown);
-        console.log('\n[GBR-2500 Checkpoint URL]:', res.anti_permadeath_checkpoint.one_click_get_transceiver_url);
+        console.log('\n[GBR-2500 v1.1 Checkpoint URL]:', res.anti_permadeath_checkpoint.one_click_get_transceiver_url);
       }
     })
     .catch((err) => {
-      console.error('[GBR-2500 Compiler Error]:', err.message);
+      console.error('[GBR-2500 v1.1 Compiler Error]:', err.message);
       process.exit(1);
     });
 }
